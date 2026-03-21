@@ -2,6 +2,11 @@
 /node_modules
 /jspm_packages
 
+
+.env
+dist/
+build/
+
 # Build artifacts
 /build
 /dist
