@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Analytics } from "@vercel/analytics/react"
 
-
+import logo from "./image/mansoor_professional.jpg"
 // ── Single Premium Light Theme ─────────────────────────────────────────────────
 const TH = {
   bg: "#F7F5F0",
@@ -385,21 +385,21 @@ export default function Portfolio() {
             </div>
           </div>
 
-{/* Real Photo */}
-<div style={{
-  width: 120, height: 120,
-  borderRadius: "50%",
-  overflow: "hidden",
-  border: `3px solid ${TH.accent}`,
-  boxShadow: `0 8px 28px rgba(12,110,78,0.25)`,
-  margin: "0 auto 16px",
-}}>
-  <img
-    src="/mansoor.jpg"
-    alt="M. Mansoor Farooq"
-    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-  />
-</div>
+          {/* Real Photo */}
+          <div style={{
+            width: 120, height: 120,
+            borderRadius: "50%",
+            overflow: "hidden",
+            border: `3px solid ${TH.accent}`,
+            boxShadow: `0 8px 28px rgba(12,110,78,0.25)`,
+            margin: "0 auto 16px",
+          }}>
+            <img
+              src={logo}
+              alt="M. Mansoor Farooq"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
 
 
           {/* Right — hero card */}
