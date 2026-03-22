@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { Analytics } from "@vercel/analytics/react"
+
 
 // ── Single Premium Light Theme ─────────────────────────────────────────────────
 const TH = {
@@ -542,3 +544,4 @@ export default function Portfolio() {
 
   );
 }
+
