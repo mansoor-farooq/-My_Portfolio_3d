@@ -385,6 +385,23 @@ export default function Portfolio() {
             </div>
           </div>
 
+{/* Real Photo */}
+<div style={{
+  width: 120, height: 120,
+  borderRadius: "50%",
+  overflow: "hidden",
+  border: `3px solid ${TH.accent}`,
+  boxShadow: `0 8px 28px rgba(12,110,78,0.25)`,
+  margin: "0 auto 16px",
+}}>
+  <img
+    src="/mansoor.jpg"
+    alt="M. Mansoor Farooq"
+    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  />
+</div>
+
+
           {/* Right — hero card */}
           <div style={{ animation: "fadeIn 1.2s 0.5s both", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div style={{ position: "relative", background: "linear-gradient(145deg, #EFF9F4 0%, #E7F5EE 60%, #EEF0FC 100%)", border: `1px solid ${TH.borderMid}`, borderRadius: 32, padding: "36px 32px 44px", boxShadow: `0 28px 72px ${TH.shadowLg}, 0 6px 18px ${TH.shadow}` }}>
@@ -540,6 +557,7 @@ export default function Portfolio() {
           © 2025 M. Mansoor Farooq &nbsp;·&nbsp; Full Stack Developer &nbsp;·&nbsp; Infotech Solution &nbsp;·&nbsp; Karachi 🇵🇰
         </p>
       </footer>
+      <Analytics />
     </div>
 
   );
