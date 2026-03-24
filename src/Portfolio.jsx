@@ -1,6 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import logo from "./image/mansoor_professional.jpg";
+import Spline from '@splinetool/react-spline';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Mail, Terminal, Shield, Cpu, Code2 } from 'lucide-react';
 
 const TH = {
   bg: "#F7F5F0", card: "#FFFFFF", cardBorder: "rgba(16,56,40,0.08)",
@@ -294,6 +297,28 @@ export default function Portfolio() {
   const filtered = filter === "All" ? SKILLS : SKILLS.filter(s => s.cat === filter);
   const sec = { padding: isMobile ? "80px 18px 60px" : "110px 48px", position: "relative", zIndex: 1 };
 
+  // --- iam adding dy namic marge top for hero section ---
+
+  const [marginTop, setMarginTop] = useState("80px");
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+
+      if (w >= 1200) setMarginTop("80px");
+      else if (w >= 768) setMarginTop("50px");
+      else setMarginTop("30px");
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // --- end of dynamic margin top for hero section ---
+
+
+
   return (
     <div style={{ minHeight: "100vh", background: TH.bg, color: TH.text, overflowX: "hidden", fontFamily: "'DM Sans',sans-serif" }}>
       <style>{`
@@ -322,83 +347,277 @@ export default function Portfolio() {
       <Nav active={active} setActive={setActive} />
       <ScrollCompanion section={section} />
 
+
+
       {/* ── HERO ── */}
-      <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "100px 18px 70px" : "130px 48px 90px", position: "relative", zIndex: 1 }}>
-        <div style={{ maxWidth: 1100, width: "100%", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "space-between", gap: isMobile ? 32 : 64 }}>
+      <section id="home" style={{
+        position: 'relative',
+        minHeight: '100vh',
+        marginTop,
+        width: '100vw',
+        marginLeft: 'calc(-50vw + 50%)',
+        overflow: 'hidden',
+        backgroundColor: TH.bg,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: isMobile ? 'center' : 'flex-start',
+        padding: isMobile ? '120px 24px 60px' : '0 10%',
+        color: TH.text
+      }}>
+        {/* Dynamic Premium Background */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.8 }}>
+          <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '50vw', height: '50vw', background: `radial-gradient(circle, ${TH.accentLight} 0%, transparent 70%)`, filter: 'blur(80px)' }} />
+          <div style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: '60vw', height: '60vw', background: `radial-gradient(circle, ${TH.goldLight} 0%, transparent 70%)`, filter: 'blur(100px)' }} />
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: `linear-gradient(${TH.accentLight} 1px, transparent 1px), linear-gradient(90deg, ${TH.accentLight} 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
+        </div>
 
-          {/* Mobile: photo + character on top */}
-          {isMobile && (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", animation: "fadeIn 1s 0.2s both" }}>
-              <div style={{ width: 124, height: 124, borderRadius: "50%", overflow: "hidden", border: `3px solid ${TH.accent}`, animation: "photoRing 3s ease-in-out infinite", marginBottom: 20 }}>
-                <img src={logo} alt="M. Mansoor Farooq" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+        {/* Spline 3D Character Layer */}
+        <div style={{
+          position: 'absolute',
+          right: isMobile ? '-20%' : '-5%',
+          top: isMobile ? '10%' : '5%',
+          width: isMobile ? '140%' : '60%',
+          height: isMobile ? '80vh' : '90%',
+          zIndex: 1,
+          opacity: isMobile ? 0.25 : 0.95,
+          pointerEvents: isMobile ? 'none' : 'auto',
+          transform: isMobile ? 'scale(1.2)' : 'scale(1)'
+        }}>
+          <Suspense fallback={<div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: TH.accent }}>Loading 3D Engine...</div>}>
+            {/* Realistic 3D Interactive Robot Model from Spline */}
+            <Spline scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode" />
+          </Suspense>
+        </div>
+
+        {/* Premium Content Layer */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: 700,
+          width: '100%',
+          marginTop: 0,
+          paddingBottom: isMobile ? 20 : 0
+        }}>
+          {/* Enhanced Profile Picture & Status Badge Container */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 18 : 24, marginBottom: 32 }}>
+
+            {/* Standard Professional Photo Wrapper with Animated Ring */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                position: 'relative',
+                width: isMobile ? 95 : 120,
+                height: isMobile ? 95 : 120,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 4,
+                boxShadow: `0 12px 32px ${TH.accentLight}`,
+                flexShrink: 0
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '50%',
+                background: `conic-gradient(from 0deg, ${TH.accent}, ${TH.green}, ${TH.gold}, ${TH.accent})`,
+                animation: 'spinRing 4s linear infinite'
+              }} />
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                backgroundColor: TH.bg,
+                border: `4px solid ${TH.bg}`,
+                zIndex: 2
+              }}>
+                <img src={logo} alt="M. Mansoor Farooq" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", transform: 'scale(1.05)' }} />
               </div>
-              <HeroChar isMobile={true} />
-            </div>
-          )}
+            </motion.div>
 
-          {/* Text content */}
-          <div style={{ flex: 1, minWidth: 0, textAlign: isMobile ? "center" : "left" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 13px", marginBottom: 20, background: TH.greenLight, border: `1px solid ${TH.green}28`, borderRadius: 100, animation: "fadeUp 0.6s 0.1s both" }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: TH.green, animation: "SPulse 1.6s infinite", display: "inline-block" }} />
-              <span style={{ color: TH.green, fontSize: 9.5, fontFamily: "'DM Mono',monospace", fontWeight: 500, letterSpacing: "0.16em" }}>OPEN TO OPPORTUNITIES</span>
-            </div>
-
-            <div style={{ animation: "fadeUp 0.6s 0.22s both" }}>
-              <p style={{ color: TH.textMuted, fontSize: 10.5, fontFamily: "'DM Mono',monospace", letterSpacing: "0.35em", marginBottom: 10 }}>HELLO, I'M</p>
-              <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: isMobile ? "clamp(34px,10vw,50px)" : "clamp(38px,6vw,74px)", fontWeight: 800, lineHeight: 1.0, letterSpacing: "-0.025em", marginBottom: 4 }}>
-                <span style={{ background: `linear-gradient(135deg, ${TH.text} 0%, ${TH.accent} 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>M. Mansoor</span>
-                <span style={{ display: "block", color: TH.text }}>Farooq</span>
-              </h1>
-            </div>
-
-            <div style={{ animation: "fadeUp 0.6s 0.36s both", minHeight: 30, margin: "14px 0 18px", display: "flex", alignItems: "center", gap: 9, justifyContent: isMobile ? "center" : "flex-start" }}>
-              <span style={{ width: 24, height: 2.5, background: `linear-gradient(90deg, ${TH.accent}, ${TH.green})`, borderRadius: 2, display: "inline-block", flexShrink: 0 }} />
-              <span style={{ fontFamily: "'DM Mono',monospace", fontSize: isMobile ? 12.5 : 15, color: TH.accent, fontWeight: 500 }}>{typed}</span>
-              <span style={{ animation: "Blink 0.85s infinite", color: TH.accent }}>|</span>
-            </div>
-
-            <p style={{ color: TH.textSub, fontSize: isMobile ? 14 : 15.5, lineHeight: 1.85, maxWidth: isMobile ? "100%" : 490, marginBottom: 26, animation: "fadeUp 0.6s 0.48s both" }}>
-              Full-Stack Developer at <strong style={{ color: TH.accent }}>Infotech Solution</strong>, Karachi. Building AI-powered apps with React, Next.js & Node.js. Trained at <strong style={{ color: TH.gold }}>Youngs Private Limited</strong>. Also skilled in <strong style={{ color: TH.red }}>Penetration Testing</strong>. 🚀
-            </p>
-
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", animation: "fadeUp 0.6s 0.55s both", justifyContent: isMobile ? "center" : "flex-start" }}>
-              <button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ padding: isMobile ? "12px 22px" : "13px 30px", background: TH.accent, color: "#FFF", fontFamily: "'DM Sans',sans-serif", fontSize: isMobile ? 13.5 : 14, fontWeight: 600, border: "none", borderRadius: 13, cursor: "pointer", boxShadow: `0 8px 28px ${TH.accent}35`, transition: "all 0.25s", flex: isMobile ? "1 1 auto" : "none" }}>
-                View Projects →
-              </button>
-              <a href="mailto:mansoorturk757@gmail.com" style={{ padding: isMobile ? "12px 22px" : "13px 30px", background: "#FFFFFF", color: TH.text, fontFamily: "'DM Sans',sans-serif", fontSize: isMobile ? 13.5 : 14, fontWeight: 600, border: `1px solid ${TH.border}`, borderRadius: 13, textDecoration: "none", boxShadow: `0 4px 14px ${TH.shadow}`, transition: "all 0.25s", flex: isMobile ? "1 1 auto" : "none", textAlign: "center" }}>
-                📧 Email Me
-              </a>
-            </div>
-
-            <div style={{ display: "flex", gap: isMobile ? 18 : 36, marginTop: 30, flexWrap: "wrap", animation: "fadeUp 0.6s 0.65s both", paddingTop: 24, borderTop: `1px solid ${TH.border}`, justifyContent: isMobile ? "center" : "flex-start" }}>
-              {[["17+", "Repos"], ["1yr+", "Experience"], ["10+", "Technologies"], ["3", "AI Models"]].map(([n, l]) => (
-                <div key={l} style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "'Playfair Display',serif", fontSize: isMobile ? 22 : 28, fontWeight: 700, color: TH.accent }}>{n}</div>
-                  <div style={{ color: TH.textMuted, fontSize: 10.5, marginTop: 2, fontWeight: 500 }}>{l}</div>
-                </div>
-              ))}
-            </div>
+            {/* Premium Status Badge */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "10px 20px",
+                background: "rgba(255,255,255,0.85)",
+                border: `1px solid ${TH.borderMid}`,
+                borderRadius: 100,
+                backdropFilter: "blur(12px)",
+                boxShadow: `0 6px 16px ${TH.shadow}`
+              }}
+            >
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ width: 10, height: 10, borderRadius: "50%", background: TH.green }} />
+                <span style={{ position: 'absolute', width: 10, height: 10, borderRadius: "50%", background: TH.green, animation: "ping 2s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ color: TH.textMuted, fontSize: 9.5, fontFamily: "'DM Mono',monospace", fontWeight: 700, letterSpacing: "0.15em", lineHeight: 1, marginBottom: 2 }}>STATUS</span>
+                <span style={{ color: TH.accent, fontSize: 13, fontFamily: "'DM Sans',sans-serif", fontWeight: 800, letterSpacing: "0.05em", lineHeight: 1 }}>AVAILABLE</span>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Desktop: hero card with photo */}
-          {!isMobile && (
-            <div style={{ animation: "fadeIn 1.2s 0.5s both", flexShrink: 0 }}>
-              <div style={{ position: "relative", background: "linear-gradient(145deg,#EFF9F4 0%,#E7F5EE 60%,#EEF0FC 100%)", border: `1px solid ${TH.borderMid}`, borderRadius: 32, padding: "26px 26px 38px", boxShadow: `0 28px 72px ${TH.shadowLg}` }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg,${TH.accent},${TH.green},${TH.gold},${TH.red})`, borderRadius: "32px 32px 0 0" }} />
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
-                  <div style={{ width: 108, height: 108, borderRadius: "50%", overflow: "hidden", border: `3px solid ${TH.accent}`, animation: "photoRing 3s ease-in-out infinite", boxShadow: `0 8px 28px rgba(12,110,78,0.22)` }}>
-                    <img src={logo} alt="M. Mansoor Farooq" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
-                  </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p style={{ color: TH.textMuted, fontSize: 13, fontFamily: "'DM Mono',monospace", letterSpacing: "0.4em", marginBottom: 12, textTransform: 'uppercase' }}>Hello, I am</p>
+            <h1 style={{
+              fontFamily: "'Playfair Display',serif",
+              fontSize: isMobile ? "clamp(42px,11vw,60px)" : "clamp(60px,8vw,90px)",
+              fontWeight: 800,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              marginBottom: 20,
+              backgroundImage: `linear-gradient(135deg, ${TH.text} 0%, ${TH.accent} 100%)`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent"
+            }}>
+              M. Mansoor <br />
+              <span style={{
+                color: TH.text,
+                WebkitTextStroke: '0px',
+                backgroundImage: 'none'
+              }}>Farooq</span>
+            </h1>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: 32
+            }}
+          >
+            <Terminal size={20} color={TH.accent} />
+            <h2 style={{ fontFamily: "'DM Mono',monospace", fontSize: isMobile ? 14 : 18, color: TH.textSub, fontWeight: 600 }}>
+              {typed}
+              <span style={{ animation: "Blink 1s infinite", color: TH.accent }}>|</span>
+            </h2>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              color: TH.textSub,
+              fontSize: isMobile ? 15 : 18,
+              lineHeight: 1.8,
+              maxWidth: 540,
+              marginBottom: 40,
+              fontFamily: "'DM Sans', sans-serif"
+            }}
+          >
+            Building the future of web and artificial intelligence. Specializing in highly scalable architectures, neural networks, and uncompromising digital security. Currently innovating at <strong style={{ color: TH.accent }}>Infotech Solution</strong>.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: 'center' }}
+          >
+            <button
+              onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+              style={{
+                padding: "16px 32px",
+                background: TH.accent,
+                color: "#FFFFFF",
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 15,
+                fontWeight: 600,
+                border: "none",
+                borderRadius: 100,
+                cursor: "pointer",
+                boxShadow: `0 8px 24px ${TH.accentLight}`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                outline: "none"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 12px 30px ${TH.accent}40`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = `0 8px 24px ${TH.accentLight}`; }}
+            >
+              Explore Projects <ArrowRight size={18} />
+            </button>
+            <a
+              href="mailto:mansoorturk757@gmail.com"
+              style={{
+                padding: "16px 32px",
+                background: "rgba(255,255,255,0.9)",
+                color: TH.text,
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 15,
+                fontWeight: 600,
+                border: `1px solid ${TH.borderMid}`,
+                borderRadius: 100,
+                textDecoration: "none",
+                display: 'flex',
+                backdropFilter: 'blur(10px)',
+                alignItems: 'center',
+                gap: 10,
+                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 6px 20px ${TH.shadowLg}`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              <Mail size={18} /> Contact Me
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            style={{
+              display: "flex",
+              gap: isMobile ? 20 : 50,
+              marginTop: isMobile ? 40 : 70,
+              borderTop: `1px solid ${TH.border}`,
+              paddingTop: 30,
+              flexWrap: 'wrap'
+            }}
+          >
+            {[
+              { icon: <Code2 size={24} color={TH.accent} />, n: "17+", l: "Projects Shipped" },
+              { icon: <Cpu size={24} color={TH.green} />, n: "AI/LLM", l: "Integration" },
+              { icon: <Shield size={24} color={TH.red} />, n: "Security", l: "Pen-Testing" }
+            ].map((stat, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{ width: 46, height: 46, borderRadius: '12px', background: TH.card, border: `1px solid ${TH.cardBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 4px 12px ${TH.shadow}` }}>
+                  {stat.icon}
                 </div>
-                <HeroChar isMobile={false} />
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", marginTop: 22, maxWidth: 290 }}>
-                  {["⚛️ React", "▲ Next.js", "🤖 AI", "🦙 Ollama", "🔓 Security", "🐘 PostgreSQL"].map(t => (<span key={t} style={{ padding: "4px 11px", background: "#FFFFFF", border: `1px solid ${TH.border}`, borderRadius: 100, color: TH.textSub, fontSize: 11, fontFamily: "'DM Sans',sans-serif", boxShadow: `0 2px 6px ${TH.shadow}` }}>{t}</span>))}
+                <div>
+                  <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, color: TH.text, lineHeight: 1.1 }}>{stat.n}</div>
+                  <div style={{ color: TH.textMuted, fontSize: 11.5, fontWeight: 600, marginTop: 4, fontFamily: "'DM Sans', sans-serif", letterSpacing: '0.05em' }}>{stat.l}</div>
                 </div>
               </div>
-            </div>
-          )}
+            ))}
+          </motion.div>
+
         </div>
+        <style>{`
+          @keyframes ping { 75%, 100% { transform: scale(2.5); opacity: 0; } }
+          @keyframes spinRing { 100% { transform: rotate(360deg); } }
+        `}</style>
       </section>
 
       <Divider />
