@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   ContactShadows,
@@ -6,8 +6,8 @@ import {
   Float,
   MeshTransmissionMaterial,
   Sparkles,
-  OrbitControls,
 } from "@react-three/drei";
+import * as THREE from "three";
 
 function usePageVisibility() {
   const [visible, setVisible] = useState(true);
@@ -20,79 +20,121 @@ function usePageVisibility() {
   return visible;
 }
 
-function PremiumShape({ running }) {
-  const ref = useRef();
-  const light = useRef();
+function HyperGlassCore({ mouse, running }) {
+  const outerRef = useRef();
+  const innerRef = useRef();
+  const lightRef = useRef();
+  const pointLight2 = useRef();
 
   useFrame((state) => {
     if (!running) return;
     const t = state.clock.getElapsedTime();
 
-    if (ref.current) {
-      ref.current.rotation.x = t * 0.18;
-      ref.current.rotation.y = t * 0.28;
+    // Smooth inertia mouse tracking
+    const targetX = mouse.current.x * 0.4;
+    const targetY = mouse.current.y * 0.3;
+
+    if (outerRef.current) {
+      outerRef.current.rotation.x = THREE.MathUtils.lerp(outerRef.current.rotation.x, t * 0.15 + targetY, 0.05);
+      outerRef.current.rotation.y = THREE.MathUtils.lerp(outerRef.current.rotation.y, t * 0.22 + targetX, 0.05);
     }
-    if (light.current) {
-      light.current.position.x = Math.sin(t * 0.8) * 3.2;
-      light.current.position.z = Math.cos(t * 0.8) * 3.2;
+
+    if (innerRef.current) {
+      innerRef.current.rotation.x = THREE.MathUtils.lerp(innerRef.current.rotation.x, -t * 0.3, 0.05);
+      innerRef.current.rotation.z = THREE.MathUtils.lerp(innerRef.current.rotation.z, t * 0.25, 0.05);
+    }
+
+    if (lightRef.current) {
+      lightRef.current.position.x = Math.sin(t * 0.7) * 3.5;
+      lightRef.current.position.z = Math.cos(t * 0.7) * 3.5;
+      lightRef.current.position.y = Math.cos(t * 0.5) * 1.5;
+    }
+
+    if (pointLight2.current) {
+      pointLight2.current.position.x = -Math.sin(t * 0.6) * 3.0;
+      pointLight2.current.position.y = Math.sin(t * 0.9) * 2.0;
     }
   });
 
   return (
     <group>
-      <pointLight ref={light} intensity={2.2} color="#19ffb0" position={[2, 2, 2]} />
-      <Float speed={1.35} rotationIntensity={0.55} floatIntensity={0.85}>
-        <mesh ref={ref} castShadow>
-          <torusKnotGeometry args={[1.05, 0.32, 100, 16]} />
+      {/* Specular Cyber-Emerald & Cyan Lights */}
+      <pointLight ref={lightRef} intensity={3.5} color="#00F59B" position={[2.5, 2.5, 3]} />
+      <pointLight ref={pointLight2} intensity={2.8} color="#00D2FF" position={[-2.5, -2, 2]} />
+      <pointLight intensity={1.5} color="#E5B869" position={[0, 3, -2]} />
+
+      <Float speed={1.8} rotationIntensity={0.6} floatIntensity={0.9}>
+        {/* Outer Translucent Glass Torus Knot */}
+        <mesh ref={outerRef} castShadow>
+          <torusKnotGeometry args={[1.15, 0.36, 128, 24]} />
           <MeshTransmissionMaterial
-            thickness={1.0}
-            roughness={0.08}
+            backside
+            samples={6}
+            resolution={384}
             transmission={1}
-            ior={1.25}
-            chromaticAberration={0.08}
-            anisotropy={0.25}
-            distortion={0.25}
-            distortionScale={0.32}
+            roughness={0.06}
+            thickness={1.2}
+            ior={1.35}
+            chromaticAberration={0.12}
+            anisotropy={0.3}
+            distortion={0.3}
+            distortionScale={0.4}
             temporalDistortion={0.15}
-            color="#0C6E4E"
-            resolution={256}
+            color="#00F59B"
+            attenuationDistance={1.0}
+            attenuationColor="#003B26"
+          />
+        </mesh>
+
+        {/* Inner Glowing Crystal Core */}
+        <mesh ref={innerRef} scale={0.48}>
+          <octahedronGeometry args={[1, 0]} />
+          <meshStandardMaterial
+            color="#00F59B"
+            emissive="#00F59B"
+            emissiveIntensity={1.8}
+            roughness={0.1}
+            metalness={0.9}
+            wireframe={true}
           />
         </mesh>
       </Float>
 
-      {/* Premium particles */}
-      <Sparkles count={40} scale={[6, 4, 6]} size={1.2} speed={0.25} color="#B8873A" />
+      {/* Atmospheric Star Dust / Specular Sparkles */}
+      <Sparkles count={60} scale={[8, 6, 8]} size={1.8} speed={0.35} color="#00F59B" />
+      <Sparkles count={40} scale={[10, 8, 10]} size={1.4} speed={0.25} color="#00D2FF" />
+      <Sparkles count={25} scale={[7, 5, 7]} size={2.0} speed={0.4} color="#E5B869" />
     </group>
   );
 }
 
 export default function ThreeHero() {
   const pageVisible = usePageVisibility();
-  const reduceMotion =
-    typeof window !== "undefined" && window.matchMedia
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+  const mouse = useRef({ x: 0, y: 0 });
 
-  const running = pageVisible && !reduceMotion;
+  useEffect(() => {
+    const handleMove = (e) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, []);
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }}>
       <Canvas
         shadows
-        dpr={[1, 1.5]}
+        dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        camera={{ position: [0, 0, 4.2], fov: 45 }}
-        style={{ height: "100%", width: "100%" }}
+        camera={{ position: [0, 0, 4.4], fov: 45 }}
+        style={{ width: "100%", height: "100%" }}
       >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[6, 6, 4]} intensity={1.1} castShadow />
-        <PremiumShape running={running} />
-
-        <ContactShadows position={[0, -1.55, 0]} opacity={0.38} scale={8} blur={2.7} resolution={256} frames={1} />
-        <Environment preset="city" resolution={256} />
-
-        {/* Desktop only control feel (optional) */}
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[5, 8, 5]} intensity={1.4} color="#F8FAFC" />
+        <HyperGlassCore mouse={mouse} running={pageVisible} />
+        <ContactShadows position={[0, -1.8, 0]} opacity={0.5} scale={9} blur={2.8} far={4} color="#000000" />
+        <Environment preset="city" />
       </Canvas>
     </div>
   );
