@@ -24,11 +24,12 @@ export default function Navbar({ activeSection, onOpenCommandPalette }) {
     setIsMuted(muted);
   };
 
-  // Personal site minimal navigation labels
+  // Navigation links
   const navLinks = [
-    { id: "home", label: "Work" },
+    { id: "home", label: "Overview" },
     { id: "about", label: "About" },
-    { id: "case-studies", label: "Writing" },
+    { id: "skills", label: "Stack" },
+    { id: "projects", label: "Work" },
     { id: "contact", label: "Contact" },
   ];
 

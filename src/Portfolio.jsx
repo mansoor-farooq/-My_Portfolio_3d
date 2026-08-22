@@ -34,6 +34,8 @@ import ProjectModal from "./components/ProjectModal";
 import SpotlightCard from "./components/SpotlightCard";
 import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
+import SkillsSection from "./components/SkillsSection";
+import GitHubProjects from "./components/GitHubProjects";
 import CaseStudies from "./components/CaseStudies";
 import Footer from "./components/Footer";
 
@@ -392,10 +394,16 @@ export default function Portfolio() {
         {/* ── ABOUT SECTION (Character, Origins & Portrait Anchor) ── */}
         <AboutSection />
 
+        {/* ── TECHNICAL STACK SECTION ── */}
+        <SkillsSection />
+
+        {/* ── GITHUB REPOSITORIES & REAL PROJECTS ── */}
+        <GitHubProjects />
+
         {/* ── CASE STUDIES SECTION ── */}
         <CaseStudies />
 
-        {/* ── CONTACT & FOOTER ── */}
+        {/* ── CONTACT & FOOTER WITH DIRECT EMAIL FORM ── */}
         <Footer />
 
         {/* Vercel Analytics */}
