@@ -35,8 +35,7 @@ import SpotlightCard from "./components/SpotlightCard";
 import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
-import GitHubProjects from "./components/GitHubProjects";
-import CaseStudies from "./components/CaseStudies";
+import FeaturedProjects from "./components/FeaturedProjects";
 import Footer from "./components/Footer";
 
 // ── Skills Database ─────────────────────────────────────────────────────────────
@@ -397,11 +396,8 @@ export default function Portfolio() {
         {/* ── TECHNICAL STACK SECTION ── */}
         <SkillsSection />
 
-        {/* ── GITHUB REPOSITORIES & REAL PROJECTS ── */}
-        <GitHubProjects />
-
-        {/* ── CASE STUDIES SECTION ── */}
-        <CaseStudies />
+        {/* ── FEATURED APPLICATIONS & CASE STUDIES (With Images & Problem/Solution) ── */}
+        <FeaturedProjects />
 
         {/* ── CONTACT & FOOTER WITH DIRECT EMAIL FORM ── */}
         <Footer />
