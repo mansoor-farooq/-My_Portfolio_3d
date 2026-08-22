@@ -506,21 +506,27 @@ export default function Spatial3DLab() {
               </button>
             </div>
 
-            {isVisible && (
-              <Canvas
-                camera={{ position: [0, 0, 8.2], fov: 42 }}
-                style={{ background: "transparent" }}
-                gl={{ alpha: true, antialias: true }}
-              >
-                <LabScene
-                  activeNodeId={selectedNode.id}
-                  onSelectNode={handleNodeClick}
-                  hoveredNodeId={hoveredNodeId}
-                  onHover={setHoveredNodeId}
-                  controlsRef={controlsRef}
-                />
-              </Canvas>
-            )}
+            <Canvas
+              frameloop={isVisible ? "always" : "never"}
+              dpr={[1, 1.5]}
+              camera={{ position: [0, 0, 8.2], fov: 42 }}
+              style={{ background: "transparent" }}
+              gl={{
+                powerPreference: "high-performance",
+                antialias: true,
+                alpha: true,
+                stencil: false,
+                depth: true,
+              }}
+            >
+              <LabScene
+                activeNodeId={selectedNode.id}
+                onSelectNode={handleNodeClick}
+                hoveredNodeId={hoveredNodeId}
+                onHover={setHoveredNodeId}
+                controlsRef={controlsRef}
+              />
+            </Canvas>
 
             {/* Bottom HUD Overlay Instruction */}
             <div

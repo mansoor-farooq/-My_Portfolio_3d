@@ -208,17 +208,23 @@ export default function Interactive3DCore() {
         </button>
       </div>
 
-      {/* 3D WebGL Canvas Area with generous Zoom Out */}
+      {/* 3D WebGL Canvas Area with generous Zoom Out & Zero-Load Offscreen Pausing */}
       <div style={{ position: "relative", flex: 1, width: "100%", height: "100%" }}>
-        {isVisible && (
-          <Canvas
-            camera={{ position: [0, 0, 5.8], fov: 42 }}
-            style={{ background: "transparent" }}
-            gl={{ alpha: true, antialias: true }}
-          >
-            <HolographicCore mouse={mouse} isWireframe={isWireframe} />
-          </Canvas>
-        )}
+        <Canvas
+          frameloop={isVisible ? "always" : "never"}
+          dpr={[1, 1.5]}
+          camera={{ position: [0, 0, 5.8], fov: 42 }}
+          style={{ background: "transparent" }}
+          gl={{
+            powerPreference: "high-performance",
+            antialias: true,
+            alpha: true,
+            stencil: false,
+            depth: true,
+          }}
+        >
+          <HolographicCore mouse={mouse} isWireframe={isWireframe} />
+        </Canvas>
 
         {/* Interactive Physics Bottom Left Overlay */}
         <div
