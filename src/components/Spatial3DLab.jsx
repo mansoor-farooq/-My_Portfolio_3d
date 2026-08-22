@@ -3,16 +3,16 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles, Html, MeshTransmissionMaterial, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { TOKENS } from "../theme";
-import { Cpu, Database, Globe, Smartphone, Shield, Sparkles as SparklesIcon, RefreshCw, Zap, Activity, Layers, ArrowRight, Code2, CheckCircle2, Terminal } from "lucide-react";
+import { Cpu, Database, Globe, Smartphone, Shield, Sparkles as SparklesIcon, RefreshCw, Zap, Activity, Layers, ArrowRight, Code2, CheckCircle2, Terminal, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { playClickSound } from "../utils/audio";
 
-// ── Ultra-Detailed System Topology Nodes
+// ── Ultra-Detailed System Topology Nodes (Compact & Well-Centered Coordinates)
 const SYSTEM_NODES = [
   {
     id: "frontend",
     name: "Next.js & React Core",
     role: "Client Architecture & 60FPS UI Engine",
-    position: [-2.4, 0.9, 0],
+    position: [-1.8, 0.7, 0],
     color: "#0284C7",
     glowColor: "#38BDF8",
     icon: "⚛️",
@@ -33,7 +33,7 @@ export async function SystemDashboard() {
     id: "backend",
     name: "Node.js REST Gateway",
     role: "Microservices & JWT Auth Pipeline",
-    position: [0, 1.6, -0.6],
+    position: [0, 1.25, -0.4],
     color: "#059669",
     glowColor: "#34D399",
     icon: "🟢",
@@ -52,7 +52,7 @@ router.post('/auth/refresh', async (req, res) => {
     id: "database",
     name: "PostgreSQL & SQLite",
     role: "Relational Ledger & Offline Edge DB",
-    position: [2.4, 0.7, 0.3],
+    position: [1.8, 0.6, 0.2],
     color: "#7C3AED",
     glowColor: "#A78BFA",
     icon: "🐘",
@@ -70,7 +70,7 @@ COMMIT;`,
     id: "mobile",
     name: "Kotlin & Android Native",
     role: "Native Mobile Client & Room DB",
-    position: [-1.4, -1.4, 0.6],
+    position: [-1.05, -1.0, 0.4],
     color: "#D97706",
     glowColor: "#FBBF24",
     icon: "🎯",
@@ -90,7 +90,7 @@ fun KnowledgeScreen(viewModel: MindVaultViewModel) {
     id: "security",
     name: "Safe Auth & Encryption",
     role: "OWASP Hardening & SSL Shield",
-    position: [1.4, -1.3, -0.4],
+    position: [1.05, -0.95, -0.3],
     color: "#EC4899",
     glowColor: "#F472B6",
     icon: "🔒",
@@ -128,7 +128,7 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
 
   return (
     <group position={node.position}>
-      <Float speed={2.2} rotationIntensity={0.6} floatIntensity={0.9}>
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.7}>
         {/* 1. Translucent Outer Glass Polyhedron */}
         <mesh
           ref={outerRef}
@@ -145,19 +145,19 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
             onHover(null);
             document.body.style.cursor = "auto";
           }}
-          scale={isSelected ? 1.3 : isHovered ? 1.18 : 1.05}
+          scale={isSelected ? 1.2 : isHovered ? 1.12 : 1.0}
         >
-          <icosahedronGeometry args={[0.62, 0]} />
+          <icosahedronGeometry args={[0.55, 0]} />
           <MeshTransmissionMaterial
             backside
             samples={4}
             resolution={256}
             transmission={0.92}
             roughness={0.08}
-            thickness={1.2}
+            thickness={1.1}
             ior={1.45}
-            chromaticAberration={0.18}
-            distortion={0.25}
+            chromaticAberration={0.16}
+            distortion={0.2}
             color={node.color}
             attenuationDistance={1.4}
             attenuationColor={node.color}
@@ -165,7 +165,7 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
         </mesh>
 
         {/* 2. Inner Glowing Energy Core */}
-        <mesh ref={innerRef} scale={isSelected ? 0.38 : 0.3}>
+        <mesh ref={innerRef} scale={isSelected ? 0.35 : 0.28}>
           <octahedronGeometry args={[1, 0]} />
           <meshStandardMaterial
             color={node.glowColor}
@@ -178,25 +178,25 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
         </mesh>
 
         {/* 3. Glowing Orbital Planetary Ring */}
-        <mesh ref={ringRef} rotation={[Math.PI / 2.5, 0, 0]} scale={isSelected ? 1.15 : 0.95}>
-          <torusGeometry args={[1, 0.018, 16, 64]} />
+        <mesh ref={ringRef} rotation={[Math.PI / 2.5, 0, 0]} scale={isSelected ? 1.05 : 0.88}>
+          <torusGeometry args={[1, 0.016, 16, 64]} />
           <meshBasicMaterial color={node.glowColor} transparent opacity={isSelected ? 0.9 : 0.45} />
         </mesh>
 
         {/* 4. Luxury Cyberpunk Frosted Glass HUD Tag */}
-        <Html distanceFactor={8} position={[0, -0.95, 0]} center>
+        <Html distanceFactor={9} position={[0, -0.78, 0]} center zIndexRange={[100, 0]}>
           <div
             onClick={(e) => {
               e.stopPropagation();
               onSelectNode(node);
             }}
             style={{
-              padding: "5px 12px",
-              borderRadius: "8px",
-              backgroundColor: isSelected ? node.color : "rgba(11, 18, 32, 0.88)",
+              padding: "4px 11px",
+              borderRadius: "7px",
+              backgroundColor: isSelected ? node.color : "rgba(11, 18, 32, 0.9)",
               backdropFilter: "blur(14px)",
               WebkitBackdropFilter: "blur(14px)",
-              border: `1px solid ${isSelected ? "#FFFFFF" : `${node.glowColor}60`}`,
+              border: `1px solid ${isSelected ? "#FFFFFF" : `${node.glowColor}70`}`,
               color: "#FFFFFF",
               fontSize: "11px",
               fontFamily: "'IBM Plex Mono', monospace",
@@ -204,16 +204,16 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
               whiteSpace: "nowrap",
               cursor: "pointer",
               boxShadow: isSelected
-                ? `0 0 20px ${node.glowColor}, 0 4px 14px rgba(0,0,0,0.5)`
-                : "0 8px 24px rgba(0, 0, 0, 0.45)",
-              transition: "all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                ? `0 0 18px ${node.glowColor}, 0 4px 14px rgba(0,0,0,0.5)`
+                : "0 6px 18px rgba(0, 0, 0, 0.45)",
+              transition: "all 180ms ease",
               userSelect: "none",
               display: "flex",
               alignItems: "center",
-              gap: "7px",
+              gap: "6px",
             }}
           >
-            <span style={{ fontSize: "12px" }}>{node.icon}</span>
+            <span style={{ fontSize: "11px" }}>{node.icon}</span>
             <span>{node.name.split(" ")[0]}</span>
             {isSelected && (
               <span
@@ -253,8 +253,8 @@ function LaserDataStreams({ nodes }) {
   );
 }
 
-// ── Main WebGL 3D Scene
-function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover }) {
+// ── Main WebGL 3D Scene with OrbitControls Ref
+function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover, controlsRef }) {
   return (
     <>
       <ambientLight intensity={1.4} />
@@ -275,15 +275,18 @@ function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover }) {
         />
       ))}
 
-      <Sparkles count={55} scale={9} size={2.8} speed={0.6} color="#38BDF8" opacity={0.7} />
+      <Sparkles count={45} scale={8} size={2.5} speed={0.5} color="#38BDF8" opacity={0.6} />
       <OrbitControls
-        enableZoom={false}
+        ref={controlsRef}
+        enableZoom={true}
         enablePan={false}
+        minDistance={5}
+        maxDistance={12}
         maxPolarAngle={Math.PI / 1.7}
         minPolarAngle={Math.PI / 2.6}
         rotateSpeed={0.5}
         autoRotate={true}
-        autoRotateSpeed={0.6}
+        autoRotateSpeed={0.4}
       />
     </>
   );
@@ -295,6 +298,7 @@ export default function Spatial3DLab() {
   const [activeTab, setActiveTab] = useState("specs"); // 'specs' | 'code'
   const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef(null);
+  const controlsRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -310,6 +314,13 @@ export default function Spatial3DLab() {
   const handleNodeClick = (node) => {
     playClickSound();
     setSelectedNode(node);
+  };
+
+  const handleResetCamera = () => {
+    playClickSound();
+    if (controlsRef.current) {
+      controlsRef.current.reset();
+    }
   };
 
   return (
@@ -452,7 +463,7 @@ export default function Spatial3DLab() {
           <div
             style={{
               position: "relative",
-              height: "500px",
+              height: "520px",
               backgroundColor: "rgba(11, 18, 32, 0.9)",
               border: "1px solid rgba(255, 255, 255, 0.12)",
               borderRadius: TOKENS.radius.sm,
@@ -460,9 +471,44 @@ export default function Spatial3DLab() {
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             }}
           >
+            {/* Top Canvas Controls Bar */}
+            <div
+              style={{
+                position: "absolute",
+                top: "14px",
+                right: "14px",
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <button
+                onClick={handleResetCamera}
+                title="Reset 3D Camera"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  padding: "5px 10px",
+                  borderRadius: TOKENS.radius.xs,
+                  backgroundColor: "rgba(11, 18, 32, 0.8)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  color: "#94A3B8",
+                  fontSize: "11px",
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  cursor: "pointer",
+                }}
+              >
+                <RotateCcw size={12} />
+                <span>Reset 3D View</span>
+              </button>
+            </div>
+
             {isVisible && (
               <Canvas
-                camera={{ position: [0, 0, 5.4], fov: 48 }}
+                camera={{ position: [0, 0, 8.2], fov: 42 }}
                 style={{ background: "transparent" }}
                 gl={{ alpha: true, antialias: true }}
               >
@@ -471,6 +517,7 @@ export default function Spatial3DLab() {
                   onSelectNode={handleNodeClick}
                   hoveredNodeId={hoveredNodeId}
                   onHover={setHoveredNodeId}
+                  controlsRef={controlsRef}
                 />
               </Canvas>
             )}
@@ -500,7 +547,7 @@ export default function Spatial3DLab() {
                   border: "1px solid rgba(56, 189, 248, 0.3)",
                 }}
               >
-                DRAG TO ORBIT · CLICK NODES TO INSPECT
+                DRAG TO ORBIT · SCROLL TO ZOOM · CLICK NODES
               </span>
 
               <span
