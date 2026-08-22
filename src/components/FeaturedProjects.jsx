@@ -240,15 +240,19 @@ export default function FeaturedProjects() {
                       </span>
                     </div>
 
-                    {/* Big Visual Image with Hover Zoom */}
+                    {/* Big Visual Image with 100% Uncropped Contain & Soft Shadow */}
                     <div
                       style={{
                         position: "relative",
                         flex: 1,
-                        minHeight: "340px",
-                        overflow: "hidden",
-                        backgroundColor: "#0B1220",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "20px 24px",
+                        backgroundColor: "#080D1A",
                         cursor: "pointer",
+                        overflow: "hidden",
+                        minHeight: "320px",
                       }}
                       onClick={() => openProjectModal(p)}
                     >
@@ -257,17 +261,22 @@ export default function FeaturedProjects() {
                         alt={`${p.title} Full Interface`}
                         style={{
                           width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          objectPosition: "top center",
+                          height: "auto",
+                          maxHeight: "320px",
+                          objectFit: "contain",
                           display: "block",
-                          transition: "transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                          borderRadius: "8px",
+                          border: "1px solid rgba(255, 255, 255, 0.12)",
+                          boxShadow: "0 12px 30px rgba(0, 0, 0, 0.45)",
+                          transition: "transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 350ms ease",
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = "scale(1.03)";
+                          e.currentTarget.style.transform = "scale(1.025)";
+                          e.currentTarget.style.boxShadow = "0 18px 40px rgba(0, 0, 0, 0.6)";
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = "scale(1)";
+                          e.currentTarget.style.boxShadow = "0 12px 30px rgba(0, 0, 0, 0.45)";
                         }}
                         loading="lazy"
                       />
@@ -276,25 +285,25 @@ export default function FeaturedProjects() {
                       <div
                         style={{
                           position: "absolute",
-                          bottom: "14px",
-                          right: "14px",
+                          bottom: "12px",
+                          right: "16px",
                           display: "inline-flex",
                           alignItems: "center",
-                          gap: "6px",
-                          padding: "6px 12px",
-                          backgroundColor: "rgba(11, 18, 32, 0.88)",
+                          gap: "5px",
+                          padding: "5px 11px",
+                          backgroundColor: "rgba(11, 18, 32, 0.9)",
                           backdropFilter: "blur(10px)",
                           borderRadius: TOKENS.radius.xs,
                           border: "1px solid rgba(255, 255, 255, 0.2)",
                           color: "#FFFFFF",
                           ...TOKENS.type.micro,
-                          fontSize: "11px",
+                          fontSize: "10.5px",
                           fontWeight: 600,
-                          boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                         }}
                       >
-                        <Maximize2 size={12} />
-                        <span>Click to Inspect Case Study</span>
+                        <Maximize2 size={11} />
+                        <span>Click to Expand</span>
                       </div>
                     </div>
                   </div>
