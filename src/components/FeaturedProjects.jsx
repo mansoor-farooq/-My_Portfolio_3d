@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TOKENS } from "../theme";
 import { CheckCircle2, AlertCircle, Sparkles, ArrowRight, ArrowLeft, X, Maximize2, ShieldCheck, Zap, Layers, Activity, ChevronLeft, ChevronRight } from "lucide-react";
@@ -131,6 +131,18 @@ export default function FeaturedProjects() {
     setActiveModalProject(p);
   };
 
+  // Safe background scroll lock for modals without breaking internal modal wheel scroll
+  useEffect(() => {
+    if (activeModalProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeModalProject]);
+
   const handleModalNext = () => {
     playClickSound();
     const nextIdx = (projects.findIndex((p) => p.id === activeModalProject.id) + 1) % projects.length;
@@ -144,10 +156,23 @@ export default function FeaturedProjects() {
     setActiveModalProject(projects[prevIdx]);
   };
 
+  // Keyboard navigation when modal or slider is focused
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (activeModalProject) {
+        if (e.key === "Escape") setActiveModalProject(null);
+        if (e.key === "ArrowRight") handleModalNext();
+        if (e.key === "ArrowLeft") handleModalPrev();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeModalProject]);
+
   // Slide Animation Variants
   const slideVariants = {
     enter: (dir) => ({
-      x: dir > 0 ? 120 : -120,
+      x: dir > 0 ? 140 : -140,
       opacity: 0,
       scale: 0.98,
     }),
@@ -162,7 +187,7 @@ export default function FeaturedProjects() {
       },
     },
     exit: (dir) => ({
-      x: dir > 0 ? -120 : 120,
+      x: dir > 0 ? -140 : 140,
       opacity: 0,
       scale: 0.98,
       transition: {
@@ -181,7 +206,6 @@ export default function FeaturedProjects() {
         paddingBottom: "90px",
         borderBottom: `1px solid ${TOKENS.line}`,
         position: "relative",
-        overflow: "hidden",
       }}
     >
       <div
@@ -236,14 +260,14 @@ export default function FeaturedProjects() {
               </p>
             </div>
 
-            {/* Slider Navigation Buttons */}
+            {/* Slider Navigation Buttons & Counter */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  padding: "4px 10px",
+                  padding: "6px 12px",
                   backgroundColor: TOKENS.card,
                   border: `1px solid ${TOKENS.line}`,
                   borderRadius: TOKENS.radius.xs,
@@ -262,8 +286,8 @@ export default function FeaturedProjects() {
                 onClick={handlePrev}
                 aria-label="Previous Project"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: TOKENS.radius.xs,
                   backgroundColor: TOKENS.card,
                   border: `1px solid ${TOKENS.line}`,
@@ -286,15 +310,15 @@ export default function FeaturedProjects() {
                   e.currentTarget.style.color = TOKENS.ink;
                 }}
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={20} />
               </button>
 
               <button
                 onClick={handleNext}
                 aria-label="Next Project"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: TOKENS.radius.xs,
                   backgroundColor: TOKENS.card,
                   border: `1px solid ${TOKENS.line}`,
@@ -317,14 +341,14 @@ export default function FeaturedProjects() {
                   e.currentTarget.style.color = TOKENS.ink;
                 }}
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={20} />
               </button>
             </div>
           </div>
         </div>
 
         {/* ── Slideable Active Project Showcase Card ── */}
-        <div style={{ position: "relative", minHeight: "520px", marginBottom: "28px" }}>
+        <div style={{ position: "relative", minHeight: "520px", marginBottom: "28px", width: "100%" }}>
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentProject.id}
@@ -338,15 +362,15 @@ export default function FeaturedProjects() {
               dragElastic={0.2}
               onDragEnd={(e, { offset, velocity }) => {
                 const swipe = Math.abs(offset.x) * velocity.x;
-                if (swipe < -100 || offset.x < -60) {
+                if (swipe < -80 || offset.x < -50) {
                   handleNext();
-                } else if (swipe > 100 || offset.x > 60) {
+                } else if (swipe > 80 || offset.x > 50) {
                   handlePrev();
                 }
               }}
               style={{ width: "100%", cursor: "grab" }}
             >
-              <TiltCard3D intensity={4} glare={true}>
+              <TiltCard3D intensity={3} glare={true}>
                 <div
                   style={{
                     backgroundColor: TOKENS.card,
@@ -662,6 +686,7 @@ export default function FeaturedProjects() {
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
             gap: "14px",
+            width: "100%",
           }}
           className="project-thumbnails-grid"
         >
@@ -725,36 +750,43 @@ export default function FeaturedProjects() {
           })}
         </div>
 
-        {/* ── Deep Architectural Case Study Modal with Next/Prev Navigation ── */}
+        {/* ── Ultra-Wide Deep Architectural Case Study Modal (data-lenis-prevent) ── */}
         {activeModalProject && (
           <div
+            data-lenis-prevent="true"
             onClick={() => setActiveModalProject(null)}
             style={{
               position: "fixed",
               inset: 0,
               zIndex: 9999,
-              backgroundColor: "rgba(11, 18, 32, 0.85)",
-              backdropFilter: "blur(14px)",
+              backgroundColor: "rgba(11, 18, 32, 0.88)",
+              backdropFilter: "blur(16px)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               padding: "20px",
+              overscrollBehavior: "contain",
             }}
           >
             <div
+              data-lenis-prevent="true"
               onClick={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
               style={{
                 backgroundColor: TOKENS.card,
                 border: `1px solid ${activeModalProject.tagColor}50`,
                 borderRadius: TOKENS.radius.sm,
-                maxWidth: "920px",
-                width: "100%",
-                maxHeight: "92vh",
+                maxWidth: "1160px",
+                width: "95vw",
+                maxHeight: "90vh",
                 overflowY: "auto",
-                padding: "36px 32px",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+                overscrollBehavior: "contain",
+                padding: "36px 36px",
+                boxShadow: "0 25px 60px -12px rgba(0, 0, 0, 0.5)",
                 position: "relative",
               }}
+              className="custom-modal-scrollbar"
             >
               {/* Modal Top Bar with Next / Prev */}
               <div
@@ -790,46 +822,48 @@ export default function FeaturedProjects() {
                   <button
                     onClick={handleModalPrev}
                     style={{
-                      padding: "5px 10px",
+                      padding: "6px 12px",
                       borderRadius: TOKENS.radius.xs,
                       border: `1px solid ${TOKENS.line}`,
                       backgroundColor: TOKENS.surface,
                       ...TOKENS.type.micro,
-                      fontSize: "11px",
+                      fontSize: "11.5px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       gap: "4px",
+                      fontWeight: 600,
                     }}
                   >
-                    <ChevronLeft size={13} />
-                    <span>Prev</span>
+                    <ChevronLeft size={14} />
+                    <span>PREV</span>
                   </button>
 
                   <button
                     onClick={handleModalNext}
                     style={{
-                      padding: "5px 10px",
+                      padding: "6px 12px",
                       borderRadius: TOKENS.radius.xs,
                       border: `1px solid ${TOKENS.line}`,
                       backgroundColor: TOKENS.surface,
                       ...TOKENS.type.micro,
-                      fontSize: "11px",
+                      fontSize: "11.5px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       gap: "4px",
+                      fontWeight: 600,
                     }}
                   >
-                    <span>Next</span>
-                    <ChevronRight size={13} />
+                    <span>NEXT</span>
+                    <ChevronRight size={14} />
                   </button>
 
                   <button
                     onClick={() => setActiveModalProject(null)}
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "34px",
+                      height: "34px",
                       borderRadius: TOKENS.radius.xs,
                       border: `1px solid ${TOKENS.line}`,
                       backgroundColor: TOKENS.surface,
@@ -847,21 +881,21 @@ export default function FeaturedProjects() {
               </div>
 
               {/* Title & Subtitle */}
-              <h2 style={{ ...TOKENS.type.title, fontSize: "24px", color: TOKENS.ink, marginBottom: "6px" }}>
+              <h2 style={{ ...TOKENS.type.title, fontSize: "26px", color: TOKENS.ink, marginBottom: "6px" }}>
                 {activeModalProject.title}
               </h2>
-              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "20px" }}>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "22px" }}>
                 {activeModalProject.subtitle}
               </p>
 
-              {/* High-Res Full Image Banner (100% Uncropped with Padded Frame) */}
+              {/* High-Res Full Image Banner (100% Uncropped with Ultra-Wide Padded Frame) */}
               <div
                 style={{
                   width: "100%",
-                  padding: "16px 20px",
+                  padding: "20px 24px",
                   borderRadius: TOKENS.radius.xs,
                   overflow: "hidden",
-                  marginBottom: "24px",
+                  marginBottom: "26px",
                   border: `1px solid ${TOKENS.line}`,
                   backgroundColor: "#080D1A",
                   display: "flex",
@@ -875,50 +909,58 @@ export default function FeaturedProjects() {
                   style={{
                     width: "100%",
                     height: "auto",
-                    maxHeight: "380px",
+                    maxHeight: "440px",
                     objectFit: "contain",
                     display: "block",
-                    borderRadius: "6px",
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+                    borderRadius: "8px",
+                    boxShadow: "0 14px 36px rgba(0,0,0,0.5)",
                   }}
                 />
               </div>
 
-              {/* Architecture Deep Dive Sections */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "24px" }}>
-                <div style={{ padding: "16px 18px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: TOKENS.radius.xs }}>
+              {/* Wide 2-Column Problem & Solution Grid */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "18px",
+                  marginBottom: "24px",
+                }}
+                className="modal-challenge-grid"
+              >
+                <div style={{ padding: "18px 20px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: TOKENS.radius.xs }}>
                   <div style={{ ...TOKENS.type.micro, color: "#DC2626", fontWeight: 700, marginBottom: "6px" }}>
                     EXACT CHALLENGE & CLIENT PROBLEM
                   </div>
-                  <p style={{ ...TOKENS.type.body, fontSize: "14px", color: "#7F1D1D", margin: 0, lineHeight: 1.6 }}>
+                  <p style={{ ...TOKENS.type.body, fontSize: "13.5px", color: "#7F1D1D", margin: 0, lineHeight: 1.6 }}>
                     {activeModalProject.problem}
                   </p>
                 </div>
 
-                <div style={{ padding: "16px 18px", backgroundColor: `${activeModalProject.tagColor}0D`, border: `1px solid ${activeModalProject.tagColor}40`, borderRadius: TOKENS.radius.xs }}>
+                <div style={{ padding: "18px 20px", backgroundColor: `${activeModalProject.tagColor}0D`, border: `1px solid ${activeModalProject.tagColor}40`, borderRadius: TOKENS.radius.xs }}>
                   <div style={{ ...TOKENS.type.micro, color: activeModalProject.tagColor, fontWeight: 700, marginBottom: "6px" }}>
                     CUSTOM ENGINEERING SOLUTION
                   </div>
-                  <p style={{ ...TOKENS.type.body, fontSize: "14px", color: TOKENS.ink, margin: 0, lineHeight: 1.6 }}>
+                  <p style={{ ...TOKENS.type.body, fontSize: "13.5px", color: TOKENS.ink, margin: 0, lineHeight: 1.6 }}>
                     {activeModalProject.solution}
                   </p>
                 </div>
+              </div>
 
-                {/* Key Technical Protocols */}
-                <div>
-                  <div style={{ ...TOKENS.type.micro, color: TOKENS.muted, marginBottom: "10px", fontSize: "11.5px" }}>
-                    SYSTEM ARCHITECTURAL DECISIONS:
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    {activeModalProject.architecture.map((item, idx) => (
-                      <div key={idx} style={{ display: "flex", alignItems: "start", gap: "10px" }}>
-                        <CheckCircle2 size={16} color={activeModalProject.tagColor} style={{ marginTop: "2px", flexShrink: 0 }} />
-                        <span style={{ ...TOKENS.type.data, fontSize: "13.5px", color: TOKENS.ink, lineHeight: 1.5 }}>
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Key Technical Protocols List */}
+              <div style={{ marginBottom: "26px" }}>
+                <div style={{ ...TOKENS.type.micro, color: TOKENS.muted, marginBottom: "10px", fontSize: "11.5px" }}>
+                  SYSTEM ARCHITECTURAL DECISIONS:
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {activeModalProject.architecture.map((item, idx) => (
+                    <div key={idx} style={{ display: "flex", alignItems: "start", gap: "10px" }}>
+                      <CheckCircle2 size={16} color={activeModalProject.tagColor} style={{ marginTop: "2px", flexShrink: 0 }} />
+                      <span style={{ ...TOKENS.type.data, fontSize: "13.5px", color: TOKENS.ink, lineHeight: 1.5 }}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -928,7 +970,7 @@ export default function FeaturedProjects() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingTop: "18px",
+                  paddingTop: "20px",
                   borderTop: `1px solid ${TOKENS.line}`,
                   flexWrap: "wrap",
                   gap: "12px",
@@ -941,7 +983,7 @@ export default function FeaturedProjects() {
                       style={{
                         ...TOKENS.type.micro,
                         fontSize: "11px",
-                        padding: "3px 8px",
+                        padding: "4px 9px",
                         borderRadius: TOKENS.radius.xs,
                         backgroundColor: TOKENS.surface,
                         border: `1px solid ${TOKENS.line}`,
@@ -980,6 +1022,21 @@ export default function FeaturedProjects() {
       </div>
 
       <style>{`
+        .custom-modal-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+        .custom-modal-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 4px;
+        }
+        .custom-modal-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+        }
+        .custom-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 0, 0, 0.35);
+        }
+
         @media (max-width: 900px) {
           .project-showcase-row {
             grid-template-columns: 1fr !important;
@@ -990,6 +1047,9 @@ export default function FeaturedProjects() {
           }
           .project-thumbnails-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .modal-challenge-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>

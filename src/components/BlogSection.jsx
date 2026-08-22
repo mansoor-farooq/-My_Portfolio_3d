@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { TOKENS } from "../theme";
 import { BookOpen, Clock, Tag, ArrowRight, X, Sparkles, CheckCircle2, Search, Share2, Copy, Check, ChevronRight, User, Calendar } from "lucide-react";
 import TiltCard3D from "./TiltCard3D";
@@ -267,6 +267,20 @@ export default function BlogSection() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeArticle, setActiveArticle] = useState(null);
   const [copiedLink, setCopiedLink] = useState(false);
+
+  useEffect(() => {
+    if (activeArticle) {
+      if (window.__lenis) window.__lenis.stop();
+      document.body.style.overflow = "hidden";
+    } else {
+      if (window.__lenis) window.__lenis.start();
+      document.body.style.overflow = "";
+    }
+    return () => {
+      if (window.__lenis) window.__lenis.start();
+      document.body.style.overflow = "";
+    };
+  }, [activeArticle]);
 
   const categories = ["All", "Architecture", "Frontend", "Backend", "Database", "Mobile"];
 
@@ -716,33 +730,40 @@ export default function BlogSection() {
         {/* 3. Publication Full-Screen Interactive Reader Modal */}
         {activeArticle && (
           <div
+            data-lenis-prevent="true"
             onClick={() => setActiveArticle(null)}
             style={{
               position: "fixed",
               inset: 0,
               zIndex: 9999,
-              backgroundColor: "rgba(11, 18, 32, 0.8)",
-              backdropFilter: "blur(12px)",
+              backgroundColor: "rgba(11, 18, 32, 0.85)",
+              backdropFilter: "blur(14px)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               padding: "20px",
+              overscrollBehavior: "contain",
             }}
           >
             <div
+              data-lenis-prevent="true"
               onClick={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
               style={{
                 backgroundColor: TOKENS.card,
                 border: `1px solid ${TOKENS.line}`,
                 borderRadius: TOKENS.radius.sm,
-                maxWidth: "820px",
-                width: "100%",
+                maxWidth: "960px",
+                width: "95vw",
                 maxHeight: "90vh",
                 overflowY: "auto",
-                padding: "36px 34px",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                overscrollBehavior: "contain",
+                padding: "36px 36px",
+                boxShadow: "0 25px 60px -12px rgba(0, 0, 0, 0.4)",
                 position: "relative",
               }}
+              className="custom-modal-scrollbar"
             >
               {/* Modal Top Bar */}
               <div

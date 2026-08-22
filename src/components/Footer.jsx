@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TOKENS } from "../theme";
-import { Mail, Copy, Check, ArrowUpRight, Send, CheckCircle2, AlertCircle, Loader2, MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
+import { Mail, Copy, Check, ArrowUpRight, ArrowUp, Send, CheckCircle2, AlertCircle, Loader2, MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
 import { GithubIcon, LinkedInIcon } from "./Icons";
 import { playClickSound, playSuccessSound } from "../utils/audio";
 import confetti from "canvas-confetti";
@@ -810,26 +810,40 @@ export default function Footer() {
               }
             }}
             style={{
-              background: "transparent",
-              border: `1px solid rgba(255, 255, 255, 0.2)`,
+              backgroundColor: "rgba(255, 255, 255, 0.06)",
+              backdropFilter: "blur(10px)",
+              border: `1px solid rgba(255, 255, 255, 0.15)`,
               borderRadius: TOKENS.radius.xs,
-              color: "rgba(255, 255, 255, 0.75)",
+              color: "#E2E8F0",
               ...TOKENS.type.micro,
               fontSize: "11px",
-              padding: "7px 16px",
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              padding: "8px 18px",
               cursor: "pointer",
-              transition: TOKENS.transition,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "7px",
+              boxShadow: "0 4px 14px rgba(0, 0, 0, 0.25)",
+              transition: "all 200ms ease",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = "#FFFFFF";
-              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.5)";
+              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.14)";
+              e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.5)";
+              e.currentTarget.style.boxShadow = "0 0 20px rgba(56, 189, 248, 0.3)";
+              e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = "rgba(255, 255, 255, 0.75)";
-              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+              e.currentTarget.style.color = "#E2E8F0";
+              e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.06)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+              e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.25)";
+              e.currentTarget.style.transform = "none";
             }}
           >
-            Back to top ↑
+            <span>BACK TO TOP</span>
+            <ArrowUp size={13} color="#38BDF8" />
           </button>
         </div>
       </footer>

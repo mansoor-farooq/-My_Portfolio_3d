@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Mail, MessageCircle, Heart, ArrowUp, Send } from "lucide-react";
+import { Mail, MessageCircle, ArrowUp, Send, Sparkles } from "lucide-react";
 import { playClickSound } from "../utils/audio";
+import { TOKENS } from "../theme";
 
 export default function FloatingWidgets() {
   const [hoveredBtn, setHoveredBtn] = useState(null);
@@ -8,7 +9,7 @@ export default function FloatingWidgets() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 400) {
+      if (window.scrollY > 350) {
         setShowScrollTop(true);
       } else {
         setShowScrollTop(false);
@@ -38,233 +39,281 @@ export default function FloatingWidgets() {
 
   return (
     <aside
-      aria-label="Quick Actions & WhatsApp Chat"
+      aria-label="Quick Action Floating Glass Dock"
       style={{
         position: "fixed",
-        bottom: "28px",
+        bottom: "26px",
         right: "24px",
         zIndex: 999,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        gap: "12px",
+        alignItems: "flex-end",
+        gap: "10px",
+        pointerEvents: "none", // child buttons enable pointer-events
       }}
     >
-      {/* 1. Scroll To Top Button (Appears when scrolled) */}
-      {showScrollTop && (
-        <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-          {hoveredBtn === "top" && (
+      {/* ── 1. Unified Frosted Glass Action Dock ── */}
+      <div
+        style={{
+          pointerEvents: "auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "8px",
+          padding: "7px",
+          backgroundColor: "rgba(11, 18, 32, 0.85)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderRadius: "40px",
+          border: "1px solid rgba(255, 255, 255, 0.16)",
+          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.2)",
+          transition: "transform 250ms ease, box-shadow 250ms ease",
+        }}
+      >
+        {/* A. Scroll to Top Button (Collapses inside dock smoothly) */}
+        {showScrollTop && (
+          <div style={{ position: "relative" }}>
+            {hoveredBtn === "top" && (
+              <div
+                style={{
+                  position: "absolute",
+                  right: "52px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  backgroundColor: "rgba(11, 18, 32, 0.95)",
+                  backdropFilter: "blur(10px)",
+                  color: "#FFFFFF",
+                  padding: "5px 12px",
+                  borderRadius: TOKENS.radius.xs,
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  ...TOKENS.type.micro,
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 6px 16px rgba(0,0,0,0.35)",
+                  pointerEvents: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <span>Back to Top</span>
+                <ArrowUp size={11} color={TOKENS.accent} />
+              </div>
+            )}
+            <button
+              onClick={scrollToTop}
+              onMouseEnter={() => setHoveredBtn("top")}
+              onMouseLeave={() => setHoveredBtn(null)}
+              aria-label="Scroll to top"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                border: "1px solid rgba(255, 255, 255, 0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#E2E8F0",
+                cursor: "pointer",
+                transition: "all 200ms ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+                e.currentTarget.style.color = "#FFFFFF";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
+                e.currentTarget.style.color = "#E2E8F0";
+                e.currentTarget.style.transform = "none";
+              }}
+            >
+              <ArrowUp size={16} />
+            </button>
+          </div>
+        )}
+
+        {/* B. Direct Message / Contact Form Button */}
+        <div style={{ position: "relative" }}>
+          {hoveredBtn === "contact" && (
             <div
               style={{
                 position: "absolute",
-                right: "56px",
-                backgroundColor: "#0B1220",
+                right: "54px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(11, 18, 32, 0.95)",
+                backdropFilter: "blur(10px)",
                 color: "#FFFFFF",
-                padding: "4px 10px",
-                borderRadius: "6px",
-                fontSize: "11px",
-                fontFamily: "'IBM Plex Mono', monospace",
+                padding: "6px 14px",
+                borderRadius: TOKENS.radius.xs,
+                border: "1px solid rgba(2, 132, 199, 0.4)",
+                ...TOKENS.type.micro,
+                fontSize: "11.5px",
                 fontWeight: 600,
                 whiteSpace: "nowrap",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
                 pointerEvents: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
               }}
             >
-              Back to Top
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: TOKENS.accent }} />
+              <span>Direct Project Inquiry Form</span>
             </div>
           )}
+
           <button
-            onClick={scrollToTop}
-            onMouseEnter={() => setHoveredBtn("top")}
+            onClick={scrollToContact}
+            onMouseEnter={() => setHoveredBtn("contact")}
             onMouseLeave={() => setHoveredBtn(null)}
-            aria-label="Scroll to top"
+            aria-label="Direct Contact Form"
             style={{
-              width: "42px",
-              height: "42px",
+              width: "44px",
+              height: "44px",
               borderRadius: "50%",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E2E6EC",
-              boxShadow: "0 4px 14px rgba(11, 18, 32, 0.12)",
+              backgroundColor: "rgba(2, 132, 199, 0.18)",
+              border: "1px solid rgba(56, 189, 248, 0.35)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#0B1220",
+              color: "#38BDF8",
               cursor: "pointer",
-              transition: "transform 180ms ease, box-shadow 180ms ease",
+              position: "relative",
+              transition: "all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(11, 18, 32, 0.18)";
+              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.4)";
+              e.currentTarget.style.borderColor = "#38BDF8";
+              e.currentTarget.style.transform = "scale(1.08)";
+              e.currentTarget.style.boxShadow = "0 0 20px rgba(56, 189, 248, 0.5)";
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = "none";
-              e.currentTarget.style.boxShadow = "0 4px 14px rgba(11, 18, 32, 0.12)";
+              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.18)";
+              e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.35)";
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            <ArrowUp size={16} />
-          </button>
-        </div>
-      )}
-
-      {/* 2. Contact Us / Hire Me Button (White Circle with Red Heart / Mail) */}
-      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-        {hoveredBtn === "contact" && (
-          <div
-            style={{
-              position: "absolute",
-              right: "60px",
-              backgroundColor: "#0B1220",
-              color: "#FFFFFF",
-              padding: "5px 12px",
-              borderRadius: "6px",
-              fontSize: "12px",
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontWeight: 600,
-              whiteSpace: "nowrap",
-              boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
-              pointerEvents: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-            }}
-          >
-            <span>Direct Message & Inquiries</span>
-          </div>
-        )}
-        <button
-          onClick={scrollToContact}
-          onMouseEnter={() => setHoveredBtn("contact")}
-          onMouseLeave={() => setHoveredBtn(null)}
-          aria-label="Direct Contact Form"
-          style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "50%",
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #E2E6EC",
-            boxShadow: "0 6px 18px rgba(11, 18, 32, 0.14)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            position: "relative",
-            transition: "transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 200ms ease",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = "scale(1.08) translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 10px 25px rgba(11, 18, 32, 0.22)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "0 6px 18px rgba(11, 18, 32, 0.14)";
-          }}
-        >
-          <Mail size={20} color="#0284C7" />
-          {/* Live pulsing dot */}
-          <span
-            style={{
-              position: "absolute",
-              top: "2px",
-              right: "2px",
-              width: "10px",
-              height: "10px",
-              borderRadius: "50%",
-              backgroundColor: "#059669",
-              border: "2px solid #FFFFFF",
-            }}
-          />
-        </button>
-      </div>
-
-      {/* 3. Floating WhatsApp Button (Exact Style from Image) */}
-      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-        {hoveredBtn === "whatsapp" && (
-          <div
-            style={{
-              position: "absolute",
-              right: "66px",
-              backgroundColor: "#1F2937",
-              color: "#FFFFFF",
-              padding: "6px 14px",
-              borderRadius: "6px",
-              fontSize: "12.5px",
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontWeight: 600,
-              whiteSpace: "nowrap",
-              boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
-              pointerEvents: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-            }}
-          >
+            <Mail size={18} />
+            {/* Live Indicator Pulse */}
             <span
               style={{
-                width: "7px",
-                height: "7px",
+                position: "absolute",
+                top: "2px",
+                right: "2px",
+                width: "8px",
+                height: "8px",
                 borderRadius: "50%",
-                backgroundColor: "#25D366",
-                display: "inline-block",
+                backgroundColor: "#38BDF8",
+                boxShadow: "0 0 8px #38BDF8",
               }}
             />
-            <span>Chat on WhatsApp · Online</span>
-          </div>
-        )}
+          </button>
+        </div>
 
-        <a
-          href="https://wa.me/923292597331?text=Hello%20Mansoor,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project."
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => playClickSound()}
-          onMouseEnter={() => setHoveredBtn("whatsapp")}
-          onMouseLeave={() => setHoveredBtn(null)}
-          aria-label="Direct WhatsApp Chat with Mansoor"
-          style={{
-            width: "54px",
-            height: "54px",
-            borderRadius: "50%",
-            backgroundColor: "#25D366",
-            boxShadow: "0 8px 24px rgba(37, 211, 102, 0.45)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textDecoration: "none",
-            cursor: "pointer",
-            transition: "transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 200ms ease",
-            animation: "pulseShadow 2.5s infinite",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = "scale(1.12) translateY(-3px)";
-            e.currentTarget.style.boxShadow = "0 12px 30px rgba(37, 211, 102, 0.6)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "0 8px 24px rgba(37, 211, 102, 0.45)";
-          }}
-        >
-          {/* Authentic WhatsApp SVG Logo */}
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 24 24"
-            fill="#FFFFFF"
-            xmlns="http://www.w3.org/2000/svg"
+        {/* C. Direct WhatsApp Floating Action */}
+        <div style={{ position: "relative" }}>
+          {hoveredBtn === "whatsapp" && (
+            <div
+              style={{
+                position: "absolute",
+                right: "60px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(11, 18, 32, 0.95)",
+                backdropFilter: "blur(10px)",
+                color: "#FFFFFF",
+                padding: "6px 14px",
+                borderRadius: TOKENS.radius.xs,
+                border: "1px solid rgba(37, 211, 102, 0.4)",
+                ...TOKENS.type.micro,
+                fontSize: "11.5px",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
+                pointerEvents: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <span
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  borderRadius: "50%",
+                  backgroundColor: "#25D366",
+                  boxShadow: "0 0 8px #25D366",
+                }}
+              />
+              <span>Chat on WhatsApp · Online (+92 329 2597331)</span>
+            </div>
+          )}
+
+          <a
+            href="https://wa.me/923292597331?text=Hello%20Mansoor,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project."
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => playClickSound()}
+            onMouseEnter={() => setHoveredBtn("whatsapp")}
+            onMouseLeave={() => setHoveredBtn(null)}
+            aria-label="Direct WhatsApp Chat with Mansoor"
+            style={{
+              width: "48px",
+              height: "48px",
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#FFFFFF",
+              textDecoration: "none",
+              boxShadow: "0 4px 18px rgba(37, 211, 102, 0.45)",
+              position: "relative",
+              transition: "transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "scale(1.12)";
+              e.currentTarget.style.boxShadow = "0 8px 28px rgba(37, 211, 102, 0.7)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 4px 18px rgba(37, 211, 102, 0.45)";
+            }}
           >
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.16 12.04 20.16C10.66 20.16 9.3 19.8 8.1 19.09L7.81 18.92L4.7 19.74L5.53 16.71L5.34 16.41C4.55 15.15 4.14 13.56 4.14 11.92C4.14 7.38 7.84 3.67 12.04 3.67ZM8.83 7.37C8.65 7.37 8.35 7.44 8.1 7.71C7.86 7.97 7.17 8.62 7.17 9.94C7.17 11.26 8.13 12.54 8.27 12.72C8.4 12.9 10.16 15.61 12.86 16.78C13.51 17.06 14.01 17.22 14.41 17.35C15.06 17.56 15.65 17.53 16.12 17.46C16.64 17.38 17.72 16.8 17.95 16.16C18.18 15.52 18.18 14.97 18.11 14.86C18.04 14.75 17.86 14.69 17.59 14.55C17.32 14.42 16.02 13.78 15.78 13.69C15.54 13.6 15.36 13.56 15.18 13.82C15.01 14.09 14.51 14.69 14.36 14.86C14.21 15.04 14.06 15.06 13.79 14.93C13.53 14.79 12.67 14.51 11.66 13.61C10.87 12.91 10.34 12.04 10.18 11.78C10.03 11.51 10.17 11.37 10.3 11.24C10.42 11.12 10.57 10.93 10.7 10.77C10.84 10.62 10.88 10.51 10.97 10.33C11.06 10.16 11.02 10.01 10.95 9.87C10.89 9.74 10.39 8.52 10.18 8.01C9.98 7.52 9.77 7.59 9.62 7.58C9.47 7.57 9.3 7.57 9.12 7.57L8.83 7.37Z" />
-          </svg>
-        </a>
+            {/* WhatsApp SVG Icon */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+            </svg>
+
+            {/* Glowing Pulse Ring */}
+            <span
+              style={{
+                position: "absolute",
+                inset: "-2px",
+                borderRadius: "50%",
+                border: "2px solid rgba(37, 211, 102, 0.4)",
+                animation: "whatsappPulse 2s infinite ease-out",
+                pointerEvents: "none",
+              }}
+            />
+          </a>
+        </div>
       </div>
 
       <style>{`
-        @keyframes pulseShadow {
+        @keyframes whatsappPulse {
           0% {
-            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
-          }
-          70% {
-            box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+            transform: scale(1);
+            opacity: 0.8;
           }
           100% {
-            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            transform: scale(1.4);
+            opacity: 0;
           }
         }
       `}</style>
