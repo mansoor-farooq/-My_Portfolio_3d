@@ -137,9 +137,9 @@ Native Android code provides direct hardware access (Bluetooth, barcode hardware
     tags: ["Kotlin", "Android", "Jetpack Compose", "Mobile"],
   },
   {
-    id: "framer-motion-60fps-web",
-    title: "Building Silky 60FPS UI Animations with Framer Motion",
-    slug: "framer-motion-60fps-web",
+    id: "framer-motion-smooth-web",
+    title: "Building Silky Smooth UI Animations with Framer Motion",
+    slug: "framer-motion-smooth-web",
     category: "Frontend",
     featured: false,
     date: "June 2026",

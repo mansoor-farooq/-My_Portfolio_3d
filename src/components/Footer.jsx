@@ -624,7 +624,7 @@ export default function Footer() {
                     }}
                   >
                     <option value="Custom Web Application (Next.js / Node)">Custom Web Application (Next.js / Node / PostgreSQL)</option>
-                    <option value="Animated Business Website (InfoTech Style)">Animated Business Website (InfoTech 60FPS Style)</option>
+                    <option value="Animated Business Website (InfoTech Style)">Animated Business Website (InfoTech Style)</option>
                     <option value="Native Mobile App (Kotlin / Android)">Native Mobile App (Kotlin / Jetpack Compose)</option>
                     <option value="Offline-First System / SQLite Engine">Offline-First System / Local SQLite Engine</option>
                     <option value="Backend API & Microservice Architecture">Backend REST API & Microservice Architecture</option>

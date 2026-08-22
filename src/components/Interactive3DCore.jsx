@@ -237,7 +237,7 @@ export default function Interactive3DCore() {
             pointerEvents: "none",
           }}
         >
-          MOUSE RESPONSIVE · 60FPS WEBGL
+          MOUSE RESPONSIVE · WEBGL CORE
         </div>
 
         {/* Stack Highlight Orbit Pill */}

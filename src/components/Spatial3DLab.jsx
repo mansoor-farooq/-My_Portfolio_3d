@@ -11,14 +11,14 @@ const SYSTEM_NODES = [
   {
     id: "frontend",
     name: "Next.js & React Core",
-    role: "Client Architecture & 60FPS UI Engine",
+    role: "Client Architecture & UI Engine",
     position: [-1.8, 0.7, 0],
     color: "#0284C7",
     glowColor: "#38BDF8",
     icon: "⚛️",
     badge: "SUB-1.2s LCP",
     specs: ["App Router & Server Components", "React Streaming & Suspense", "Framer Motion Hardware Transforms", "Tailwind Atomic CSS"],
-    metrics: { throughput: "60 FPS", latency: "<120ms TTFB", state: "OPTIMAL", load: "98.8%" },
+    metrics: { throughput: "Sub-1.2s LCP", latency: "<120ms TTFB", state: "OPTIMAL", load: "98.8%" },
     codeSnippet: `// Next.js App Router Server Component
 export async function SystemDashboard() {
   const telemetry = await getLiveTelemetry();
@@ -562,7 +562,7 @@ export default function Spatial3DLab() {
                   border: "1px solid rgba(255, 255, 255, 0.08)",
                 }}
               >
-                60FPS WEBGL ACCELERATED
+                WEBGL ACCELERATED ENGINE
               </span>
             </div>
           </div>
