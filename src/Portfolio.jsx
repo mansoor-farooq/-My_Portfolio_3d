@@ -271,24 +271,26 @@ export default function Portfolio() {
 
   // Section Observer for Active Navigation Highlighting
   useEffect(() => {
-    const sectionIds = ["home", "about", "skills", "projects", "contact"];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+    const sectionIds = ["home", "about", "skills", "projects", "process", "blog", "terminal", "faq", "contact"];
+    
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSection(sectionIds[i]);
+            break;
           }
-        });
-      },
-      { threshold: 0.3 }
-    );
+        }
+      }
+    };
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
 
-    return () => observer.disconnect();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Filter skills
