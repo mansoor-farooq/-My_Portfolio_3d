@@ -36,6 +36,7 @@ import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
 import FeaturedProjects from "./components/FeaturedProjects";
+import InteractiveTerminalHUD from "./components/InteractiveTerminalHUD";
 import Footer from "./components/Footer";
 
 // ── Skills Database ─────────────────────────────────────────────────────────────
@@ -398,6 +399,9 @@ export default function Portfolio() {
 
         {/* ── FEATURED APPLICATIONS & CASE STUDIES (With Images & Problem/Solution) ── */}
         <FeaturedProjects />
+
+        {/* ── INTERACTIVE 3D ARCHITECTURE TERMINAL HUD ── */}
+        <InteractiveTerminalHUD />
 
         {/* ── CONTACT & FOOTER WITH DIRECT EMAIL FORM ── */}
         <Footer />

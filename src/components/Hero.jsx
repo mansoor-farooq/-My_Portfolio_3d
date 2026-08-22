@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Database, Cpu } from "lucide-react";
+import { ArrowRight, ShieldCheck, Database, Cpu, Sparkles, Layers } from "lucide-react";
 import { TOKENS } from "../theme";
 import IsometricArchitecture from "./IsometricArchitecture";
+import Interactive3DCore from "./Interactive3DCore";
 
 export default function Hero({ onExploreClick }) {
+  const [heroMode, setHeroMode] = useState("3d");
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -216,16 +219,74 @@ export default function Hero({ onExploreClick }) {
               </motion.div>
             </div>
 
-            {/* Right: Pure CSS 3D Isometric Architecture Diagram */}
+            {/* Right: Interactive 3D Spatial Canvas or Isometric Architecture */}
             <motion.div
               variants={itemVariants}
               style={{
                 display: "flex",
-                justifyContent: "center",
+                flexDirection: "column",
                 alignItems: "center",
+                gap: "10px",
+                width: "100%",
               }}
             >
-              <IsometricArchitecture />
+              {/* 3D Mode Selector Pill */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  padding: "3px",
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  borderRadius: TOKENS.radius.xs,
+                  boxShadow: TOKENS.shadow.resting,
+                }}
+              >
+                <button
+                  onClick={() => setHeroMode("3d")}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "4px 10px",
+                    border: "none",
+                    borderRadius: TOKENS.radius.xs,
+                    backgroundColor: heroMode === "3d" ? TOKENS.accent : "transparent",
+                    color: heroMode === "3d" ? "#FFFFFF" : TOKENS.muted,
+                    ...TOKENS.type.micro,
+                    fontSize: "11px",
+                    cursor: "pointer",
+                    transition: TOKENS.transition,
+                  }}
+                >
+                  <Sparkles size={11} />
+                  <span>3D HOLOGRAM CORE</span>
+                </button>
+
+                <button
+                  onClick={() => setHeroMode("iso")}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "4px 10px",
+                    border: "none",
+                    borderRadius: TOKENS.radius.xs,
+                    backgroundColor: heroMode === "iso" ? TOKENS.accent : "transparent",
+                    color: heroMode === "iso" ? "#FFFFFF" : TOKENS.muted,
+                    ...TOKENS.type.micro,
+                    fontSize: "11px",
+                    cursor: "pointer",
+                    transition: TOKENS.transition,
+                  }}
+                >
+                  <Layers size={11} />
+                  <span>ISOMETRIC STACK</span>
+                </button>
+              </div>
+
+              {heroMode === "3d" ? <Interactive3DCore /> : <IsometricArchitecture />}
             </motion.div>
           </div>
 

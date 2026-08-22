@@ -30,6 +30,7 @@ export default function Navbar({ activeSection, onOpenCommandPalette }) {
     { id: "about", label: "About" },
     { id: "skills", label: "Stack" },
     { id: "projects", label: "Work" },
+    { id: "terminal", label: "Terminal" },
     { id: "contact", label: "Contact" },
   ];
 

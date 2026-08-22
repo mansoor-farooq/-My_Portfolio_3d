@@ -1,6 +1,7 @@
 import React from "react";
 import { TOKENS } from "../theme";
 import { Terminal, Smartphone, Code2, Heart, ArrowUpRight } from "lucide-react";
+import TiltCard3D from "./TiltCard3D";
 import mansoorImg from "../image/mansoor_professional.jpg";
 
 export default function AboutSection() {
@@ -135,16 +136,17 @@ export default function AboutSection() {
             </div>
           </div>
 
-          {/* Right Column: Designed Portrait Anchor */}
-          <div
-            style={{
-              backgroundColor: TOKENS.card,
-              border: `1px solid ${TOKENS.line}`,
-              borderRadius: TOKENS.radius.sm,
-              overflow: "hidden",
-              boxShadow: TOKENS.shadow.raised,
-            }}
-          >
+          {/* Right Column: Designed Portrait Anchor with 3D Tilt */}
+          <TiltCard3D intensity={10} glare={true}>
+            <div
+              style={{
+                backgroundColor: TOKENS.card,
+                border: `1px solid ${TOKENS.line}`,
+                borderRadius: TOKENS.radius.sm,
+                overflow: "hidden",
+                boxShadow: TOKENS.shadow.raised,
+              }}
+            >
             {/* Header Telemetry Bar */}
             <div
               style={{
@@ -240,6 +242,7 @@ export default function AboutSection() {
               </a>
             </div>
           </div>
+        </TiltCard3D>
         </div>
       </div>
 

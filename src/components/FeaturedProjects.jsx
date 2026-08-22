@@ -1,6 +1,7 @@
 import React from "react";
 import { TOKENS } from "../theme";
 import { Layers, CheckCircle2, AlertCircle, Sparkles, Cpu, Globe, ArrowRight } from "lucide-react";
+import TiltCard3D from "./TiltCard3D";
 import infotechImg from "../image/project_infotech.jpg";
 import mindvaultImg from "../image/project_mindvault.jpg";
 import gatepassImg from "../image/project_gatepass.jpg";
@@ -127,28 +128,29 @@ export default function FeaturedProjects() {
           className="projects-grid"
         >
           {projects.map((p) => (
-            <article
-              key={p.id}
-              style={{
-                backgroundColor: TOKENS.card,
-                border: `1px solid ${TOKENS.line}`,
-                borderRadius: TOKENS.radius.sm,
-                overflow: "hidden",
-                boxShadow: TOKENS.shadow.resting,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                transition: TOKENS.transition,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = p.tagColor;
-                e.currentTarget.style.boxShadow = TOKENS.shadow.raised;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = TOKENS.line;
-                e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
-              }}
-            >
+            <TiltCard3D key={p.id} intensity={8} glare={true} style={{ height: "100%" }}>
+              <article
+                style={{
+                  height: "100%",
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  borderRadius: TOKENS.radius.sm,
+                  overflow: "hidden",
+                  boxShadow: TOKENS.shadow.resting,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  transition: TOKENS.transition,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = p.tagColor;
+                  e.currentTarget.style.boxShadow = TOKENS.shadow.raised;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = TOKENS.line;
+                  e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
+                }}
+              >
               <div>
                 {/* Visual UI Preview Image Header */}
                 <div
@@ -314,6 +316,7 @@ export default function FeaturedProjects() {
                 ))}
               </div>
             </article>
+          </TiltCard3D>
           ))}
         </div>
       </div>

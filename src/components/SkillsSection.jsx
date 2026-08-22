@@ -1,6 +1,7 @@
 import React from "react";
 import { TOKENS } from "../theme";
 import { Code2, Server, Database, Smartphone, Wrench, Shield } from "lucide-react";
+import TiltCard3D from "./TiltCard3D";
 
 export default function SkillsSection() {
   const categories = [
@@ -125,20 +126,21 @@ export default function SkillsSection() {
           }}
         >
           {categories.map((cat) => (
-            <div
-              key={cat.title}
-              style={{
-                backgroundColor: TOKENS.card,
-                border: `1px solid ${TOKENS.line}`,
-                borderRadius: TOKENS.radius.sm,
-                padding: "22px 20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                boxShadow: TOKENS.shadow.resting,
-                transition: TOKENS.transition,
-              }}
-            >
+            <TiltCard3D key={cat.title} intensity={9} glare={true} style={{ height: "100%" }}>
+              <div
+                style={{
+                  height: "100%",
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  borderRadius: TOKENS.radius.sm,
+                  padding: "22px 20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  boxShadow: TOKENS.shadow.resting,
+                  transition: TOKENS.transition,
+                }}
+              >
               <div>
                 {/* Category Top */}
                 <div
@@ -211,6 +213,7 @@ export default function SkillsSection() {
                 </div>
               </div>
             </div>
+          </TiltCard3D>
           ))}
         </div>
       </div>
