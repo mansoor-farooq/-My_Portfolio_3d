@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { TOKENS } from "../theme";
-import { CheckCircle2, AlertCircle, Sparkles, ArrowRight, X, Maximize2, ShieldCheck, Zap, Layers, Activity } from "lucide-react";
+import { CheckCircle2, AlertCircle, Sparkles, ArrowRight, ArrowLeft, X, Maximize2, ShieldCheck, Zap, Layers, Activity, ChevronLeft, ChevronRight } from "lucide-react";
 import TiltCard3D from "./TiltCard3D";
 import { playClickSound } from "../utils/audio";
 import infotechImg from "../image/project_infotech.jpg";
@@ -9,6 +10,8 @@ import gatepassImg from "../image/project_gatepass.jpg";
 import apimonitorImg from "../image/project_apimonitor.jpg";
 
 export default function FeaturedProjects() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [activeModalProject, setActiveModalProject] = useState(null);
 
   const projects = [
@@ -102,9 +105,71 @@ export default function FeaturedProjects() {
     },
   ];
 
+  const currentProject = projects[currentIndex];
+
+  const handleNext = () => {
+    playClickSound();
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % projects.length);
+  };
+
+  const handlePrev = () => {
+    playClickSound();
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+  };
+
+  const handleJumpTo = (idx) => {
+    if (idx === currentIndex) return;
+    playClickSound();
+    setDirection(idx > currentIndex ? 1 : -1);
+    setCurrentIndex(idx);
+  };
+
   const openProjectModal = (p) => {
     playClickSound();
     setActiveModalProject(p);
+  };
+
+  const handleModalNext = () => {
+    playClickSound();
+    const nextIdx = (projects.findIndex((p) => p.id === activeModalProject.id) + 1) % projects.length;
+    setActiveModalProject(projects[nextIdx]);
+  };
+
+  const handleModalPrev = () => {
+    playClickSound();
+    const currIdx = projects.findIndex((p) => p.id === activeModalProject.id);
+    const prevIdx = (currIdx - 1 + projects.length) % projects.length;
+    setActiveModalProject(projects[prevIdx]);
+  };
+
+  // Slide Animation Variants
+  const slideVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 120 : -120,
+      opacity: 0,
+      scale: 0.98,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: "spring", stiffness: 320, damping: 30 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.25 },
+      },
+    },
+    exit: (dir) => ({
+      x: dir > 0 ? -120 : 120,
+      opacity: 0,
+      scale: 0.98,
+      transition: {
+        x: { type: "spring", stiffness: 320, damping: 30 },
+        opacity: { duration: 0.2 },
+      },
+    }),
   };
 
   return (
@@ -116,6 +181,7 @@ export default function FeaturedProjects() {
         paddingBottom: "90px",
         borderBottom: `1px solid ${TOKENS.line}`,
         position: "relative",
+        overflow: "hidden",
       }}
     >
       <div
@@ -128,7 +194,7 @@ export default function FeaturedProjects() {
         }}
       >
         {/* Section Header */}
-        <div style={{ marginBottom: "48px" }}>
+        <div style={{ marginBottom: "36px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
             <span
               style={{
@@ -145,65 +211,170 @@ export default function FeaturedProjects() {
             </span>
           </div>
 
-          <h2
+          <div
             style={{
-              ...TOKENS.type.title,
-              fontSize: "clamp(26px, 3.4vw, 38px)",
-              color: TOKENS.ink,
-              marginBottom: "8px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              flexWrap: "wrap",
+              gap: "20px",
             }}
           >
-            Real problems solved with custom software.
-          </h2>
-          <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "680px" }}>
-            Detailed breakdown of production applications — uncompromised visual interfaces, exact challenge definitions, and custom architectural solutions.
-          </p>
+            <div>
+              <h2
+                style={{
+                  ...TOKENS.type.title,
+                  fontSize: "clamp(26px, 3.4vw, 38px)",
+                  color: TOKENS.ink,
+                  marginBottom: "8px",
+                }}
+              >
+                Real problems solved with custom software.
+              </h2>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "660px" }}>
+                Interactive sliding case studies — slide through production applications to inspect exact challenges and custom architectures.
+              </p>
+            </div>
+
+            {/* Slider Navigation Buttons */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "4px 10px",
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  borderRadius: TOKENS.radius.xs,
+                  ...TOKENS.type.micro,
+                  fontSize: "12px",
+                  color: TOKENS.ink,
+                  fontWeight: 600,
+                }}
+              >
+                <span>{String(currentIndex + 1).padStart(2, "0")}</span>
+                <span style={{ color: TOKENS.muted }}>/</span>
+                <span style={{ color: TOKENS.muted }}>{String(projects.length).padStart(2, "0")}</span>
+              </div>
+
+              <button
+                onClick={handlePrev}
+                aria-label="Previous Project"
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: TOKENS.radius.xs,
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: TOKENS.ink,
+                  transition: TOKENS.transition,
+                  boxShadow: TOKENS.shadow.resting,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = TOKENS.accent;
+                  e.currentTarget.style.backgroundColor = TOKENS.accentSubtle;
+                  e.currentTarget.style.color = TOKENS.accent;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = TOKENS.line;
+                  e.currentTarget.style.backgroundColor = TOKENS.card;
+                  e.currentTarget.style.color = TOKENS.ink;
+                }}
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <button
+                onClick={handleNext}
+                aria-label="Next Project"
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: TOKENS.radius.xs,
+                  backgroundColor: TOKENS.card,
+                  border: `1px solid ${TOKENS.line}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: TOKENS.ink,
+                  transition: TOKENS.transition,
+                  boxShadow: TOKENS.shadow.resting,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = TOKENS.accent;
+                  e.currentTarget.style.backgroundColor = TOKENS.accentSubtle;
+                  e.currentTarget.style.color = TOKENS.accent;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = TOKENS.line;
+                  e.currentTarget.style.backgroundColor = TOKENS.card;
+                  e.currentTarget.style.color = TOKENS.ink;
+                }}
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* ── Alternating Full-Width Showcase Stack ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
-          {projects.map((p, idx) => {
-            const isEven = idx % 2 === 1;
-            return (
-              <TiltCard3D key={p.id} intensity={4} glare={true}>
+        {/* ── Slideable Active Project Showcase Card ── */}
+        <div style={{ position: "relative", minHeight: "520px", marginBottom: "28px" }}>
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentProject.id}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = Math.abs(offset.x) * velocity.x;
+                if (swipe < -100 || offset.x < -60) {
+                  handleNext();
+                } else if (swipe > 100 || offset.x > 60) {
+                  handlePrev();
+                }
+              }}
+              style={{ width: "100%", cursor: "grab" }}
+            >
+              <TiltCard3D intensity={4} glare={true}>
                 <div
                   style={{
                     backgroundColor: TOKENS.card,
-                    border: `1px solid ${TOKENS.line}`,
+                    border: `1px solid ${currentProject.tagColor}50`,
                     borderRadius: TOKENS.radius.sm,
                     overflow: "hidden",
-                    boxShadow: TOKENS.shadow.resting,
+                    boxShadow: "0 20px 45px rgba(0, 0, 0, 0.08)",
                     display: "grid",
                     gridTemplateColumns: "1.15fr 1fr",
                     alignItems: "stretch",
                     transition: TOKENS.transition,
                   }}
                   className="project-showcase-row"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = p.tagColor;
-                    e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = TOKENS.line;
-                    e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
-                  }}
                 >
-                  {/* Left Column: Big Spacious UI Preview (Swaps with isEven on desktop) */}
+                  {/* Left Column: Uncropped Padded UI Mockup */}
                   <div
                     style={{
-                      order: isEven ? 2 : 1,
-                      backgroundColor: "#0B1220",
+                      backgroundColor: "#080D1A",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "space-between",
-                      borderRight: isEven ? "none" : `1px solid ${TOKENS.line}`,
-                      borderLeft: isEven ? `1px solid ${TOKENS.line}` : "none",
+                      borderRight: `1px solid ${TOKENS.line}`,
                       position: "relative",
                       overflow: "hidden",
                     }}
                     className="project-image-col"
                   >
-                    {/* Top Browser Bar */}
+                    {/* Top macOS Browser Frame Bar */}
                     <div
                       style={{
                         padding: "10px 16px",
@@ -222,25 +393,25 @@ export default function FeaturedProjects() {
                       </div>
 
                       <span style={{ ...TOKENS.type.micro, fontSize: "11px", color: "rgba(255, 255, 255, 0.6)" }}>
-                        https://app.{p.id}.mansoor.production
+                        https://app.{currentProject.id}.mansoor.production
                       </span>
 
                       <span
                         style={{
                           ...TOKENS.type.micro,
                           fontSize: "10px",
-                          color: p.tagColor,
-                          backgroundColor: `${p.tagColor}20`,
+                          color: currentProject.tagColor,
+                          backgroundColor: `${currentProject.tagColor}20`,
                           padding: "2px 8px",
                           borderRadius: "4px",
                           fontWeight: 700,
                         }}
                       >
-                        {p.metric.split("·")[0]}
+                        {currentProject.metric.split("·")[0]}
                       </span>
                     </div>
 
-                    {/* Big Visual Image with 100% Uncropped Contain & Soft Shadow */}
+                    {/* Uncropped Fitted Mockup Image Container */}
                     <div
                       style={{
                         position: "relative",
@@ -248,35 +419,33 @@ export default function FeaturedProjects() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: "20px 24px",
+                        padding: "22px 26px",
                         backgroundColor: "#080D1A",
                         cursor: "pointer",
                         overflow: "hidden",
-                        minHeight: "320px",
+                        minHeight: "330px",
                       }}
-                      onClick={() => openProjectModal(p)}
+                      onClick={() => openProjectModal(currentProject)}
                     >
                       <img
-                        src={p.image}
-                        alt={`${p.title} Full Interface`}
+                        src={currentProject.image}
+                        alt={`${currentProject.title} Interface`}
                         style={{
                           width: "100%",
                           height: "auto",
-                          maxHeight: "320px",
+                          maxHeight: "330px",
                           objectFit: "contain",
                           display: "block",
                           borderRadius: "8px",
                           border: "1px solid rgba(255, 255, 255, 0.12)",
                           boxShadow: "0 12px 30px rgba(0, 0, 0, 0.45)",
-                          transition: "transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 350ms ease",
+                          transition: "transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1)",
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = "scale(1.025)";
-                          e.currentTarget.style.boxShadow = "0 18px 40px rgba(0, 0, 0, 0.6)";
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = "scale(1)";
-                          e.currentTarget.style.boxShadow = "0 12px 30px rgba(0, 0, 0, 0.45)";
                         }}
                         loading="lazy"
                       />
@@ -311,7 +480,6 @@ export default function FeaturedProjects() {
                   {/* Right Column: Detailed Architecture Story */}
                   <div
                     style={{
-                      order: isEven ? 1 : 2,
                       padding: "32px 30px",
                       display: "flex",
                       flexDirection: "column",
@@ -325,18 +493,18 @@ export default function FeaturedProjects() {
                           style={{
                             ...TOKENS.type.micro,
                             fontSize: "11px",
-                            color: p.tagColor,
-                            backgroundColor: `${p.tagColor}12`,
-                            border: `1px solid ${p.tagColor}30`,
+                            color: currentProject.tagColor,
+                            backgroundColor: `${currentProject.tagColor}15`,
+                            border: `1px solid ${currentProject.tagColor}35`,
                             padding: "3px 9px",
                             borderRadius: TOKENS.radius.xs,
                             fontWeight: 700,
                           }}
                         >
-                          {p.tag}
+                          {currentProject.tag}
                         </span>
                         <span style={{ ...TOKENS.type.micro, color: TOKENS.muted, fontSize: "11px" }}>
-                          {p.category}
+                          {currentProject.category}
                         </span>
                       </div>
 
@@ -350,7 +518,7 @@ export default function FeaturedProjects() {
                           lineHeight: 1.3,
                         }}
                       >
-                        {p.title}
+                        {currentProject.title}
                       </h3>
 
                       <p
@@ -362,7 +530,7 @@ export default function FeaturedProjects() {
                           lineHeight: 1.6,
                         }}
                       >
-                        {p.subtitle}
+                        {currentProject.subtitle}
                       </p>
 
                       {/* Problem vs Solution Split */}
@@ -383,7 +551,7 @@ export default function FeaturedProjects() {
                             </span>
                           </div>
                           <p style={{ ...TOKENS.type.body, fontSize: "13px", color: "#7F1D1D", margin: 0, lineHeight: 1.55 }}>
-                            {p.problem}
+                            {currentProject.problem}
                           </p>
                         </div>
 
@@ -391,28 +559,28 @@ export default function FeaturedProjects() {
                         <div
                           style={{
                             padding: "12px 14px",
-                            backgroundColor: `${p.tagColor}0D`,
-                            border: `1px solid ${p.tagColor}35`,
+                            backgroundColor: `${currentProject.tagColor}0D`,
+                            border: `1px solid ${currentProject.tagColor}35`,
                             borderRadius: TOKENS.radius.xs,
                           }}
                         >
                           <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                            <CheckCircle2 size={14} color={p.tagColor} />
-                            <span style={{ ...TOKENS.type.micro, color: p.tagColor, fontSize: "10.5px", fontWeight: 700 }}>
+                            <CheckCircle2 size={14} color={currentProject.tagColor} />
+                            <span style={{ ...TOKENS.type.micro, color: currentProject.tagColor, fontSize: "10.5px", fontWeight: 700 }}>
                               CUSTOM ARCHITECTURAL SOLUTION
                             </span>
                           </div>
                           <p style={{ ...TOKENS.type.body, fontSize: "13px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
-                            {p.solution}
+                            {currentProject.solution}
                           </p>
                         </div>
                       </div>
 
                       {/* Key Deliverables Bullet Points */}
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
-                        {p.deliverables.map((item) => (
+                        {currentProject.deliverables.map((item) => (
                           <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: p.tagColor }} />
+                            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: currentProject.tagColor }} />
                             <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink, fontWeight: 500 }}>
                               {item}
                             </span>
@@ -434,7 +602,7 @@ export default function FeaturedProjects() {
                       }}
                     >
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                        {p.stack.map((tech) => (
+                        {currentProject.stack.map((tech) => (
                           <span
                             key={tech}
                             style={{
@@ -454,7 +622,7 @@ export default function FeaturedProjects() {
                       </div>
 
                       <button
-                        onClick={() => openProjectModal(p)}
+                        onClick={() => openProjectModal(currentProject)}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -471,7 +639,7 @@ export default function FeaturedProjects() {
                           transition: TOKENS.transition,
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = p.tagColor;
+                          e.currentTarget.style.backgroundColor = currentProject.tagColor;
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.backgroundColor = TOKENS.ink;
@@ -484,11 +652,80 @@ export default function FeaturedProjects() {
                   </div>
                 </div>
               </TiltCard3D>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* ── Direct Slide Thumbnails Selector ── */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "14px",
+          }}
+          className="project-thumbnails-grid"
+        >
+          {projects.map((p, idx) => {
+            const isSelected = idx === currentIndex;
+            return (
+              <button
+                key={p.id}
+                onClick={() => handleJumpTo(idx)}
+                style={{
+                  padding: "12px 14px",
+                  borderRadius: TOKENS.radius.xs,
+                  backgroundColor: isSelected ? TOKENS.card : TOKENS.surface,
+                  border: `1px solid ${isSelected ? p.tagColor : TOKENS.line}`,
+                  boxShadow: isSelected ? `0 4px 14px ${p.tagColor}25` : "none",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: TOKENS.transition,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span
+                    style={{
+                      ...TOKENS.type.micro,
+                      fontSize: "10px",
+                      color: isSelected ? p.tagColor : TOKENS.muted,
+                      fontWeight: 700,
+                    }}
+                  >
+                    0{idx + 1}
+                  </span>
+                  {isSelected && (
+                    <span
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        borderRadius: "50%",
+                        backgroundColor: p.tagColor,
+                      }}
+                    />
+                  )}
+                </div>
+                <div
+                  style={{
+                    ...TOKENS.type.data,
+                    fontSize: "12.5px",
+                    fontWeight: 600,
+                    color: isSelected ? TOKENS.ink : TOKENS.muted,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {p.title.split("—")[0]}
+                </div>
+              </button>
             );
           })}
         </div>
 
-        {/* ── Deep Architectural Case Study Modal ── */}
+        {/* ── Deep Architectural Case Study Modal with Next/Prev Navigation ── */}
         {activeModalProject && (
           <div
             onClick={() => setActiveModalProject(null)}
@@ -519,7 +756,7 @@ export default function FeaturedProjects() {
                 position: "relative",
               }}
             >
-              {/* Modal Top Bar */}
+              {/* Modal Top Bar with Next / Prev */}
               <div
                 style={{
                   display: "flex",
@@ -545,59 +782,110 @@ export default function FeaturedProjects() {
                     {activeModalProject.tag}
                   </span>
                   <span style={{ ...TOKENS.type.micro, color: TOKENS.muted, fontSize: "11.5px" }}>
-                    Production Architecture Case Study
+                    Case Study ({activeModalProject.id} of {projects.length})
                   </span>
                 </div>
 
-                <button
-                  onClick={() => setActiveModalProject(null)}
-                  style={{
-                    width: "34px",
-                    height: "34px",
-                    borderRadius: TOKENS.radius.xs,
-                    border: `1px solid ${TOKENS.line}`,
-                    backgroundColor: TOKENS.surface,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: TOKENS.ink,
-                    cursor: "pointer",
-                  }}
-                  aria-label="Close modal"
-                >
-                  <X size={16} />
-                </button>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <button
+                    onClick={handleModalPrev}
+                    style={{
+                      padding: "5px 10px",
+                      borderRadius: TOKENS.radius.xs,
+                      border: `1px solid ${TOKENS.line}`,
+                      backgroundColor: TOKENS.surface,
+                      ...TOKENS.type.micro,
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <ChevronLeft size={13} />
+                    <span>Prev</span>
+                  </button>
+
+                  <button
+                    onClick={handleModalNext}
+                    style={{
+                      padding: "5px 10px",
+                      borderRadius: TOKENS.radius.xs,
+                      border: `1px solid ${TOKENS.line}`,
+                      backgroundColor: TOKENS.surface,
+                      ...TOKENS.type.micro,
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <span>Next</span>
+                    <ChevronRight size={13} />
+                  </button>
+
+                  <button
+                    onClick={() => setActiveModalProject(null)}
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: TOKENS.radius.xs,
+                      border: `1px solid ${TOKENS.line}`,
+                      backgroundColor: TOKENS.surface,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: TOKENS.ink,
+                      cursor: "pointer",
+                    }}
+                    aria-label="Close modal"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
               </div>
 
               {/* Title & Subtitle */}
-              <h2 style={{ ...TOKENS.type.title, fontSize: "26px", color: TOKENS.ink, marginBottom: "8px" }}>
+              <h2 style={{ ...TOKENS.type.title, fontSize: "24px", color: TOKENS.ink, marginBottom: "6px" }}>
                 {activeModalProject.title}
               </h2>
-              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "22px" }}>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "20px" }}>
                 {activeModalProject.subtitle}
               </p>
 
-              {/* High-Res Full Image Banner */}
+              {/* High-Res Full Image Banner (100% Uncropped with Padded Frame) */}
               <div
                 style={{
                   width: "100%",
-                  maxHeight: "420px",
+                  padding: "16px 20px",
                   borderRadius: TOKENS.radius.xs,
                   overflow: "hidden",
-                  marginBottom: "28px",
+                  marginBottom: "24px",
                   border: `1px solid ${TOKENS.line}`,
-                  backgroundColor: "#0B1220",
+                  backgroundColor: "#080D1A",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <img
                   src={activeModalProject.image}
                   alt={activeModalProject.title}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    maxHeight: "380px",
+                    objectFit: "contain",
+                    display: "block",
+                    borderRadius: "6px",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+                  }}
                 />
               </div>
 
               {/* Architecture Deep Dive Sections */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "24px" }}>
                 <div style={{ padding: "16px 18px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: TOKENS.radius.xs }}>
                   <div style={{ ...TOKENS.type.micro, color: "#DC2626", fontWeight: 700, marginBottom: "6px" }}>
                     EXACT CHALLENGE & CLIENT PROBLEM
@@ -640,7 +928,7 @@ export default function FeaturedProjects() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingTop: "20px",
+                  paddingTop: "18px",
                   borderTop: `1px solid ${TOKENS.line}`,
                   flexWrap: "wrap",
                   gap: "12px",
@@ -697,10 +985,11 @@ export default function FeaturedProjects() {
             grid-template-columns: 1fr !important;
           }
           .project-image-col {
-            order: 1 !important;
             border-right: none !important;
-            border-left: none !important;
             border-bottom: 1px solid ${TOKENS.line} !important;
+          }
+          .project-thumbnails-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
       `}</style>

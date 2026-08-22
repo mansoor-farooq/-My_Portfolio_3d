@@ -3,26 +3,27 @@ import Lenis from "lenis";
 
 export default function SmoothScroll({ children }) {
   useEffect(() => {
-    // Initialize Lenis smooth scroll
+    // Ultra-smooth customized Lenis momentum scroll configuration
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1.05,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.6,
       infinite: false,
     });
 
-    // RAF loop
+    // High performance RAF loop
+    let rafId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    const rafId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    // Provide window-level access for anchors
+    // Provide window-level access for anchors & smooth scrolls
     window.__lenis = lenis;
 
     return () => {
