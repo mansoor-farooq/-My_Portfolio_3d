@@ -3,7 +3,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sparkles, MeshTransmissionMaterial, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { TOKENS } from "../theme";
-import { Layers, Sparkles as SparklesIcon, RefreshCw, Eye } from "lucide-react";
+import { Layers, Sparkles as SparklesIcon, RefreshCw, Eye, Orbit } from "lucide-react";
+import { playClickSound } from "../utils/audio";
 
 function HolographicCore({ mouse, isWireframe }) {
   const meshRef = useRef();
@@ -13,48 +14,48 @@ function HolographicCore({ mouse, isWireframe }) {
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    const targetX = mouse.current.x * 0.45;
-    const targetY = mouse.current.y * 0.35;
+    const targetX = mouse.current.x * 0.4;
+    const targetY = mouse.current.y * 0.3;
 
     if (meshRef.current) {
-      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, t * 0.2 + targetY, 0.05);
-      meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, t * 0.3 + targetX, 0.05);
+      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, t * 0.25 + targetY, 0.06);
+      meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, t * 0.35 + targetX, 0.06);
     }
 
     if (innerRef.current) {
-      innerRef.current.rotation.x = THREE.MathUtils.lerp(innerRef.current.rotation.x, -t * 0.35, 0.05);
-      innerRef.current.rotation.z = THREE.MathUtils.lerp(innerRef.current.rotation.z, t * 0.25, 0.05);
+      innerRef.current.rotation.x = THREE.MathUtils.lerp(innerRef.current.rotation.x, -t * 0.4, 0.06);
+      innerRef.current.rotation.z = THREE.MathUtils.lerp(innerRef.current.rotation.z, t * 0.3, 0.06);
     }
 
     if (ring1Ref.current) {
-      ring1Ref.current.rotation.z = t * 0.4;
+      ring1Ref.current.rotation.z = t * 0.45;
       ring1Ref.current.rotation.x = Math.PI / 3 + Math.sin(t * 0.5) * 0.1;
     }
 
     if (ring2Ref.current) {
-      ring2Ref.current.rotation.z = -t * 0.3;
+      ring2Ref.current.rotation.z = -t * 0.35;
       ring2Ref.current.rotation.y = Math.PI / 4 + Math.cos(t * 0.5) * 0.1;
     }
   });
 
   return (
     <group>
-      {/* Ambient & Directional Sky Blue Spotlights */}
-      <ambientLight intensity={0.9} />
-      <pointLight position={[3, 3, 3]} intensity={2.8} color="#0284C7" />
-      <pointLight position={[-3, -3, 2]} intensity={2.2} color="#38BDF8" />
-      <pointLight position={[0, 4, -2]} intensity={1.5} color="#818CF8" />
+      {/* Studio Lighting */}
+      <ambientLight intensity={1.2} />
+      <pointLight position={[4, 4, 4]} intensity={3.5} color="#0284C7" />
+      <pointLight position={[-4, -4, 2]} intensity={2.5} color="#38BDF8" />
+      <pointLight position={[0, 4, -2]} intensity={2.0} color="#818CF8" />
 
-      {/* Floating 3D Object */}
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.8}>
-        {/* Outer Translucent Holographic Glass Icosahedron */}
-        <mesh ref={meshRef} scale={1.35}>
+      {/* Floating 3D Crystal & Rings (Cleanly Scaled so no edge clipping) */}
+      <Float speed={2} rotationIntensity={0.4} floatIntensity={0.6}>
+        {/* 1. Outer Translucent Holographic Glass Icosahedron */}
+        <mesh ref={meshRef} scale={0.95}>
           <icosahedronGeometry args={[1, 1]} />
           {isWireframe ? (
             <meshStandardMaterial
-              color="#0284C7"
+              color="#38BDF8"
               emissive="#0284C7"
-              emissiveIntensity={1.4}
+              emissiveIntensity={1.8}
               wireframe={true}
             />
           ) : (
@@ -62,47 +63,47 @@ function HolographicCore({ mouse, isWireframe }) {
               backside
               samples={4}
               resolution={256}
-              transmission={0.95}
-              roughness={0.08}
-              thickness={1.1}
-              ior={1.4}
-              chromaticAberration={0.15}
-              distortion={0.25}
-              distortionScale={0.3}
+              transmission={0.93}
+              roughness={0.06}
+              thickness={1.2}
+              ior={1.48}
+              chromaticAberration={0.2}
+              distortion={0.2}
               color="#0284C7"
-              attenuationDistance={1.2}
+              attenuationDistance={1.3}
               attenuationColor="#0369A1"
             />
           )}
         </mesh>
 
-        {/* Inner Glowing Energetic Octahedron Core */}
-        <mesh ref={innerRef} scale={0.55}>
+        {/* 2. Inner Glowing Energy Octahedron Core */}
+        <mesh ref={innerRef} scale={0.42}>
           <octahedronGeometry args={[1, 0]} />
           <meshStandardMaterial
             color="#38BDF8"
             emissive="#38BDF8"
-            emissiveIntensity={2.5}
+            emissiveIntensity={2.8}
             roughness={0.1}
             metalness={0.8}
             wireframe={true}
           />
         </mesh>
 
-        {/* Orbital Energy Rings */}
-        <mesh ref={ring1Ref} scale={1.8}>
+        {/* 3. Primary Orbital Ring (Well within margins) */}
+        <mesh ref={ring1Ref} scale={1.35}>
           <torusGeometry args={[1, 0.015, 16, 64]} />
-          <meshBasicMaterial color="#0284C7" transparent opacity={0.6} />
+          <meshBasicMaterial color="#38BDF8" transparent opacity={0.65} />
         </mesh>
 
-        <mesh ref={ring2Ref} scale={2.1}>
+        {/* 4. Secondary Orbital Ring */}
+        <mesh ref={ring2Ref} scale={1.55}>
           <torusGeometry args={[1, 0.012, 16, 64]} />
           <meshBasicMaterial color="#818CF8" transparent opacity={0.45} />
         </mesh>
       </Float>
 
-      {/* Floating Starfield Particles */}
-      <Sparkles count={35} scale={5} size={2.5} speed={0.4} color="#38BDF8" opacity={0.6} />
+      {/* Floating Particle Dust */}
+      <Sparkles count={30} scale={4} size={2.2} speed={0.4} color="#38BDF8" opacity={0.7} />
     </group>
   );
 }
@@ -113,7 +114,6 @@ export default function Interactive3DCore() {
   const [isWireframe, setIsWireframe] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Track Mouse in Normalized Coordinates (-1 to +1)
   const handleMouseMove = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -121,7 +121,6 @@ export default function Interactive3DCore() {
     mouse.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
   };
 
-  // IntersectionObserver to pause rendering when offscreen
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -143,13 +142,13 @@ export default function Interactive3DCore() {
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: "480px",
-        height: "390px",
-        backgroundColor: TOKENS.card,
-        border: `1px solid ${TOKENS.line}`,
+        maxWidth: "490px",
+        height: "410px",
+        backgroundColor: "#0B1220",
+        border: `1px solid rgba(255, 255, 255, 0.12)`,
         borderRadius: TOKENS.radius.sm,
         overflow: "hidden",
-        boxShadow: TOKENS.shadow.raised,
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
         display: "flex",
         flexDirection: "column",
       }}
@@ -160,55 +159,60 @@ export default function Interactive3DCore() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "10px 14px",
-          borderBottom: `1px solid ${TOKENS.line}`,
-          backgroundColor: TOKENS.surface,
+          padding: "12px 16px",
+          borderBottom: `1px solid rgba(255, 255, 255, 0.08)`,
+          backgroundColor: "rgba(11, 18, 32, 0.95)",
           zIndex: 5,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span
             style={{
               width: "7px",
               height: "7px",
               borderRadius: "50%",
-              backgroundColor: TOKENS.success,
+              backgroundColor: "#10B981",
+              boxShadow: "0 0 8px #10B981",
               display: "inline-block",
             }}
           />
-          <span style={{ ...TOKENS.type.micro, color: TOKENS.ink, fontSize: "11px" }}>
+          <span style={{ ...TOKENS.type.micro, color: "#FFFFFF", fontSize: "11px", letterSpacing: "0.05em" }}>
             SPATIAL 3D ARCHITECTURE CORE
           </span>
         </div>
 
-        {/* Wireframe Mode Toggle */}
+        {/* Wireframe vs Hologram Mode Toggle */}
         <button
-          onClick={() => setIsWireframe(!isWireframe)}
+          onClick={() => {
+            playClickSound();
+            setIsWireframe(!isWireframe);
+          }}
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "5px",
-            padding: "3px 8px",
+            padding: "4px 10px",
             borderRadius: TOKENS.radius.xs,
-            backgroundColor: isWireframe ? TOKENS.accentSubtle : "transparent",
-            border: `1px solid ${isWireframe ? TOKENS.accent : TOKENS.line}`,
-            color: isWireframe ? TOKENS.accent : TOKENS.muted,
+            backgroundColor: isWireframe ? "rgba(56, 189, 248, 0.2)" : "rgba(255, 255, 255, 0.06)",
+            border: `1px solid ${isWireframe ? "#38BDF8" : "rgba(255, 255, 255, 0.15)"}`,
+            color: isWireframe ? "#38BDF8" : "#94A3B8",
             ...TOKENS.type.micro,
-            fontSize: "10px",
+            fontSize: "10.5px",
             cursor: "pointer",
             transition: TOKENS.transition,
+            fontWeight: 600,
           }}
         >
-          <Eye size={11} />
+          <Eye size={12} />
           <span>{isWireframe ? "WIREFRAME" : "HOLOGRAPHIC"}</span>
         </button>
       </div>
 
-      {/* 3D WebGL Canvas Area */}
+      {/* 3D WebGL Canvas Area with generous Zoom Out */}
       <div style={{ position: "relative", flex: 1, width: "100%", height: "100%" }}>
         {isVisible && (
           <Canvas
-            camera={{ position: [0, 0, 4.2], fov: 45 }}
+            camera={{ position: [0, 0, 5.8], fov: 42 }}
             style={{ background: "transparent" }}
             gl={{ alpha: true, antialias: true }}
           >
@@ -216,43 +220,44 @@ export default function Interactive3DCore() {
           </Canvas>
         )}
 
-        {/* Interactive Coordinate Float Tag */}
+        {/* Interactive Physics Bottom Left Overlay */}
         <div
           style={{
             position: "absolute",
-            bottom: "10px",
-            left: "12px",
+            bottom: "12px",
+            left: "14px",
             ...TOKENS.type.micro,
             fontSize: "10px",
-            color: TOKENS.muted,
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            backdropFilter: "blur(6px)",
-            padding: "3px 8px",
+            color: "#94A3B8",
+            backgroundColor: "rgba(11, 18, 32, 0.8)",
+            backdropFilter: "blur(8px)",
+            padding: "4px 9px",
             borderRadius: TOKENS.radius.xs,
-            border: `1px solid ${TOKENS.line}`,
+            border: `1px solid rgba(255, 255, 255, 0.1)`,
             pointerEvents: "none",
           }}
         >
-          INTERACTIVE PHYSICS · MOUSE RESPONSIVE
+          MOUSE RESPONSIVE · 60FPS WEBGL
         </div>
 
-        {/* Stack Highlights Orbit Pill */}
+        {/* Stack Highlight Orbit Pill */}
         <div
           style={{
             position: "absolute",
-            bottom: "10px",
-            right: "12px",
+            bottom: "12px",
+            right: "14px",
             ...TOKENS.type.micro,
             fontSize: "10px",
-            color: TOKENS.accent,
-            backgroundColor: TOKENS.accentSubtle,
-            padding: "3px 8px",
+            color: "#38BDF8",
+            backgroundColor: "rgba(2, 132, 199, 0.2)",
+            backdropFilter: "blur(8px)",
+            padding: "4px 9px",
             borderRadius: TOKENS.radius.xs,
-            border: `1px solid ${TOKENS.accent}30`,
+            border: `1px solid rgba(56, 189, 248, 0.3)`,
             pointerEvents: "none",
           }}
         >
-          NEXT.JS + R3F 3D ENGINE
+          NEXT.JS + R3F CORE
         </div>
       </div>
     </div>
