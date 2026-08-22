@@ -1,80 +1,124 @@
-import React from "react";
+import React, { useState } from "react";
 import { TOKENS } from "../theme";
-import { Layers, CheckCircle2, AlertCircle, Sparkles, Cpu, Globe, ArrowRight } from "lucide-react";
+import { Layers, CheckCircle2, AlertCircle, Sparkles, Cpu, Globe, ArrowRight, X, ExternalLink, ShieldCheck, Zap, Maximize2, Terminal, Code2 } from "lucide-react";
 import TiltCard3D from "./TiltCard3D";
+import { playClickSound } from "../utils/audio";
 import infotechImg from "../image/project_infotech.jpg";
 import mindvaultImg from "../image/project_mindvault.jpg";
 import gatepassImg from "../image/project_gatepass.jpg";
 import apimonitorImg from "../image/project_apimonitor.jpg";
 
 export default function FeaturedProjects() {
+  const [activeModalProject, setActiveModalProject] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState("All");
+
   const projects = [
     {
       id: "01",
       title: "InfoTech Solutions — Digital Platform",
-      tag: "FULL-STACK & UI ANIMATION",
+      category: "Full-Stack & Web",
+      tag: "FULL-STACK & 60FPS UI",
       tagColor: TOKENS.accent,
       image: infotechImg,
       subtitle: "Custom-built, animated web presence and client services dashboard.",
+      metric: "<1.2s LCP · 100 Lighthouse",
       problem:
         "Local business websites rely heavily on generic WordPress templates and bloated page builders that load slowly (4s+), provide poor mobile usability, and fail to convey modern technical credibility.",
       solution:
         "Engineered a bespoke, zero-bloat Next.js platform with custom Framer Motion orchestration, responsive UI components, and sub-1.5s load times. Built from scratch with clean, maintainable code.",
+      architecture: [
+        "React Server Components for instant HTML streaming without heavy JS hydration overhead",
+        "Hardware-accelerated CSS transforms targeting GPU-only properties (translate3d, opacity)",
+        "Fully custom responsive layout tested from 360px mobile viewport up to 4K displays",
+      ],
       stack: ["Next.js", "React", "Framer Motion", "Tailwind CSS", "Node.js"],
       deliverables: ["Custom Animation Engine", "100% Mobile Responsive (360px+)", "SEO & Sub-1.5s Performance"],
     },
     {
       id: "02",
       title: "MindVault — Offline Knowledge & Ledger OS",
-      tag: "OFFLINE-FIRST APP",
+      category: "Offline-First & Mobile",
+      tag: "OFFLINE-FIRST ARCHITECTURE",
       tagColor: "#7C3AED",
       image: mindvaultImg,
       subtitle: "Personal knowledge management, voice note capture, and private financial ledger.",
+      metric: "100% Offline · Sub-5ms Read/Write",
       problem:
         "Existing note-taking and personal ledger apps lock user data behind monthly subscription fees and completely stop working when internet connectivity is unstable or offline.",
       solution:
         "Architected an offline-first system using SQLite local database synchronization and in-browser audio recording. Captures thoughts, indexes documents, and manages personal ledgers without needing active internet.",
+      architecture: [
+        "Local SQLite / IndexedDB layer acting as immediate single source of truth",
+        "Append-only transaction journal with cryptographic vector clock timestamps",
+        "Background web worker sync dispatcher listening for connection state events",
+      ],
       stack: ["TypeScript", "Next.js", "SQLite (Local)", "Web Audio API", "Node.js"],
       deliverables: ["100% Offline Usability", "Voice-to-Text Note Pipeline", "Double-Entry Balance Verification"],
     },
     {
       id: "03",
       title: "Gate Pass & Material Dispatch System",
-      tag: "OPERATIONS & LOGISTICS",
+      category: "Operations & DevOps",
+      tag: "LOGISTICS & DISPATCH",
       tagColor: "#D97706",
       image: gatepassImg,
       subtitle: "Real-time dispatch tracking, gate clearance, and QR verification interface.",
+      metric: "Zero Record Loss · <300ms Verification",
       problem:
         "Manual paper registers at industrial gates cause vehicle bottlenecks, lost records, and delays in verifying whether outgoing inventory matches authorized purchase orders.",
       solution:
         "Digitized the entire gate pass lifecycle with an intuitive, high-contrast web dashboard. Features instant QR status verification, dispatch logs, and live tracking of material status across terminal checkpoints.",
+      architecture: [
+        "Role-based security ensuring security guards only see clearance tokens",
+        "PostgreSQL indexed material ledgers with audit history on every status update",
+        "High-contrast terminal UI designed specifically for outdoor industrial monitors",
+      ],
       stack: ["JavaScript", "React", "REST API", "Tailwind CSS", "PostgreSQL"],
       deliverables: ["Instant QR Verification", "Zero Record Loss", "Fast Multi-Terminal Entry Search"],
     },
     {
       id: "04",
       title: "API Status & Microservice Health Monitor",
-      tag: "DEVELOPER TOOLING",
+      category: "Operations & DevOps",
+      tag: "TELEMETRY & MONITORING",
       tagColor: TOKENS.success,
       image: apimonitorImg,
       subtitle: "Live endpoint uptime tracker, latency charts, and incident telemetry.",
+      metric: "Real-Time Telemetry · 30s Health Pings",
       problem:
         "Developers and businesses often discover backend API outages only after users complain, lacking live telemetry on latency spikes or database connection drops.",
       solution:
         "Built a lightweight, continuous health-check dashboard that pings critical microservices, visualizes response time wave charts, and generates real-time HTTP 200 / 500 status logs.",
+      architecture: [
+        "Lightweight Node.js background cron workers pinging microservice endpoints",
+        "Real-time latency analytics calculating rolling p95 and p99 response times",
+        "Automated incident alert logs stored with exact timestamps and HTTP error payloads",
+      ],
       stack: ["Node.js", "Express", "Chart Telemetry", "PostgreSQL", "Next.js"],
       deliverables: ["Live Latency Waveform Graph", "Automated Health Checks", "Endpoint Response Benchmarks"],
     },
   ];
+
+  const filters = ["All", "Full-Stack & Web", "Offline-First & Mobile", "Operations & DevOps"];
+
+  const filteredProjects = selectedFilter === "All"
+    ? projects
+    : projects.filter((p) => p.category === selectedFilter);
+
+  const openProjectModal = (p) => {
+    playClickSound();
+    setActiveModalProject(p);
+  };
 
   return (
     <section
       id="projects"
       style={{
         backgroundColor: TOKENS.surface,
-        paddingTop: "80px",
-        paddingBottom: "80px",
+        paddingTop: "90px",
+        paddingBottom: "90px",
         borderBottom: `1px solid ${TOKENS.line}`,
+        position: "relative",
       }}
     >
       <div
@@ -87,49 +131,91 @@ export default function FeaturedProjects() {
         }}
       >
         {/* Section Header */}
-        <div style={{ marginBottom: "44px" }}>
+        <div style={{ marginBottom: "36px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
             <span
               style={{
-                width: "6px",
-                height: "6px",
+                width: "7px",
+                height: "7px",
                 borderRadius: "50%",
                 backgroundColor: TOKENS.accent,
                 display: "inline-block",
+                boxShadow: "0 0 10px rgba(2, 132, 199, 0.5)",
               }}
             />
-            <span style={{ ...TOKENS.type.micro, color: TOKENS.muted }}>
-              03 // FEATURED APPLICATIONS & CASE STUDIES
+            <span style={{ ...TOKENS.type.micro, color: TOKENS.muted, letterSpacing: "0.08em" }}>
+              03 // PRODUCTION CASE STUDIES & APPLICATIONS
             </span>
           </div>
 
-          <h2
+          <div
             style={{
-              ...TOKENS.type.title,
-              fontSize: "clamp(26px, 3.2vw, 36px)",
-              color: TOKENS.ink,
-              marginBottom: "8px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              flexWrap: "wrap",
+              gap: "20px",
             }}
           >
-            Real problems solved with custom software.
-          </h2>
-          <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "660px" }}>
-            Detailed breakdown of production applications — the exact challenge, visual interface, and custom architectural solution.
-          </p>
+            <div>
+              <h2
+                style={{
+                  ...TOKENS.type.title,
+                  fontSize: "clamp(26px, 3.2vw, 36px)",
+                  color: TOKENS.ink,
+                  marginBottom: "8px",
+                }}
+              >
+                Real problems solved with custom software.
+              </h2>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "660px" }}>
+                Detailed breakdown of production applications — the exact challenge, visual interface, and custom architectural solution.
+              </p>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => {
+                    playClickSound();
+                    setSelectedFilter(f);
+                  }}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: TOKENS.radius.xs,
+                    border: `1px solid ${selectedFilter === f ? TOKENS.accent : TOKENS.line}`,
+                    backgroundColor: selectedFilter === f ? TOKENS.accent : TOKENS.card,
+                    color: selectedFilter === f ? "#FFFFFF" : TOKENS.muted,
+                    ...TOKENS.type.micro,
+                    fontSize: "11.5px",
+                    fontWeight: selectedFilter === f ? 600 : 500,
+                    cursor: "pointer",
+                    transition: TOKENS.transition,
+                    boxShadow: selectedFilter === f ? "0 4px 12px rgba(2, 132, 199, 0.25)" : TOKENS.shadow.resting,
+                  }}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* 2x2 Large Featured Projects Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
-            gap: "28px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+            gap: "30px",
           }}
           className="projects-grid"
         >
-          {projects.map((p) => (
+          {filteredProjects.map((p) => (
             <TiltCard3D key={p.id} intensity={8} glare={true} style={{ height: "100%" }}>
               <article
+                onClick={() => openProjectModal(p)}
                 style={{
                   height: "100%",
                   backgroundColor: TOKENS.card,
@@ -141,142 +227,403 @@ export default function FeaturedProjects() {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   transition: TOKENS.transition,
+                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = p.tagColor;
-                  e.currentTarget.style.boxShadow = TOKENS.shadow.raised;
+                  e.currentTarget.style.boxShadow = "0 16px 36px rgba(0, 0, 0, 0.12)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = TOKENS.line;
                   e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
                 }}
               >
-              <div>
-                {/* Visual UI Preview Image Header */}
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "220px",
-                    backgroundColor: "#0B1220",
-                    overflow: "hidden",
-                    borderBottom: `1px solid ${TOKENS.line}`,
-                  }}
-                >
-                  <img
-                    src={p.image}
-                    alt={`${p.title} Interface Preview`}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "center top",
-                      display: "block",
-                      transition: "transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "scale(1.03)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "scale(1)";
-                    }}
-                    loading="lazy"
-                  />
-
-                  {/* Float Tag */}
+                <div>
+                  {/* macOS / Browser Header Window Frame */}
                   <div
                     style={{
-                      position: "absolute",
-                      top: "12px",
-                      left: "12px",
-                      ...TOKENS.type.micro,
-                      fontSize: "10px",
-                      color: "#FFFFFF",
-                      backgroundColor: "rgba(11, 18, 32, 0.85)",
-                      backdropFilter: "blur(8px)",
-                      border: `1px solid rgba(255, 255, 255, 0.15)`,
-                      padding: "3px 8px",
-                      borderRadius: TOKENS.radius.xs,
-                      fontWeight: 600,
+                      backgroundColor: "#0B1220",
+                      padding: "8px 14px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
                     }}
                   >
-                    {p.tag}
+                    {/* Traffic light dots */}
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#EF4444" }} />
+                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#F59E0B" }} />
+                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#10B981" }} />
+                    </div>
+
+                    <span style={{ ...TOKENS.type.micro, fontSize: "10px", color: "rgba(255, 255, 255, 0.5)" }}>
+                      app.{p.id}.mansoor.production
+                    </span>
+
+                    <span
+                      style={{
+                        ...TOKENS.type.micro,
+                        fontSize: "9.5px",
+                        color: p.tagColor,
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        padding: "2px 6px",
+                        borderRadius: "3px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {p.metric.split("·")[0]}
+                    </span>
+                  </div>
+
+                  {/* Visual UI Preview Image Header */}
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "230px",
+                      backgroundColor: "#0B1220",
+                      overflow: "hidden",
+                      borderBottom: `1px solid ${TOKENS.line}`,
+                    }}
+                  >
+                    <img
+                      src={p.image}
+                      alt={`${p.title} Interface Preview`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center top",
+                        display: "block",
+                        transition: "transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.04)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                      }}
+                      loading="lazy"
+                    />
+
+                    {/* Float Tag */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "12px",
+                        left: "12px",
+                        ...TOKENS.type.micro,
+                        fontSize: "10px",
+                        color: "#FFFFFF",
+                        backgroundColor: "rgba(11, 18, 32, 0.9)",
+                        backdropFilter: "blur(8px)",
+                        border: `1px solid rgba(255, 255, 255, 0.2)`,
+                        padding: "4px 9px",
+                        borderRadius: TOKENS.radius.xs,
+                        fontWeight: 700,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                      }}
+                    >
+                      {p.tag}
+                    </div>
+
+                    {/* Inspect Badge on Image Hover */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "12px",
+                        right: "12px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        padding: "4px 10px",
+                        backgroundColor: "rgba(11, 18, 32, 0.85)",
+                        backdropFilter: "blur(8px)",
+                        borderRadius: TOKENS.radius.xs,
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        color: "#FFFFFF",
+                        ...TOKENS.type.micro,
+                        fontSize: "10.5px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <Maximize2 size={11} />
+                      <span>Inspect Deep Case Study</span>
+                    </div>
+                  </div>
+
+                  {/* Content Body */}
+                  <div style={{ padding: "26px 24px" }}>
+                    {/* Title & Subtitle */}
+                    <h3
+                      style={{
+                        ...TOKENS.type.title,
+                        fontSize: "20px",
+                        color: TOKENS.ink,
+                        marginBottom: "6px",
+                      }}
+                    >
+                      {p.title}
+                    </h3>
+                    <p
+                      style={{
+                        ...TOKENS.type.data,
+                        fontSize: "13px",
+                        color: TOKENS.muted,
+                        marginBottom: "20px",
+                      }}
+                    >
+                      {p.subtitle}
+                    </p>
+
+                    {/* Problem & Solution Breakdown */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+                      {/* Problem Box */}
+                      <div
+                        style={{
+                          padding: "12px 14px",
+                          backgroundColor: "#FEF2F2",
+                          border: `1px solid #FCA5A5`,
+                          borderRadius: TOKENS.radius.xs,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                          <AlertCircle size={13} color="#DC2626" />
+                          <span style={{ ...TOKENS.type.micro, color: "#DC2626", fontSize: "10.5px", fontWeight: 700 }}>
+                            THE PROBLEM
+                          </span>
+                        </div>
+                        <p style={{ ...TOKENS.type.body, fontSize: "13px", color: "#7F1D1D", margin: 0, lineHeight: 1.55 }}>
+                          {p.problem}
+                        </p>
+                      </div>
+
+                      {/* Solution Box */}
+                      <div
+                        style={{
+                          padding: "12px 14px",
+                          backgroundColor: `${p.tagColor}0D`,
+                          border: `1px solid ${p.tagColor}40`,
+                          borderRadius: TOKENS.radius.xs,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                          <CheckCircle2 size={13} color={p.tagColor} />
+                          <span style={{ ...TOKENS.type.micro, color: p.tagColor, fontSize: "10.5px", fontWeight: 700 }}>
+                            CUSTOM ARCHITECTURAL SOLUTION
+                          </span>
+                        </div>
+                        <p style={{ ...TOKENS.type.body, fontSize: "13px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
+                          {p.solution}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Deliverable Highlights */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
+                      {p.deliverables.map((item) => (
+                        <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: p.tagColor }} />
+                          <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink, fontWeight: 500 }}>
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Content Body */}
-                <div style={{ padding: "24px 22px" }}>
-                  {/* Title & Subtitle */}
-                  <h3
-                    style={{
-                      ...TOKENS.type.title,
-                      fontSize: "20px",
-                      color: TOKENS.ink,
-                      marginBottom: "6px",
-                    }}
-                  >
-                    {p.title}
-                  </h3>
-                  <p
-                    style={{
-                      ...TOKENS.type.data,
-                      fontSize: "13px",
-                      color: TOKENS.muted,
-                      marginBottom: "20px",
-                    }}
-                  >
-                    {p.subtitle}
-                  </p>
-
-                  {/* Problem & Solution Breakdown */}
-                  <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "20px" }}>
-                    {/* Problem Box */}
-                    <div
-                      style={{
-                        padding: "12px 14px",
-                        backgroundColor: TOKENS.surface,
-                        border: `1px solid ${TOKENS.line}`,
-                        borderRadius: TOKENS.radius.xs,
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                        <AlertCircle size={13} color="#DC2626" />
-                        <span style={{ ...TOKENS.type.micro, color: "#DC2626", fontSize: "10px" }}>
-                          THE PROBLEM
-                        </span>
-                      </div>
-                      <p style={{ ...TOKENS.type.body, fontSize: "13.5px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
-                        {p.problem}
-                      </p>
-                    </div>
-
-                    {/* Solution Box */}
-                    <div
-                      style={{
-                        padding: "12px 14px",
-                        backgroundColor: `${p.tagColor}08`,
-                        border: `1px solid ${p.tagColor}25`,
-                        borderRadius: TOKENS.radius.xs,
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                        <CheckCircle2 size={13} color={p.tagColor} />
-                        <span style={{ ...TOKENS.type.micro, color: p.tagColor, fontSize: "10px" }}>
-                          WHAT I BUILT & SOLVED
-                        </span>
-                      </div>
-                      <p style={{ ...TOKENS.type.body, fontSize: "13.5px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
-                        {p.solution}
-                      </p>
-                    </div>
+                {/* Card Footer: Tech Stack Chips (Zero repo links) */}
+                <div
+                  style={{
+                    padding: "14px 24px",
+                    borderTop: `1px solid ${TOKENS.line}`,
+                    backgroundColor: TOKENS.surface,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "8px",
+                  }}
+                >
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                    {p.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        style={{
+                          ...TOKENS.type.micro,
+                          fontSize: "10.5px",
+                          padding: "2px 7px",
+                          borderRadius: TOKENS.radius.xs,
+                          backgroundColor: TOKENS.card,
+                          border: `1px solid ${TOKENS.line}`,
+                          color: TOKENS.muted,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
 
-                  {/* Deliverable Highlights */}
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
-                    {p.deliverables.map((item) => (
-                      <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: p.tagColor }} />
-                        <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      color: p.tagColor,
+                      ...TOKENS.type.micro,
+                      fontSize: "11px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    <span>Read Architecture</span>
+                    <ArrowRight size={13} />
+                  </div>
+                </div>
+              </article>
+            </TiltCard3D>
+          ))}
+        </div>
+
+        {/* ── Deep Architectural Case Study Modal ── */}
+        {activeModalProject && (
+          <div
+            onClick={() => setActiveModalProject(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: "rgba(11, 18, 32, 0.82)",
+              backdropFilter: "blur(14px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px",
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                backgroundColor: TOKENS.card,
+                border: `1px solid ${activeModalProject.tagColor}50`,
+                borderRadius: TOKENS.radius.sm,
+                maxWidth: "860px",
+                width: "100%",
+                maxHeight: "90vh",
+                overflowY: "auto",
+                padding: "36px 32px",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.3)",
+                position: "relative",
+              }}
+            >
+              {/* Modal Top Bar */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "20px",
+                  paddingBottom: "16px",
+                  borderBottom: `1px solid ${TOKENS.line}`,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span
+                    style={{
+                      ...TOKENS.type.micro,
+                      fontSize: "11px",
+                      color: "#FFFFFF",
+                      backgroundColor: activeModalProject.tagColor,
+                      padding: "3px 9px",
+                      borderRadius: TOKENS.radius.xs,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {activeModalProject.tag}
+                  </span>
+                  <span style={{ ...TOKENS.type.micro, color: TOKENS.muted, fontSize: "11.5px" }}>
+                    Production Architecture Case Study
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setActiveModalProject(null)}
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: TOKENS.radius.xs,
+                    border: `1px solid ${TOKENS.line}`,
+                    backgroundColor: TOKENS.surface,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: TOKENS.ink,
+                    cursor: "pointer",
+                  }}
+                  aria-label="Close modal"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Title & Preview Banner */}
+              <h2 style={{ ...TOKENS.type.title, fontSize: "24px", color: TOKENS.ink, marginBottom: "8px" }}>
+                {activeModalProject.title}
+              </h2>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "20px" }}>
+                {activeModalProject.subtitle}
+              </p>
+
+              {/* Full Image Banner */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "320px",
+                  borderRadius: TOKENS.radius.xs,
+                  overflow: "hidden",
+                  marginBottom: "24px",
+                  border: `1px solid ${TOKENS.line}`,
+                }}
+              >
+                <img
+                  src={activeModalProject.image}
+                  alt={activeModalProject.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+
+              {/* Architecture Deep Dive Sections */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
+                <div style={{ padding: "16px 18px", backgroundColor: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: TOKENS.radius.xs }}>
+                  <div style={{ ...TOKENS.type.micro, color: "#DC2626", fontWeight: 700, marginBottom: "6px" }}>
+                    EXACT CHALLENGE & CLIENT PROBLEM
+                  </div>
+                  <p style={{ ...TOKENS.type.body, fontSize: "14px", color: "#7F1D1D", margin: 0, lineHeight: 1.6 }}>
+                    {activeModalProject.problem}
+                  </p>
+                </div>
+
+                <div style={{ padding: "16px 18px", backgroundColor: `${activeModalProject.tagColor}0D`, border: `1px solid ${activeModalProject.tagColor}40`, borderRadius: TOKENS.radius.xs }}>
+                  <div style={{ ...TOKENS.type.micro, color: activeModalProject.tagColor, fontWeight: 700, marginBottom: "6px" }}>
+                    CUSTOM ENGINEERING SOLUTION
+                  </div>
+                  <p style={{ ...TOKENS.type.body, fontSize: "14px", color: TOKENS.ink, margin: 0, lineHeight: 1.6 }}>
+                    {activeModalProject.solution}
+                  </p>
+                </div>
+
+                {/* Key Technical Protocols */}
+                <div>
+                  <div style={{ ...TOKENS.type.micro, color: TOKENS.muted, marginBottom: "10px", fontSize: "11px" }}>
+                    SYSTEM ARCHITECTURAL DECISIONS:
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {activeModalProject.architecture.map((item, idx) => (
+                      <div key={idx} style={{ display: "flex", alignItems: "start", gap: "10px" }}>
+                        <CheckCircle2 size={16} color={activeModalProject.tagColor} style={{ marginTop: "2px", flexShrink: 0 }} />
+                        <span style={{ ...TOKENS.type.data, fontSize: "13.5px", color: TOKENS.ink, lineHeight: 1.5 }}>
                           {item}
                         </span>
                       </div>
@@ -285,40 +632,61 @@ export default function FeaturedProjects() {
                 </div>
               </div>
 
-              {/* Card Footer: Tech Stack Chips (No repo links) */}
+              {/* Modal Footer CTA */}
               <div
                 style={{
-                  padding: "14px 22px",
-                  borderTop: `1px solid ${TOKENS.line}`,
-                  backgroundColor: TOKENS.surface,
                   display: "flex",
-                  flexWrap: "wrap",
-                  gap: "6px",
+                  justifyContent: "space-between",
                   alignItems: "center",
+                  paddingTop: "20px",
+                  borderTop: `1px solid ${TOKENS.line}`,
+                  flexWrap: "wrap",
+                  gap: "12px",
                 }}
               >
-                {p.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    style={{
-                      ...TOKENS.type.micro,
-                      fontSize: "11px",
-                      padding: "2px 7px",
-                      borderRadius: TOKENS.radius.xs,
-                      backgroundColor: TOKENS.card,
-                      border: `1px solid ${TOKENS.line}`,
-                      color: TOKENS.muted,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
+                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                  {activeModalProject.stack.map((t) => (
+                    <span
+                      key={t}
+                      style={{
+                        ...TOKENS.type.micro,
+                        fontSize: "11px",
+                        padding: "3px 8px",
+                        borderRadius: TOKENS.radius.xs,
+                        backgroundColor: TOKENS.surface,
+                        border: `1px solid ${TOKENS.line}`,
+                        color: TOKENS.ink,
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href="#contact"
+                  onClick={() => setActiveModalProject(null)}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "10px 18px",
+                    backgroundColor: TOKENS.ink,
+                    color: "#FFFFFF",
+                    borderRadius: TOKENS.radius.xs,
+                    textDecoration: "none",
+                    ...TOKENS.type.data,
+                    fontSize: "13px",
+                    fontWeight: 600,
+                  }}
+                >
+                  <span>Build a Similar Application with Mansoor</span>
+                  <ArrowRight size={14} />
+                </a>
               </div>
-            </article>
-          </TiltCard3D>
-          ))}
-        </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
