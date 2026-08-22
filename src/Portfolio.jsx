@@ -41,6 +41,7 @@ import BlogSection from "./components/BlogSection";
 import InteractiveTerminalHUD from "./components/InteractiveTerminalHUD";
 import FAQSection from "./components/FAQSection";
 import Footer from "./components/Footer";
+import FloatingWidgets from "./components/FloatingWidgets";
 
 // ── Skills Database ─────────────────────────────────────────────────────────────
 const SKILLS = [
@@ -417,6 +418,9 @@ export default function Portfolio() {
 
         {/* ── CONTACT & FOOTER WITH DIRECT EMAIL FORM ── */}
         <Footer />
+
+        {/* ── FLOATING WHATSAPP & CONTACT QUICK ACTION WIDGETS ── */}
+        <FloatingWidgets />
 
         {/* Vercel Analytics */}
         <Analytics />
