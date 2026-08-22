@@ -36,7 +36,10 @@ import Hero from "./components/Hero";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
 import FeaturedProjects from "./components/FeaturedProjects";
+import EngineeringProcess from "./components/EngineeringProcess";
+import BlogSection from "./components/BlogSection";
 import InteractiveTerminalHUD from "./components/InteractiveTerminalHUD";
+import FAQSection from "./components/FAQSection";
 import Footer from "./components/Footer";
 
 // ── Skills Database ─────────────────────────────────────────────────────────────
@@ -400,8 +403,17 @@ export default function Portfolio() {
         {/* ── FEATURED APPLICATIONS & CASE STUDIES (With Images & Problem/Solution) ── */}
         <FeaturedProjects />
 
+        {/* ── ENGINEERING PROCESS & WORKFLOW PIPELINE ── */}
+        <EngineeringProcess />
+
+        {/* ── TECHNICAL INSIGHTS & SEO ENGINEERING BLOG (12+ Articles) ── */}
+        <BlogSection />
+
         {/* ── INTERACTIVE 3D ARCHITECTURE TERMINAL HUD ── */}
         <InteractiveTerminalHUD />
+
+        {/* ── FREQUENTLY ASKED QUESTIONS (FAQ) ── */}
+        <FAQSection />
 
         {/* ── CONTACT & FOOTER WITH DIRECT EMAIL FORM ── */}
         <Footer />
