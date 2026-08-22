@@ -33,6 +33,7 @@ import CommandPalette from "./components/CommandPalette";
 import ProjectModal from "./components/ProjectModal";
 import SpotlightCard from "./components/SpotlightCard";
 import Hero from "./components/Hero";
+import Spatial3DLab from "./components/Spatial3DLab";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
 import FeaturedProjects from "./components/FeaturedProjects";
@@ -271,7 +272,7 @@ export default function Portfolio() {
 
   // Section Observer for Active Navigation Highlighting
   useEffect(() => {
-    const sectionIds = ["home", "about", "skills", "projects", "process", "blog", "terminal", "faq", "contact"];
+    const sectionIds = ["home", "spatial-lab", "about", "skills", "projects", "process", "blog", "terminal", "faq", "contact"];
     
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -396,6 +397,9 @@ export default function Portfolio() {
             }
           }}
         />
+
+        {/* ── SPATIAL 3D ARCHITECTURE LAB (Interactive WebGL System Engine) ── */}
+        <Spatial3DLab />
 
         {/* ── ABOUT SECTION (Character, Origins & Portrait Anchor) ── */}
         <AboutSection />

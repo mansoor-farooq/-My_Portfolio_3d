@@ -27,6 +27,7 @@ export default function Navbar({ activeSection, onOpenCommandPalette }) {
   // Navigation links
   const navLinks = [
     { id: "home", label: "Overview" },
+    { id: "spatial-lab", label: "3D Lab" },
     { id: "about", label: "About" },
     { id: "skills", label: "Stack" },
     { id: "projects", label: "Work" },
