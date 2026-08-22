@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TOKENS } from "../theme";
-import { Layers, CheckCircle2, AlertCircle, Sparkles, Cpu, Globe, ArrowRight, X, ExternalLink, ShieldCheck, Zap, Maximize2, Terminal, Code2 } from "lucide-react";
+import { CheckCircle2, AlertCircle, Sparkles, ArrowRight, X, Maximize2, ShieldCheck, Zap, Layers, Activity } from "lucide-react";
 import TiltCard3D from "./TiltCard3D";
 import { playClickSound } from "../utils/audio";
 import infotechImg from "../image/project_infotech.jpg";
@@ -10,18 +10,18 @@ import apimonitorImg from "../image/project_apimonitor.jpg";
 
 export default function FeaturedProjects() {
   const [activeModalProject, setActiveModalProject] = useState(null);
-  const [selectedFilter, setSelectedFilter] = useState("All");
 
   const projects = [
     {
       id: "01",
+      number: "01",
       title: "InfoTech Solutions — Digital Platform",
-      category: "Full-Stack & Web",
-      tag: "FULL-STACK & 60FPS UI",
+      category: "Full-Stack Web & 60FPS UI",
+      tag: "FULL-STACK & ANIMATION",
       tagColor: TOKENS.accent,
       image: infotechImg,
-      subtitle: "Custom-built, animated web presence and client services dashboard.",
-      metric: "<1.2s LCP · 100 Lighthouse",
+      subtitle: "Custom animated web presence, services catalogue, and interactive client dashboard.",
+      metric: "<1.2s LCP · 100 Lighthouse Performance",
       problem:
         "Local business websites rely heavily on generic WordPress templates and bloated page builders that load slowly (4s+), provide poor mobile usability, and fail to convey modern technical credibility.",
       solution:
@@ -36,13 +36,14 @@ export default function FeaturedProjects() {
     },
     {
       id: "02",
+      number: "02",
       title: "MindVault — Offline Knowledge & Ledger OS",
-      category: "Offline-First & Mobile",
-      tag: "OFFLINE-FIRST ARCHITECTURE",
+      category: "Offline-First Architecture",
+      tag: "OFFLINE-FIRST APP",
       tagColor: "#7C3AED",
       image: mindvaultImg,
       subtitle: "Personal knowledge management, voice note capture, and private financial ledger.",
-      metric: "100% Offline · Sub-5ms Read/Write",
+      metric: "100% Offline · Sub-5ms Local SQLite",
       problem:
         "Existing note-taking and personal ledger apps lock user data behind monthly subscription fees and completely stop working when internet connectivity is unstable or offline.",
       solution:
@@ -57,9 +58,10 @@ export default function FeaturedProjects() {
     },
     {
       id: "03",
+      number: "03",
       title: "Gate Pass & Material Dispatch System",
-      category: "Operations & DevOps",
-      tag: "LOGISTICS & DISPATCH",
+      category: "Operations & Logistics",
+      tag: "OPERATIONS & LOGISTICS",
       tagColor: "#D97706",
       image: gatepassImg,
       subtitle: "Real-time dispatch tracking, gate clearance, and QR verification interface.",
@@ -78,8 +80,9 @@ export default function FeaturedProjects() {
     },
     {
       id: "04",
+      number: "04",
       title: "API Status & Microservice Health Monitor",
-      category: "Operations & DevOps",
+      category: "Developer Tooling & DevOps",
       tag: "TELEMETRY & MONITORING",
       tagColor: TOKENS.success,
       image: apimonitorImg,
@@ -98,12 +101,6 @@ export default function FeaturedProjects() {
       deliverables: ["Live Latency Waveform Graph", "Automated Health Checks", "Endpoint Response Benchmarks"],
     },
   ];
-
-  const filters = ["All", "Full-Stack & Web", "Offline-First & Mobile", "Operations & DevOps"];
-
-  const filteredProjects = selectedFilter === "All"
-    ? projects
-    : projects.filter((p) => p.category === selectedFilter);
 
   const openProjectModal = (p) => {
     playClickSound();
@@ -131,7 +128,7 @@ export default function FeaturedProjects() {
         }}
       >
         {/* Section Header */}
-        <div style={{ marginBottom: "36px" }}>
+        <div style={{ marginBottom: "48px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
             <span
               style={{
@@ -148,343 +145,338 @@ export default function FeaturedProjects() {
             </span>
           </div>
 
-          <div
+          <h2
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              flexWrap: "wrap",
-              gap: "20px",
+              ...TOKENS.type.title,
+              fontSize: "clamp(26px, 3.4vw, 38px)",
+              color: TOKENS.ink,
+              marginBottom: "8px",
             }}
           >
-            <div>
-              <h2
-                style={{
-                  ...TOKENS.type.title,
-                  fontSize: "clamp(26px, 3.2vw, 36px)",
-                  color: TOKENS.ink,
-                  marginBottom: "8px",
-                }}
-              >
-                Real problems solved with custom software.
-              </h2>
-              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "660px" }}>
-                Detailed breakdown of production applications — the exact challenge, visual interface, and custom architectural solution.
-              </p>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-              {filters.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => {
-                    playClickSound();
-                    setSelectedFilter(f);
-                  }}
-                  style={{
-                    padding: "6px 14px",
-                    borderRadius: TOKENS.radius.xs,
-                    border: `1px solid ${selectedFilter === f ? TOKENS.accent : TOKENS.line}`,
-                    backgroundColor: selectedFilter === f ? TOKENS.accent : TOKENS.card,
-                    color: selectedFilter === f ? "#FFFFFF" : TOKENS.muted,
-                    ...TOKENS.type.micro,
-                    fontSize: "11.5px",
-                    fontWeight: selectedFilter === f ? 600 : 500,
-                    cursor: "pointer",
-                    transition: TOKENS.transition,
-                    boxShadow: selectedFilter === f ? "0 4px 12px rgba(2, 132, 199, 0.25)" : TOKENS.shadow.resting,
-                  }}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
+            Real problems solved with custom software.
+          </h2>
+          <p style={{ ...TOKENS.type.body, color: TOKENS.muted, maxWidth: "680px" }}>
+            Detailed breakdown of production applications — uncompromised visual interfaces, exact challenge definitions, and custom architectural solutions.
+          </p>
         </div>
 
-        {/* 2x2 Large Featured Projects Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-            gap: "30px",
-          }}
-          className="projects-grid"
-        >
-          {filteredProjects.map((p) => (
-            <TiltCard3D key={p.id} intensity={8} glare={true} style={{ height: "100%" }}>
-              <article
-                onClick={() => openProjectModal(p)}
-                style={{
-                  height: "100%",
-                  backgroundColor: TOKENS.card,
-                  border: `1px solid ${TOKENS.line}`,
-                  borderRadius: TOKENS.radius.sm,
-                  overflow: "hidden",
-                  boxShadow: TOKENS.shadow.resting,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  transition: TOKENS.transition,
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = p.tagColor;
-                  e.currentTarget.style.boxShadow = "0 16px 36px rgba(0, 0, 0, 0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = TOKENS.line;
-                  e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
-                }}
-              >
-                <div>
-                  {/* macOS / Browser Header Window Frame */}
-                  <div
-                    style={{
-                      backgroundColor: "#0B1220",
-                      padding: "8px 14px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    }}
-                  >
-                    {/* Traffic light dots */}
-                    <div style={{ display: "flex", gap: "6px" }}>
-                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#EF4444" }} />
-                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#F59E0B" }} />
-                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#10B981" }} />
-                    </div>
-
-                    <span style={{ ...TOKENS.type.micro, fontSize: "10px", color: "rgba(255, 255, 255, 0.5)" }}>
-                      app.{p.id}.mansoor.production
-                    </span>
-
-                    <span
-                      style={{
-                        ...TOKENS.type.micro,
-                        fontSize: "9.5px",
-                        color: p.tagColor,
-                        backgroundColor: "rgba(255, 255, 255, 0.08)",
-                        padding: "2px 6px",
-                        borderRadius: "3px",
-                        fontWeight: 700,
-                      }}
-                    >
-                      {p.metric.split("·")[0]}
-                    </span>
-                  </div>
-
-                  {/* Visual UI Preview Image Header */}
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "230px",
-                      backgroundColor: "#0B1220",
-                      overflow: "hidden",
-                      borderBottom: `1px solid ${TOKENS.line}`,
-                    }}
-                  >
-                    <img
-                      src={p.image}
-                      alt={`${p.title} Interface Preview`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center top",
-                        display: "block",
-                        transition: "transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.04)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                      }}
-                      loading="lazy"
-                    />
-
-                    {/* Float Tag */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "12px",
-                        left: "12px",
-                        ...TOKENS.type.micro,
-                        fontSize: "10px",
-                        color: "#FFFFFF",
-                        backgroundColor: "rgba(11, 18, 32, 0.9)",
-                        backdropFilter: "blur(8px)",
-                        border: `1px solid rgba(255, 255, 255, 0.2)`,
-                        padding: "4px 9px",
-                        borderRadius: TOKENS.radius.xs,
-                        fontWeight: 700,
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                      }}
-                    >
-                      {p.tag}
-                    </div>
-
-                    {/* Inspect Badge on Image Hover */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "12px",
-                        right: "12px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        padding: "4px 10px",
-                        backgroundColor: "rgba(11, 18, 32, 0.85)",
-                        backdropFilter: "blur(8px)",
-                        borderRadius: TOKENS.radius.xs,
-                        border: "1px solid rgba(255, 255, 255, 0.2)",
-                        color: "#FFFFFF",
-                        ...TOKENS.type.micro,
-                        fontSize: "10.5px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      <Maximize2 size={11} />
-                      <span>Inspect Deep Case Study</span>
-                    </div>
-                  </div>
-
-                  {/* Content Body */}
-                  <div style={{ padding: "26px 24px" }}>
-                    {/* Title & Subtitle */}
-                    <h3
-                      style={{
-                        ...TOKENS.type.title,
-                        fontSize: "20px",
-                        color: TOKENS.ink,
-                        marginBottom: "6px",
-                      }}
-                    >
-                      {p.title}
-                    </h3>
-                    <p
-                      style={{
-                        ...TOKENS.type.data,
-                        fontSize: "13px",
-                        color: TOKENS.muted,
-                        marginBottom: "20px",
-                      }}
-                    >
-                      {p.subtitle}
-                    </p>
-
-                    {/* Problem & Solution Breakdown */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
-                      {/* Problem Box */}
-                      <div
-                        style={{
-                          padding: "12px 14px",
-                          backgroundColor: "#FEF2F2",
-                          border: `1px solid #FCA5A5`,
-                          borderRadius: TOKENS.radius.xs,
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                          <AlertCircle size={13} color="#DC2626" />
-                          <span style={{ ...TOKENS.type.micro, color: "#DC2626", fontSize: "10.5px", fontWeight: 700 }}>
-                            THE PROBLEM
-                          </span>
-                        </div>
-                        <p style={{ ...TOKENS.type.body, fontSize: "13px", color: "#7F1D1D", margin: 0, lineHeight: 1.55 }}>
-                          {p.problem}
-                        </p>
-                      </div>
-
-                      {/* Solution Box */}
-                      <div
-                        style={{
-                          padding: "12px 14px",
-                          backgroundColor: `${p.tagColor}0D`,
-                          border: `1px solid ${p.tagColor}40`,
-                          borderRadius: TOKENS.radius.xs,
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                          <CheckCircle2 size={13} color={p.tagColor} />
-                          <span style={{ ...TOKENS.type.micro, color: p.tagColor, fontSize: "10.5px", fontWeight: 700 }}>
-                            CUSTOM ARCHITECTURAL SOLUTION
-                          </span>
-                        </div>
-                        <p style={{ ...TOKENS.type.body, fontSize: "13px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
-                          {p.solution}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Deliverable Highlights */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
-                      {p.deliverables.map((item) => (
-                        <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: p.tagColor }} />
-                          <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink, fontWeight: 500 }}>
-                            {item}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Footer: Tech Stack Chips (Zero repo links) */}
+        {/* ── Alternating Full-Width Showcase Stack ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+          {projects.map((p, idx) => {
+            const isEven = idx % 2 === 1;
+            return (
+              <TiltCard3D key={p.id} intensity={4} glare={true}>
                 <div
                   style={{
-                    padding: "14px 24px",
-                    borderTop: `1px solid ${TOKENS.line}`,
-                    backgroundColor: TOKENS.surface,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "8px",
+                    backgroundColor: TOKENS.card,
+                    border: `1px solid ${TOKENS.line}`,
+                    borderRadius: TOKENS.radius.sm,
+                    overflow: "hidden",
+                    boxShadow: TOKENS.shadow.resting,
+                    display: "grid",
+                    gridTemplateColumns: "1.15fr 1fr",
+                    alignItems: "stretch",
+                    transition: TOKENS.transition,
+                  }}
+                  className="project-showcase-row"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = p.tagColor;
+                    e.currentTarget.style.boxShadow = "0 20px 40px rgba(0, 0, 0, 0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = TOKENS.line;
+                    e.currentTarget.style.boxShadow = TOKENS.shadow.resting;
                   }}
                 >
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-                    {p.stack.map((tech) => (
-                      <span
-                        key={tech}
-                        style={{
-                          ...TOKENS.type.micro,
-                          fontSize: "10.5px",
-                          padding: "2px 7px",
-                          borderRadius: TOKENS.radius.xs,
-                          backgroundColor: TOKENS.card,
-                          border: `1px solid ${TOKENS.line}`,
-                          color: TOKENS.muted,
-                          fontWeight: 600,
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
+                  {/* Left Column: Big Spacious UI Preview (Swaps with isEven on desktop) */}
                   <div
                     style={{
+                      order: isEven ? 2 : 1,
+                      backgroundColor: "#0B1220",
                       display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                      color: p.tagColor,
-                      ...TOKENS.type.micro,
-                      fontSize: "11px",
-                      fontWeight: 700,
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      borderRight: isEven ? "none" : `1px solid ${TOKENS.line}`,
+                      borderLeft: isEven ? `1px solid ${TOKENS.line}` : "none",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                    className="project-image-col"
+                  >
+                    {/* Top Browser Bar */}
+                    <div
+                      style={{
+                        padding: "10px 16px",
+                        backgroundColor: "rgba(11, 18, 32, 0.95)",
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        zIndex: 2,
+                      }}
+                    >
+                      <div style={{ display: "flex", gap: "6px" }}>
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#EF4444" }} />
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#F59E0B" }} />
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#10B981" }} />
+                      </div>
+
+                      <span style={{ ...TOKENS.type.micro, fontSize: "11px", color: "rgba(255, 255, 255, 0.6)" }}>
+                        https://app.{p.id}.mansoor.production
+                      </span>
+
+                      <span
+                        style={{
+                          ...TOKENS.type.micro,
+                          fontSize: "10px",
+                          color: p.tagColor,
+                          backgroundColor: `${p.tagColor}20`,
+                          padding: "2px 8px",
+                          borderRadius: "4px",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {p.metric.split("·")[0]}
+                      </span>
+                    </div>
+
+                    {/* Big Visual Image with Hover Zoom */}
+                    <div
+                      style={{
+                        position: "relative",
+                        flex: 1,
+                        minHeight: "340px",
+                        overflow: "hidden",
+                        backgroundColor: "#0B1220",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => openProjectModal(p)}
+                    >
+                      <img
+                        src={p.image}
+                        alt={`${p.title} Full Interface`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: "top center",
+                          display: "block",
+                          transition: "transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.03)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                        loading="lazy"
+                      />
+
+                      {/* Click to Expand Overlay */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "14px",
+                          right: "14px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "6px 12px",
+                          backgroundColor: "rgba(11, 18, 32, 0.88)",
+                          backdropFilter: "blur(10px)",
+                          borderRadius: TOKENS.radius.xs,
+                          border: "1px solid rgba(255, 255, 255, 0.2)",
+                          color: "#FFFFFF",
+                          ...TOKENS.type.micro,
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+                        }}
+                      >
+                        <Maximize2 size={12} />
+                        <span>Click to Inspect Case Study</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Detailed Architecture Story */}
+                  <div
+                    style={{
+                      order: isEven ? 1 : 2,
+                      padding: "32px 30px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <span>Read Architecture</span>
-                    <ArrowRight size={13} />
+                    <div>
+                      {/* Eyebrow Meta */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                        <span
+                          style={{
+                            ...TOKENS.type.micro,
+                            fontSize: "11px",
+                            color: p.tagColor,
+                            backgroundColor: `${p.tagColor}12`,
+                            border: `1px solid ${p.tagColor}30`,
+                            padding: "3px 9px",
+                            borderRadius: TOKENS.radius.xs,
+                            fontWeight: 700,
+                          }}
+                        >
+                          {p.tag}
+                        </span>
+                        <span style={{ ...TOKENS.type.micro, color: TOKENS.muted, fontSize: "11px" }}>
+                          {p.category}
+                        </span>
+                      </div>
+
+                      {/* Title & Subtitle */}
+                      <h3
+                        style={{
+                          ...TOKENS.type.title,
+                          fontSize: "clamp(20px, 2.2vw, 24px)",
+                          color: TOKENS.ink,
+                          marginBottom: "6px",
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {p.title}
+                      </h3>
+
+                      <p
+                        style={{
+                          ...TOKENS.type.body,
+                          fontSize: "13.5px",
+                          color: TOKENS.muted,
+                          marginBottom: "20px",
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {p.subtitle}
+                      </p>
+
+                      {/* Problem vs Solution Split */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+                        {/* 1. Problem Box */}
+                        <div
+                          style={{
+                            padding: "12px 14px",
+                            backgroundColor: "#FEF2F2",
+                            border: "1px solid #FECACA",
+                            borderRadius: TOKENS.radius.xs,
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                            <AlertCircle size={14} color="#DC2626" />
+                            <span style={{ ...TOKENS.type.micro, color: "#DC2626", fontSize: "10.5px", fontWeight: 700 }}>
+                              THE CHALLENGE
+                            </span>
+                          </div>
+                          <p style={{ ...TOKENS.type.body, fontSize: "13px", color: "#7F1D1D", margin: 0, lineHeight: 1.55 }}>
+                            {p.problem}
+                          </p>
+                        </div>
+
+                        {/* 2. Solution Box */}
+                        <div
+                          style={{
+                            padding: "12px 14px",
+                            backgroundColor: `${p.tagColor}0D`,
+                            border: `1px solid ${p.tagColor}35`,
+                            borderRadius: TOKENS.radius.xs,
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                            <CheckCircle2 size={14} color={p.tagColor} />
+                            <span style={{ ...TOKENS.type.micro, color: p.tagColor, fontSize: "10.5px", fontWeight: 700 }}>
+                              CUSTOM ARCHITECTURAL SOLUTION
+                            </span>
+                          </div>
+                          <p style={{ ...TOKENS.type.body, fontSize: "13px", color: TOKENS.ink, margin: 0, lineHeight: 1.55 }}>
+                            {p.solution}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Key Deliverables Bullet Points */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
+                        {p.deliverables.map((item) => (
+                          <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: p.tagColor }} />
+                            <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink, fontWeight: 500 }}>
+                              {item}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Row: Stack Chips + Case Study Action Button */}
+                    <div
+                      style={{
+                        paddingTop: "16px",
+                        borderTop: `1px solid ${TOKENS.line}`,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "10px",
+                      }}
+                    >
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                        {p.stack.map((tech) => (
+                          <span
+                            key={tech}
+                            style={{
+                              ...TOKENS.type.micro,
+                              fontSize: "11px",
+                              padding: "3px 8px",
+                              borderRadius: TOKENS.radius.xs,
+                              backgroundColor: TOKENS.surface,
+                              border: `1px solid ${TOKENS.line}`,
+                              color: TOKENS.muted,
+                              fontWeight: 600,
+                            }}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => openProjectModal(p)}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "8px 14px",
+                          backgroundColor: TOKENS.ink,
+                          color: "#FFFFFF",
+                          border: "none",
+                          borderRadius: TOKENS.radius.xs,
+                          ...TOKENS.type.data,
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          transition: TOKENS.transition,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = p.tagColor;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = TOKENS.ink;
+                        }}
+                      >
+                        <span>Deep Case Study</span>
+                        <ArrowRight size={13} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </article>
-            </TiltCard3D>
-          ))}
+              </TiltCard3D>
+            );
+          })}
         </div>
 
         {/* ── Deep Architectural Case Study Modal ── */}
@@ -495,7 +487,7 @@ export default function FeaturedProjects() {
               position: "fixed",
               inset: 0,
               zIndex: 9999,
-              backgroundColor: "rgba(11, 18, 32, 0.82)",
+              backgroundColor: "rgba(11, 18, 32, 0.85)",
               backdropFilter: "blur(14px)",
               display: "flex",
               alignItems: "center",
@@ -509,12 +501,12 @@ export default function FeaturedProjects() {
                 backgroundColor: TOKENS.card,
                 border: `1px solid ${activeModalProject.tagColor}50`,
                 borderRadius: TOKENS.radius.sm,
-                maxWidth: "860px",
+                maxWidth: "920px",
                 width: "100%",
-                maxHeight: "90vh",
+                maxHeight: "92vh",
                 overflowY: "auto",
                 padding: "36px 32px",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.3)",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
                 position: "relative",
               }}
             >
@@ -551,8 +543,8 @@ export default function FeaturedProjects() {
                 <button
                   onClick={() => setActiveModalProject(null)}
                   style={{
-                    width: "32px",
-                    height: "32px",
+                    width: "34px",
+                    height: "34px",
                     borderRadius: TOKENS.radius.xs,
                     border: `1px solid ${TOKENS.line}`,
                     backgroundColor: TOKENS.surface,
@@ -568,35 +560,36 @@ export default function FeaturedProjects() {
                 </button>
               </div>
 
-              {/* Title & Preview Banner */}
-              <h2 style={{ ...TOKENS.type.title, fontSize: "24px", color: TOKENS.ink, marginBottom: "8px" }}>
+              {/* Title & Subtitle */}
+              <h2 style={{ ...TOKENS.type.title, fontSize: "26px", color: TOKENS.ink, marginBottom: "8px" }}>
                 {activeModalProject.title}
               </h2>
-              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "20px" }}>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.muted, marginBottom: "22px" }}>
                 {activeModalProject.subtitle}
               </p>
 
-              {/* Full Image Banner */}
+              {/* High-Res Full Image Banner */}
               <div
                 style={{
                   width: "100%",
-                  height: "320px",
+                  maxHeight: "420px",
                   borderRadius: TOKENS.radius.xs,
                   overflow: "hidden",
-                  marginBottom: "24px",
+                  marginBottom: "28px",
                   border: `1px solid ${TOKENS.line}`,
+                  backgroundColor: "#0B1220",
                 }}
               >
                 <img
                   src={activeModalProject.image}
                   alt={activeModalProject.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
                 />
               </div>
 
               {/* Architecture Deep Dive Sections */}
               <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
-                <div style={{ padding: "16px 18px", backgroundColor: "#FEF2F2", border: "1px solid #FCA5A5", borderRadius: TOKENS.radius.xs }}>
+                <div style={{ padding: "16px 18px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: TOKENS.radius.xs }}>
                   <div style={{ ...TOKENS.type.micro, color: "#DC2626", fontWeight: 700, marginBottom: "6px" }}>
                     EXACT CHALLENGE & CLIENT PROBLEM
                   </div>
@@ -616,7 +609,7 @@ export default function FeaturedProjects() {
 
                 {/* Key Technical Protocols */}
                 <div>
-                  <div style={{ ...TOKENS.type.micro, color: TOKENS.muted, marginBottom: "10px", fontSize: "11px" }}>
+                  <div style={{ ...TOKENS.type.micro, color: TOKENS.muted, marginBottom: "10px", fontSize: "11.5px" }}>
                     SYSTEM ARCHITECTURAL DECISIONS:
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -688,6 +681,20 @@ export default function FeaturedProjects() {
           </div>
         )}
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .project-showcase-row {
+            grid-template-columns: 1fr !important;
+          }
+          .project-image-col {
+            order: 1 !important;
+            border-right: none !important;
+            border-left: none !important;
+            border-bottom: 1px solid ${TOKENS.line} !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
