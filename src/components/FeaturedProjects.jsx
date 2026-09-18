@@ -358,6 +358,7 @@ export default function FeaturedProjects() {
               animate="center"
               exit="exit"
               drag="x"
+              dragDirectionLock={true}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.2}
               onDragEnd={(e, { offset, velocity }) => {
@@ -368,7 +369,7 @@ export default function FeaturedProjects() {
                   handlePrev();
                 }
               }}
-              style={{ width: "100%", cursor: "grab" }}
+              style={{ width: "100%", cursor: "grab", touchAction: "pan-y" }}
             >
               <TiltCard3D intensity={3} glare={true}>
                 <div

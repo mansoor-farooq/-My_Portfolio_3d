@@ -469,6 +469,7 @@ export default function Spatial3DLab() {
               borderRadius: TOKENS.radius.sm,
               overflow: "hidden",
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              touchAction: "pan-y",
             }}
           >
             {/* Top Canvas Controls Bar */}
