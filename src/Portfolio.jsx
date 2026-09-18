@@ -328,40 +328,26 @@ export default function Portfolio() {
         {/* Global Styles */}
         <style>{`
           ::selection {
-            background: #00F59B;
-            color: #040906;
+            background: #0284C7;
+            color: #FFFFFF;
           }
           ::-webkit-scrollbar {
-            width: 5px;
+            width: 6px;
           }
           ::-webkit-scrollbar-track {
-            background: #060709;
+            background: #F1F5F9;
           }
           ::-webkit-scrollbar-thumb {
-            background: rgba(0, 245, 155, 0.25);
+            background: #CBD5E1;
             border-radius: 4px;
           }
           ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 245, 155, 0.5);
+            background: #94A3B8;
           }
           * {
             box-sizing: border-box;
           }
         `}</style>
-
-        {/* Global Atmospheric Ambient Noise Overlay */}
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundImage: TH.grain,
-            backgroundRepeat: "repeat",
-            backgroundSize: "200px 200px",
-            pointerEvents: "none",
-            zIndex: 90,
-            opacity: 0.8,
-          }}
-        />
 
         {/* Navigation & Command HUD */}
         <Navbar

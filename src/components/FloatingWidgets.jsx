@@ -61,12 +61,12 @@ export default function FloatingWidgets() {
           alignItems: "center",
           gap: "8px",
           padding: "7px",
-          backgroundColor: "rgba(11, 18, 32, 0.85)",
+          backgroundColor: "rgba(255, 255, 255, 0.92)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           borderRadius: "40px",
-          border: "1px solid rgba(255, 255, 255, 0.16)",
-          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.2)",
+          border: `1px solid ${TOKENS.line}`,
+          boxShadow: "0 16px 40px -10px rgba(15, 23, 42, 0.15), 0 2px 8px rgba(15, 23, 42, 0.04)",
           transition: "transform 250ms ease, box-shadow 250ms ease",
         }}
       >
@@ -80,17 +80,17 @@ export default function FloatingWidgets() {
                   right: "52px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  backgroundColor: "rgba(11, 18, 32, 0.95)",
-                  backdropFilter: "blur(10px)",
-                  color: "#FFFFFF",
+                  backgroundColor: "rgba(255, 255, 255, 0.96)",
+                  backdropFilter: "blur(12px)",
+                  color: TOKENS.ink,
                   padding: "5px 12px",
                   borderRadius: TOKENS.radius.xs,
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  border: `1px solid ${TOKENS.line}`,
                   ...TOKENS.type.micro,
                   fontSize: "11px",
-                  fontWeight: 600,
+                  fontWeight: 700,
                   whiteSpace: "nowrap",
-                  boxShadow: "0 6px 16px rgba(0,0,0,0.35)",
+                  boxShadow: "0 6px 16px rgba(15, 23, 42, 0.08)",
                   pointerEvents: "none",
                   display: "flex",
                   alignItems: "center",
@@ -98,7 +98,7 @@ export default function FloatingWidgets() {
                 }}
               >
                 <span>Back to Top</span>
-                <ArrowUp size={11} color={TOKENS.accent} />
+                <ArrowUp size={11} color="#0284C7" />
               </div>
             )}
             <button
@@ -110,23 +110,23 @@ export default function FloatingWidgets() {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                border: "1px solid rgba(255, 255, 255, 0.12)",
+                backgroundColor: "#F1F5F9",
+                border: `1px solid ${TOKENS.line}`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#E2E8F0",
+                color: TOKENS.ink,
                 cursor: "pointer",
                 transition: "all 200ms ease",
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-                e.currentTarget.style.color = "#FFFFFF";
+                e.currentTarget.style.backgroundColor = "#E2E8F0";
+                e.currentTarget.style.color = "#0284C7";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                e.currentTarget.style.color = "#E2E8F0";
+                e.currentTarget.style.backgroundColor = "#F1F5F9";
+                e.currentTarget.style.color = TOKENS.ink;
                 e.currentTarget.style.transform = "none";
               }}
             >
@@ -144,24 +144,24 @@ export default function FloatingWidgets() {
                 right: "54px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                backgroundColor: "rgba(11, 18, 32, 0.95)",
-                backdropFilter: "blur(10px)",
-                color: "#FFFFFF",
+                backgroundColor: "rgba(255, 255, 255, 0.96)",
+                backdropFilter: "blur(12px)",
+                color: TOKENS.ink,
                 padding: "6px 14px",
                 borderRadius: TOKENS.radius.xs,
-                border: "1px solid rgba(2, 132, 199, 0.4)",
+                border: "1px solid rgba(2, 132, 199, 0.25)",
                 ...TOKENS.type.micro,
                 fontSize: "11.5px",
-                fontWeight: 600,
+                fontWeight: 700,
                 whiteSpace: "nowrap",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 8px 20px rgba(15, 23, 42, 0.08)",
                 pointerEvents: "none",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
               }}
             >
-              <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: TOKENS.accent }} />
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#0284C7" }} />
               <span>Direct Project Inquiry Form</span>
             </div>
           )}
@@ -175,25 +175,25 @@ export default function FloatingWidgets() {
               width: "44px",
               height: "44px",
               borderRadius: "50%",
-              backgroundColor: "rgba(2, 132, 199, 0.18)",
-              border: "1px solid rgba(56, 189, 248, 0.35)",
+              backgroundColor: "rgba(2, 132, 199, 0.08)",
+              border: "1px solid rgba(2, 132, 199, 0.25)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#38BDF8",
+              color: "#0284C7",
               cursor: "pointer",
               position: "relative",
               transition: "all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.4)";
-              e.currentTarget.style.borderColor = "#38BDF8";
+              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.15)";
+              e.currentTarget.style.borderColor = "#0284C7";
               e.currentTarget.style.transform = "scale(1.08)";
-              e.currentTarget.style.boxShadow = "0 0 20px rgba(56, 189, 248, 0.5)";
+              e.currentTarget.style.boxShadow = "0 4px 14px rgba(2, 132, 199, 0.25)";
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.18)";
-              e.currentTarget.style.borderColor = "rgba(56, 189, 248, 0.35)";
+              e.currentTarget.style.backgroundColor = "rgba(2, 132, 199, 0.08)";
+              e.currentTarget.style.borderColor = "rgba(2, 132, 199, 0.25)";
               e.currentTarget.style.transform = "scale(1)";
               e.currentTarget.style.boxShadow = "none";
             }}
@@ -208,8 +208,8 @@ export default function FloatingWidgets() {
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                backgroundColor: "#38BDF8",
-                boxShadow: "0 0 8px #38BDF8",
+                backgroundColor: "#0284C7",
+                boxShadow: "0 0 6px rgba(2, 132, 199, 0.5)",
               }}
             />
           </button>
@@ -224,17 +224,17 @@ export default function FloatingWidgets() {
                 right: "60px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                backgroundColor: "rgba(11, 18, 32, 0.95)",
-                backdropFilter: "blur(10px)",
-                color: "#FFFFFF",
+                backgroundColor: "rgba(255, 255, 255, 0.96)",
+                backdropFilter: "blur(12px)",
+                color: TOKENS.ink,
                 padding: "6px 14px",
                 borderRadius: TOKENS.radius.xs,
-                border: "1px solid rgba(37, 211, 102, 0.4)",
+                border: "1px solid rgba(37, 211, 102, 0.35)",
                 ...TOKENS.type.micro,
                 fontSize: "11.5px",
-                fontWeight: 600,
+                fontWeight: 700,
                 whiteSpace: "nowrap",
-                boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 8px 20px rgba(15, 23, 42, 0.08)",
                 pointerEvents: "none",
                 display: "flex",
                 alignItems: "center",

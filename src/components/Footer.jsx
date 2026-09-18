@@ -843,7 +843,7 @@ export default function Footer() {
             }}
           >
             <span>BACK TO TOP</span>
-            <ArrowUp size={13} color="#38BDF8" />
+            <ArrowUp size={13} color="#0284C7" />
           </button>
         </div>
       </footer>

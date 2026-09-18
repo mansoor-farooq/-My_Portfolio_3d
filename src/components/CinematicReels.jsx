@@ -126,24 +126,24 @@ export default function CinematicReels() {
     <section
       id="cinema"
       style={{
-        backgroundColor: "#070C16",
+        backgroundColor: TOKENS.surface,
         paddingTop: "100px",
         paddingBottom: "100px",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        borderBottom: `1px solid ${TOKENS.line}`,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Ambient Film Glow */}
+      {/* Light Film Ambience */}
       <div
         style={{
           position: "absolute",
           top: "0",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "800px",
+          width: "900px",
           height: "350px",
-          background: "radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.15) 0%, transparent 70%)",
+          background: "radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -162,14 +162,14 @@ export default function CinematicReels() {
         {/* Section Header */}
         <div style={{ marginBottom: "42px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-            <Clapperboard size={16} color="#38BDF8" />
+            <Clapperboard size={16} color="#0284C7" />
             <span
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "11px",
-                color: "#38BDF8",
+                color: "#0284C7",
                 letterSpacing: "0.08em",
-                fontWeight: 600,
+                fontWeight: 700,
               }}
             >
               04 // CINEMATIC MOTION & VIDEO PRODUCTION
@@ -190,14 +190,14 @@ export default function CinematicReels() {
                 style={{
                   ...TOKENS.type.title,
                   fontSize: "clamp(26px, 3.4vw, 38px)",
-                  color: "#FFFFFF",
+                  color: TOKENS.ink,
                   marginBottom: "8px",
                   lineHeight: 1.25,
                 }}
               >
                 Cinema-grade motion, 3D VFX & brand storytelling.
               </h2>
-              <p style={{ ...TOKENS.type.body, color: "#94A3B8", maxWidth: "680px" }}>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.sub, maxWidth: "680px" }}>
                 Inspired by the visual direction of <strong>Nicolas Martins</strong> and <strong>Peryton Film</strong>.
                 Bespoke motion graphics, commercial film pacing, and high-impact digital showcases.
               </p>
@@ -210,16 +210,17 @@ export default function CinematicReels() {
                 alignItems: "center",
                 gap: "8px",
                 padding: "8px 16px",
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid rgba(255, 255, 255, 0.12)",
+                backgroundColor: "#FFFFFF",
+                border: `1px solid ${TOKENS.line}`,
                 borderRadius: TOKENS.radius.xs,
-                color: "#E2E8F0",
+                color: TOKENS.ink,
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "12px",
-                fontWeight: 600,
+                fontWeight: 700,
+                boxShadow: "0 2px 8px rgba(15, 23, 42, 0.04)",
               }}
             >
-              <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#10B981" }} />
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#059669" }} />
               <span>3 CINEMATIC REELS READY</span>
             </div>
           </div>
@@ -248,15 +249,15 @@ export default function CinematicReels() {
                   }}
                   onMouseLeave={() => setHoveredReelId(null)}
                   style={{
-                    backgroundColor: "rgba(11, 18, 32, 0.85)",
-                    border: `1px solid ${isHovered ? reel.glowColor : "rgba(255, 255, 255, 0.1)"}`,
+                    backgroundColor: "#FFFFFF",
+                    border: `1px solid ${isHovered ? reel.accentColor : TOKENS.line}`,
                     borderRadius: TOKENS.radius.sm,
                     overflow: "hidden",
                     cursor: "pointer",
                     transition: "all 300ms cubic-bezier(0.2, 0.8, 0.2, 1)",
                     boxShadow: isHovered
-                      ? `0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px ${reel.glowColor}25`
-                      : "0 10px 30px rgba(0, 0, 0, 0.4)",
+                      ? `0 20px 45px rgba(15, 23, 42, 0.12), 0 0 25px ${reel.accentColor}25`
+                      : TOKENS.shadow.raised,
                     display: "flex",
                     flexDirection: "column",
                     position: "relative",
@@ -266,11 +267,11 @@ export default function CinematicReels() {
                   <div
                     style={{
                       padding: "12px 18px",
-                      borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                      borderBottom: `1px solid ${TOKENS.line}`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      backgroundColor: "rgba(6, 10, 18, 0.95)",
+                      backgroundColor: "#FFFFFF",
                       zIndex: 3,
                     }}
                   >
@@ -281,8 +282,8 @@ export default function CinematicReels() {
                           fontSize: "10.5px",
                           color: reel.accentColor,
                           fontWeight: 700,
-                          backgroundColor: `${reel.accentColor}18`,
-                          border: `1px solid ${reel.accentColor}35`,
+                          backgroundColor: `${reel.accentColor}12`,
+                          border: `1px solid ${reel.accentColor}30`,
                           padding: "2px 7px",
                           borderRadius: "4px",
                         }}
@@ -293,7 +294,8 @@ export default function CinematicReels() {
                         style={{
                           fontFamily: "'IBM Plex Mono', monospace",
                           fontSize: "10.5px",
-                          color: "rgba(255, 255, 255, 0.6)",
+                          color: TOKENS.sub,
+                          fontWeight: 600,
                         }}
                       >
                         {reel.edition}
@@ -304,8 +306,8 @@ export default function CinematicReels() {
                       style={{
                         fontFamily: "'IBM Plex Mono', monospace",
                         fontSize: "11px",
-                        color: "#E2E8F0",
-                        fontWeight: 600,
+                        color: TOKENS.ink,
+                        fontWeight: 700,
                       }}
                     >
                       {reel.duration}
@@ -318,7 +320,7 @@ export default function CinematicReels() {
                       position: "relative",
                       width: "100%",
                       aspectRatio: "16 / 9",
-                      backgroundColor: "#000000",
+                      backgroundColor: "#0F172A",
                       overflow: "hidden",
                     }}
                   >
@@ -334,7 +336,7 @@ export default function CinematicReels() {
                         height: "100%",
                         objectFit: "cover",
                         display: "block",
-                        filter: isHovered ? "brightness(1.05) contrast(1.05)" : "brightness(0.95)",
+                        filter: isHovered ? "brightness(1.04) contrast(1.04)" : "brightness(0.96)",
                         transition: "filter 300ms ease, transform 400ms ease",
                         transform: isHovered ? "scale(1.04)" : "scale(1)",
                       }}
@@ -345,7 +347,7 @@ export default function CinematicReels() {
                       style={{
                         position: "absolute",
                         inset: 0,
-                        background: "linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%)",
+                        background: "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.4) 100%)",
                         pointerEvents: "none",
                       }}
                     />
@@ -361,24 +363,25 @@ export default function CinematicReels() {
                         width: "32px",
                         height: "32px",
                         borderRadius: "50%",
-                        backgroundColor: "rgba(11, 18, 32, 0.8)",
+                        backgroundColor: "rgba(255, 255, 255, 0.9)",
                         backdropFilter: "blur(10px)",
-                        border: "1px solid rgba(255, 255, 255, 0.15)",
-                        color: isMuted ? "#94A3B8" : "#38BDF8",
+                        border: "1px solid rgba(0, 0, 0, 0.08)",
+                        color: isMuted ? "#64748B" : "#0284C7",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         cursor: "pointer",
                         zIndex: 5,
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
                         transition: "transform 180ms ease, background 180ms ease",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.transform = "scale(1.1)";
-                        e.currentTarget.style.backgroundColor = "rgba(11, 18, 32, 0.95)";
+                        e.currentTarget.style.backgroundColor = "#FFFFFF";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = "scale(1)";
-                        e.currentTarget.style.backgroundColor = "rgba(11, 18, 32, 0.8)";
+                        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
                       }}
                     >
                       {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -394,20 +397,20 @@ export default function CinematicReels() {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "7px",
-                        padding: "8px 18px",
-                        backgroundColor: isHovered ? "rgba(255, 255, 255, 0.96)" : "rgba(11, 18, 32, 0.85)",
-                        backdropFilter: "blur(12px)",
-                        color: isHovered ? "#0B1220" : "#FFFFFF",
+                        padding: "9px 20px",
+                        backgroundColor: "rgba(255, 255, 255, 0.94)",
+                        backdropFilter: "blur(14px)",
+                        color: TOKENS.ink,
                         borderRadius: "30px",
-                        border: `1px solid ${isHovered ? "#FFFFFF" : "rgba(255, 255, 255, 0.25)"}`,
+                        border: `1px solid rgba(255, 255, 255, 0.9)`,
                         fontFamily: "'IBM Plex Mono', monospace",
                         fontSize: "11px",
                         fontWeight: 700,
                         letterSpacing: "0.06em",
-                        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
+                        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.25)",
                         pointerEvents: "none",
                         transition: "all 250ms cubic-bezier(0.2, 0.8, 0.2, 1)",
-                        opacity: isHovered ? 1 : 0.85,
+                        opacity: isHovered ? 1 : 0.9,
                         scale: isHovered ? 1.08 : 1,
                       }}
                     >
@@ -432,7 +435,7 @@ export default function CinematicReels() {
                           fontFamily: "'IBM Plex Mono', monospace",
                           fontSize: "11px",
                           color: reel.accentColor,
-                          fontWeight: 600,
+                          fontWeight: 700,
                           marginBottom: "6px",
                         }}
                       >
@@ -444,7 +447,7 @@ export default function CinematicReels() {
                           fontFamily: "'IBM Plex Sans', sans-serif",
                           fontSize: "17.5px",
                           fontWeight: 600,
-                          color: "#FFFFFF",
+                          color: TOKENS.ink,
                           marginBottom: "8px",
                           lineHeight: 1.35,
                         }}
@@ -456,7 +459,7 @@ export default function CinematicReels() {
                         style={{
                           fontFamily: "'IBM Plex Sans', sans-serif",
                           fontSize: "13px",
-                          color: "#94A3B8",
+                          color: TOKENS.sub,
                           lineHeight: 1.6,
                           marginBottom: "16px",
                         }}
@@ -472,11 +475,12 @@ export default function CinematicReels() {
                             style={{
                               fontFamily: "'IBM Plex Mono', monospace",
                               fontSize: "10.5px",
-                              color: "#CBD5E1",
-                              backgroundColor: "rgba(255, 255, 255, 0.05)",
-                              border: "1px solid rgba(255, 255, 255, 0.1)",
-                              padding: "3px 8px",
+                              color: TOKENS.ink,
+                              backgroundColor: "#F8FAFC",
+                              border: `1px solid ${TOKENS.line}`,
+                              padding: "4px 9px",
                               borderRadius: TOKENS.radius.xs,
+                              fontWeight: 600,
                             }}
                           >
                             {s}
@@ -489,7 +493,7 @@ export default function CinematicReels() {
                     <div
                       style={{
                         paddingTop: "14px",
-                        borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+                        borderTop: `1px solid ${TOKENS.line}`,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
@@ -499,7 +503,8 @@ export default function CinematicReels() {
                         style={{
                           fontFamily: "'IBM Plex Mono', monospace",
                           fontSize: "11px",
-                          color: "rgba(255, 255, 255, 0.4)",
+                          color: TOKENS.sub,
+                          fontWeight: 600,
                         }}
                       >
                         {reel.client}
@@ -510,10 +515,10 @@ export default function CinematicReels() {
                           display: "inline-flex",
                           alignItems: "center",
                           gap: "5px",
-                          color: reel.glowColor,
+                          color: reel.accentColor,
                           fontFamily: "'IBM Plex Mono', monospace",
                           fontSize: "11.5px",
-                          fontWeight: 600,
+                          fontWeight: 700,
                         }}
                       >
                         <span>Watch Theater</span>

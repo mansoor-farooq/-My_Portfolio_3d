@@ -458,8 +458,8 @@ export default function BlogSection() {
                 setActiveArticle(featuredArticle);
               }}
               style={{
-                backgroundColor: "#0B1220",
-                color: "#FFFFFF",
+                backgroundColor: "#FFFFFF",
+                color: TOKENS.ink,
                 borderRadius: TOKENS.radius.sm,
                 padding: "32px 30px",
                 cursor: "pointer",
@@ -468,7 +468,7 @@ export default function BlogSection() {
                 gap: "28px",
                 alignItems: "center",
                 boxShadow: TOKENS.shadow.raised,
-                border: `1px solid rgba(255, 255, 255, 0.1)`,
+                border: `1px solid ${TOKENS.line}`,
               }}
               className="featured-banner-grid"
             >
@@ -478,8 +478,9 @@ export default function BlogSection() {
                     style={{
                       ...TOKENS.type.micro,
                       fontSize: "10px",
-                      color: "#38BDF8",
-                      backgroundColor: "rgba(56, 189, 248, 0.15)",
+                      color: "#0284C7",
+                      backgroundColor: "rgba(2, 132, 199, 0.08)",
+                      border: "1px solid rgba(2, 132, 199, 0.22)",
                       padding: "3px 8px",
                       borderRadius: TOKENS.radius.xs,
                       fontWeight: 700,
@@ -487,8 +488,8 @@ export default function BlogSection() {
                   >
                     ★ FEATURED PUBLICATION
                   </span>
-                  <span style={{ color: "rgba(255, 255, 255, 0.4)", fontSize: "11px" }}>·</span>
-                  <span style={{ ...TOKENS.type.micro, color: "rgba(255, 255, 255, 0.6)", fontSize: "11px" }}>
+                  <span style={{ color: TOKENS.line, fontSize: "11px" }}>·</span>
+                  <span style={{ ...TOKENS.type.micro, color: TOKENS.sub, fontSize: "11px", fontWeight: 600 }}>
                     {featuredArticle.date} · {featuredArticle.readTime}
                   </span>
                 </div>
@@ -497,7 +498,7 @@ export default function BlogSection() {
                   style={{
                     ...TOKENS.type.title,
                     fontSize: "clamp(20px, 2.5vw, 26px)",
-                    color: "#FFFFFF",
+                    color: TOKENS.ink,
                     marginBottom: "12px",
                     lineHeight: 1.3,
                   }}
@@ -509,7 +510,7 @@ export default function BlogSection() {
                   style={{
                     ...TOKENS.type.body,
                     fontSize: "14px",
-                    color: "#94A3B8",
+                    color: TOKENS.sub,
                     lineHeight: 1.6,
                     marginBottom: "20px",
                   }}
@@ -522,10 +523,10 @@ export default function BlogSection() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
-                    color: "#38BDF8",
+                    color: "#0284C7",
                     ...TOKENS.type.data,
                     fontSize: "13px",
-                    fontWeight: 600,
+                    fontWeight: 700,
                   }}
                 >
                   <span>Read Complete Engineering Architecture</span>
@@ -536,8 +537,8 @@ export default function BlogSection() {
               {/* Banner Right Tech Spec */}
               <div
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  backgroundColor: "#F8FAFC",
+                  border: `1px solid ${TOKENS.line}`,
                   borderRadius: TOKENS.radius.xs,
                   padding: "20px",
                   display: "flex",
@@ -545,14 +546,14 @@ export default function BlogSection() {
                   gap: "12px",
                 }}
               >
-                <div style={{ ...TOKENS.type.micro, fontSize: "11px", color: "#38BDF8" }}>
+                <div style={{ ...TOKENS.type.micro, fontSize: "11px", color: "#0284C7", fontWeight: 700 }}>
                   KEY ARCHITECTURAL HIGHLIGHTS
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   {["Sub-5ms Local SQLite Reads/Writes", "Vector Clock Conflict Resolution", "Background PWA Sync Dispatcher"].map((item) => (
                     <div key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <CheckCircle2 size={14} color="#38BDF8" />
-                      <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: "#E2E8F0" }}>{item}</span>
+                      <CheckCircle2 size={14} color="#0284C7" />
+                      <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink, fontWeight: 600 }}>{item}</span>
                     </div>
                   ))}
                 </div>

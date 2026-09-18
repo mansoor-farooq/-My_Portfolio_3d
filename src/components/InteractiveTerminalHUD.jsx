@@ -140,7 +140,7 @@ export default function InteractiveTerminalHUD() {
         {/* Terminal Container */}
         <div
           style={{
-            backgroundColor: "#0B1220",
+            backgroundColor: "#FFFFFF",
             border: `1px solid ${TOKENS.line}`,
             borderRadius: TOKENS.radius.sm,
             overflow: "hidden",
@@ -153,35 +153,38 @@ export default function InteractiveTerminalHUD() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              padding: "10px 16px",
-              backgroundColor: "#070B14",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+              padding: "11px 18px",
+              backgroundColor: "#F8FAFC",
+              borderBottom: `1px solid ${TOKENS.line}`,
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#EF4444" }} />
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#F59E0B" }} />
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#10B981" }} />
+              <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#EF4444" }} />
+              <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#F59E0B" }} />
+              <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#10B981" }} />
               <span
                 style={{
                   ...TOKENS.type.micro,
-                  color: "rgba(255, 255, 255, 0.5)",
+                  color: TOKENS.sub,
                   fontSize: "11px",
                   marginLeft: "8px",
+                  fontWeight: 600,
                 }}
               >
-                mansoor@karachi-edge:~
+                mansoor@karachi-edge:~ (zsh)
               </span>
             </div>
 
             <span
               style={{
                 ...TOKENS.type.micro,
-                color: TOKENS.accent,
-                fontSize: "10px",
-                backgroundColor: "rgba(2, 132, 199, 0.15)",
-                padding: "2px 8px",
+                color: "#0284C7",
+                fontSize: "10.5px",
+                backgroundColor: "rgba(2, 132, 199, 0.08)",
+                border: "1px solid rgba(2, 132, 199, 0.22)",
+                padding: "3px 9px",
                 borderRadius: TOKENS.radius.xs,
+                fontWeight: 700,
               }}
             >
               HTTP 200 · LIVE READY
@@ -191,14 +194,15 @@ export default function InteractiveTerminalHUD() {
           {/* Terminal Body */}
           <div
             style={{
-              padding: "18px 20px",
+              padding: "20px 22px",
               minHeight: "220px",
               maxHeight: "340px",
               overflowY: "auto",
               fontFamily: "'IBM Plex Mono', monospace",
               fontSize: "13px",
-              lineHeight: 1.6,
-              color: "#E2E8F0",
+              lineHeight: 1.65,
+              backgroundColor: "#FFFFFF",
+              color: TOKENS.ink,
               display: "flex",
               flexDirection: "column",
               gap: "8px",
@@ -207,16 +211,16 @@ export default function InteractiveTerminalHUD() {
             {history.map((item, idx) => (
               <div key={idx}>
                 {item.type === "system" && (
-                  <span style={{ color: TOKENS.accent, fontWeight: 600 }}>{item.text}</span>
+                  <span style={{ color: "#0284C7", fontWeight: 700 }}>{item.text}</span>
                 )}
                 {item.type === "user" && (
-                  <span style={{ color: "#38BDF8", fontWeight: 600 }}>{item.text}</span>
+                  <span style={{ color: "#0F172A", fontWeight: 700 }}>{item.text}</span>
                 )}
                 {item.type === "output" && (
                   <pre
                     style={{
                       margin: 0,
-                      color: "#94A3B8",
+                      color: "#334155",
                       fontFamily: "inherit",
                       whiteSpace: "pre-wrap",
                     }}
@@ -228,9 +232,10 @@ export default function InteractiveTerminalHUD() {
                   <pre
                     style={{
                       margin: 0,
-                      color: "#A7F3D0",
-                      backgroundColor: "rgba(255, 255, 255, 0.03)",
-                      padding: "8px 12px",
+                      color: "#0F172A",
+                      backgroundColor: "#F1F5F9",
+                      border: `1px solid ${TOKENS.line}`,
+                      padding: "10px 14px",
                       borderRadius: TOKENS.radius.xs,
                       fontFamily: "inherit",
                       overflowX: "auto",
@@ -240,7 +245,7 @@ export default function InteractiveTerminalHUD() {
                   </pre>
                 )}
                 {item.type === "error" && (
-                  <span style={{ color: "#F87171" }}>{item.text}</span>
+                  <span style={{ color: "#DC2626", fontWeight: 600 }}>{item.text}</span>
                 )}
               </div>
             ))}
@@ -250,16 +255,16 @@ export default function InteractiveTerminalHUD() {
           {/* Quick Command Pills */}
           <div
             style={{
-              padding: "8px 16px",
-              backgroundColor: "#070B14",
-              borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+              padding: "10px 18px",
+              backgroundColor: "#F8FAFC",
+              borderTop: `1px solid ${TOKENS.line}`,
               display: "flex",
               alignItems: "center",
               gap: "8px",
               flexWrap: "wrap",
             }}
           >
-            <span style={{ ...TOKENS.type.micro, color: "rgba(255, 255, 255, 0.4)", fontSize: "10px" }}>
+            <span style={{ ...TOKENS.type.micro, color: TOKENS.sub, fontSize: "10.5px", fontWeight: 700 }}>
               QUICK:
             </span>
             {["help", "stack", "projects", "about", "contact", "ping", "clear"].map((cmd) => (
@@ -267,23 +272,25 @@ export default function InteractiveTerminalHUD() {
                 key={cmd}
                 onClick={() => executeCommand(cmd)}
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.06)",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
+                  backgroundColor: "#FFFFFF",
+                  border: `1px solid ${TOKENS.line}`,
                   borderRadius: TOKENS.radius.xs,
-                  color: "#E2E8F0",
+                  color: TOKENS.ink,
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: "11px",
-                  padding: "3px 9px",
+                  fontWeight: 600,
+                  padding: "4px 10px",
                   cursor: "pointer",
+                  boxShadow: "0 1px 3px rgba(15, 23, 42, 0.04)",
                   transition: TOKENS.transition,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = TOKENS.accent;
-                  e.currentTarget.style.color = TOKENS.accent;
+                  e.currentTarget.style.borderColor = "#0284C7";
+                  e.currentTarget.style.color = "#0284C7";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.12)";
-                  e.currentTarget.style.color = "#E2E8F0";
+                  e.currentTarget.style.borderColor = TOKENS.line;
+                  e.currentTarget.style.color = TOKENS.ink;
                 }}
               >
                 {cmd}
@@ -300,12 +307,12 @@ export default function InteractiveTerminalHUD() {
             style={{
               display: "flex",
               alignItems: "center",
-              padding: "10px 16px",
-              backgroundColor: "#05080F",
-              borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+              padding: "12px 18px",
+              backgroundColor: "#FFFFFF",
+              borderTop: `1px solid ${TOKENS.line}`,
             }}
           >
-            <span style={{ color: TOKENS.accent, fontFamily: "'IBM Plex Mono', monospace", fontSize: "13px", marginRight: "8px" }}>
+            <span style={{ color: "#0284C7", fontFamily: "'IBM Plex Mono', monospace", fontSize: "13px", fontWeight: 700, marginRight: "10px" }}>
               $&gt;
             </span>
             <input
@@ -318,7 +325,7 @@ export default function InteractiveTerminalHUD() {
                 backgroundColor: "transparent",
                 border: "none",
                 outline: "none",
-                color: "#FFFFFF",
+                color: TOKENS.ink,
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "13px",
               }}
@@ -326,18 +333,19 @@ export default function InteractiveTerminalHUD() {
             <button
               type="submit"
               style={{
-                backgroundColor: TOKENS.accent,
+                backgroundColor: "#0284C7",
                 border: "none",
                 borderRadius: TOKENS.radius.xs,
                 color: "#FFFFFF",
-                padding: "5px 12px",
+                padding: "6px 14px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
-                gap: "4px",
+                gap: "5px",
                 fontFamily: "'IBM Plex Sans', sans-serif",
                 fontSize: "12px",
-                fontWeight: 600,
+                fontWeight: 700,
+                boxShadow: "0 2px 8px rgba(2, 132, 199, 0.25)",
               }}
             >
               <span>Run</span>

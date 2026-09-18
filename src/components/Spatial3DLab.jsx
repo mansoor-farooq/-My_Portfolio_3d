@@ -129,7 +129,7 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
   return (
     <group position={node.position}>
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.7}>
-        {/* 1. Translucent Outer Glass Polyhedron */}
+        {/* 1. Translucent Outer Optical Quartz Polyhedron */}
         <mesh
           ref={outerRef}
           onClick={(e) => {
@@ -150,16 +150,16 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
           <icosahedronGeometry args={[0.55, 0]} />
           <MeshTransmissionMaterial
             backside
-            samples={4}
+            samples={6}
             resolution={256}
-            transmission={0.92}
-            roughness={0.08}
-            thickness={1.1}
-            ior={1.45}
-            chromaticAberration={0.16}
-            distortion={0.2}
+            transmission={0.96}
+            roughness={0.04}
+            thickness={1.3}
+            ior={1.52}
+            chromaticAberration={0.2}
+            distortion={0.15}
             color={node.color}
-            attenuationDistance={1.4}
+            attenuationDistance={1.6}
             attenuationColor={node.color}
           />
         </mesh>
@@ -168,11 +168,11 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
         <mesh ref={innerRef} scale={isSelected ? 0.35 : 0.28}>
           <octahedronGeometry args={[1, 0]} />
           <meshStandardMaterial
-            color={node.glowColor}
-            emissive={node.glowColor}
-            emissiveIntensity={isSelected ? 3.0 : isHovered ? 2.2 : 1.4}
+            color={node.color}
+            emissive={node.color}
+            emissiveIntensity={isSelected ? 2.0 : isHovered ? 1.5 : 1.0}
             roughness={0.1}
-            metalness={0.8}
+            metalness={0.85}
             wireframe={true}
           />
         </mesh>
@@ -180,10 +180,10 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
         {/* 3. Glowing Orbital Planetary Ring */}
         <mesh ref={ringRef} rotation={[Math.PI / 2.5, 0, 0]} scale={isSelected ? 1.05 : 0.88}>
           <torusGeometry args={[1, 0.016, 16, 64]} />
-          <meshBasicMaterial color={node.glowColor} transparent opacity={isSelected ? 0.9 : 0.45} />
+          <meshBasicMaterial color={node.color} transparent opacity={isSelected ? 0.9 : 0.45} />
         </mesh>
 
-        {/* 4. Luxury Cyberpunk Frosted Glass HUD Tag */}
+        {/* 4. Luxury Architectural Cleanroom HUD Tag */}
         <Html distanceFactor={9} position={[0, -0.78, 0]} center zIndexRange={[100, 0]}>
           <div
             onClick={(e) => {
@@ -191,21 +191,21 @@ function Ultra3DNode({ node, activeNodeId, onSelectNode, isHovered, onHover }) {
               onSelectNode(node);
             }}
             style={{
-              padding: "4px 11px",
-              borderRadius: "7px",
-              backgroundColor: isSelected ? node.color : "rgba(11, 18, 32, 0.9)",
+              padding: "5px 12px",
+              borderRadius: "8px",
+              backgroundColor: isSelected ? node.color : "rgba(255, 255, 255, 0.94)",
               backdropFilter: "blur(14px)",
               WebkitBackdropFilter: "blur(14px)",
-              border: `1px solid ${isSelected ? "#FFFFFF" : `${node.glowColor}70`}`,
-              color: "#FFFFFF",
+              border: `1px solid ${isSelected ? node.color : TOKENS.line}`,
+              color: isSelected ? "#FFFFFF" : TOKENS.ink,
               fontSize: "11px",
               fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 600,
+              fontWeight: 700,
               whiteSpace: "nowrap",
               cursor: "pointer",
               boxShadow: isSelected
-                ? `0 0 18px ${node.glowColor}, 0 4px 14px rgba(0,0,0,0.5)`
-                : "0 6px 18px rgba(0, 0, 0, 0.45)",
+                ? `0 6px 18px ${node.color}50, 0 2px 8px rgba(0,0,0,0.1)`
+                : "0 4px 14px rgba(15, 23, 42, 0.08)",
               transition: "all 180ms ease",
               userSelect: "none",
               display: "flex",
@@ -248,7 +248,7 @@ function LaserDataStreams({ nodes }) {
 
   return (
     <lineSegments geometry={lineGeo}>
-      <lineBasicMaterial color="#38BDF8" transparent opacity={0.35} />
+      <lineBasicMaterial color="#0284C7" transparent opacity={0.45} />
     </lineSegments>
   );
 }
@@ -257,9 +257,10 @@ function LaserDataStreams({ nodes }) {
 function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover, controlsRef }) {
   return (
     <>
-      <ambientLight intensity={1.4} />
-      <pointLight position={[6, 6, 6]} intensity={3.2} color="#0284C7" />
-      <pointLight position={[-6, -6, -2]} intensity={2.6} color="#38BDF8" />
+      <ambientLight intensity={1.8} />
+      <directionalLight position={[0, 8, 4]} intensity={1.5} color="#FFFFFF" />
+      <pointLight position={[6, 6, 6]} intensity={3.5} color="#0284C7" />
+      <pointLight position={[-6, -4, 2]} intensity={2.5} color="#0EA5E9" />
       <pointLight position={[0, 5, 4]} intensity={2.0} color="#7C3AED" />
 
       <LaserDataStreams nodes={SYSTEM_NODES} />
@@ -275,7 +276,7 @@ function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover, controls
         />
       ))}
 
-      <Sparkles count={45} scale={8} size={2.5} speed={0.5} color="#38BDF8" opacity={0.6} />
+      <Sparkles count={35} scale={8} size={2.2} speed={0.4} color="#0284C7" opacity={0.45} />
       <OrbitControls
         ref={controlsRef}
         enableZoom={false}
@@ -332,25 +333,25 @@ export default function Spatial3DLab() {
       id="spatial-lab"
       ref={containerRef}
       style={{
-        backgroundColor: "#060912",
+        backgroundColor: TOKENS.surface,
         paddingTop: "90px",
         paddingBottom: "90px",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        borderBottom: `1px solid ${TOKENS.line}`,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Aurora Ambient Glows */}
+      {/* Light Ambient Glows */}
       <div
         style={{
           position: "absolute",
           top: "15%",
-          left: "15%",
-          width: "450px",
-          height: "450px",
+          left: "10%",
+          width: "500px",
+          height: "500px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%)",
-          filter: "blur(70px)",
+          background: "radial-gradient(circle, rgba(2, 132, 199, 0.07) 0%, transparent 70%)",
+          filter: "blur(80px)",
           pointerEvents: "none",
         }}
       />
@@ -358,12 +359,12 @@ export default function Spatial3DLab() {
         style={{
           position: "absolute",
           bottom: "15%",
-          right: "15%",
-          width: "450px",
-          height: "450px",
+          right: "10%",
+          width: "500px",
+          height: "500px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, transparent 70%)",
-          filter: "blur(70px)",
+          background: "radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%)",
+          filter: "blur(80px)",
           pointerEvents: "none",
         }}
       />
@@ -387,12 +388,12 @@ export default function Spatial3DLab() {
                 width: "7px",
                 height: "7px",
                 borderRadius: "50%",
-                backgroundColor: "#38BDF8",
+                backgroundColor: "#0284C7",
                 display: "inline-block",
-                boxShadow: "0 0 12px #38BDF8",
+                boxShadow: "0 0 8px rgba(2, 132, 199, 0.5)",
               }}
             />
-            <span style={{ ...TOKENS.type.micro, color: "#94A3B8", letterSpacing: "0.08em" }}>
+            <span style={{ ...TOKENS.type.micro, color: TOKENS.sub, letterSpacing: "0.08em", fontWeight: 700 }}>
               SPATIAL 3D ARCHITECTURE LAB // INTERACTIVE SYSTEM TOPOLOGY
             </span>
           </div>
@@ -411,13 +412,13 @@ export default function Spatial3DLab() {
                 style={{
                   ...TOKENS.type.title,
                   fontSize: "clamp(26px, 3.4vw, 38px)",
-                  color: "#FFFFFF",
+                  color: TOKENS.ink,
                   marginBottom: "8px",
                 }}
               >
                 Inspect Full-Stack 3D System Topology
               </h2>
-              <p style={{ ...TOKENS.type.body, color: "#94A3B8", maxWidth: "640px" }}>
+              <p style={{ ...TOKENS.type.body, color: TOKENS.sub, maxWidth: "640px" }}>
                 Rotate the 3D WebGL constellation. Click any system node to inspect live throughput benchmarks, security protocols, and production code snippets.
               </p>
             </div>
@@ -434,15 +435,15 @@ export default function Spatial3DLab() {
                     gap: "6px",
                     padding: "7px 14px",
                     borderRadius: TOKENS.radius.xs,
-                    border: `1px solid ${selectedNode.id === n.id ? n.color : "rgba(255, 255, 255, 0.12)"}`,
-                    backgroundColor: selectedNode.id === n.id ? `${n.color}25` : "rgba(255, 255, 255, 0.04)",
-                    color: selectedNode.id === n.id ? "#FFFFFF" : "#94A3B8",
+                    border: `1px solid ${selectedNode.id === n.id ? n.color : TOKENS.line}`,
+                    backgroundColor: selectedNode.id === n.id ? `${n.color}15` : "#FFFFFF",
+                    color: selectedNode.id === n.id ? n.color : TOKENS.sub,
                     fontFamily: "'IBM Plex Mono', monospace",
                     fontSize: "11.5px",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     cursor: "pointer",
                     transition: TOKENS.transition,
-                    boxShadow: selectedNode.id === n.id ? `0 0 16px ${n.glowColor}40` : "none",
+                    boxShadow: selectedNode.id === n.id ? `0 4px 14px ${n.color}25` : "0 2px 6px rgba(15, 23, 42, 0.04)",
                   }}
                 >
                   <span>{n.icon}</span>
@@ -468,11 +469,11 @@ export default function Spatial3DLab() {
             style={{
               position: "relative",
               height: "520px",
-              backgroundColor: "rgba(11, 18, 32, 0.9)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
+              backgroundColor: "#FFFFFF",
+              border: `1px solid ${TOKENS.line}`,
               borderRadius: TOKENS.radius.sm,
               overflow: "hidden",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              boxShadow: TOKENS.shadow.raised,
               touchAction: "pan-y",
             }}
           >
@@ -495,14 +496,16 @@ export default function Spatial3DLab() {
                   display: "flex",
                   alignItems: "center",
                   gap: "4px",
-                  padding: "5px 10px",
+                  padding: "6px 12px",
                   borderRadius: TOKENS.radius.xs,
-                  backgroundColor: "rgba(11, 18, 32, 0.8)",
+                  backgroundColor: "rgba(255, 255, 255, 0.92)",
                   backdropFilter: "blur(8px)",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                  color: "#94A3B8",
+                  border: `1px solid ${TOKENS.line}`,
+                  color: TOKENS.sub,
                   fontSize: "11px",
                   fontFamily: "'IBM Plex Mono', monospace",
+                  fontWeight: 600,
+                  boxShadow: "0 2px 6px rgba(15, 23, 42, 0.05)",
                   cursor: "pointer",
                 }}
               >
@@ -515,7 +518,7 @@ export default function Spatial3DLab() {
               frameloop={isVisible ? "always" : "never"}
               dpr={[1, 1.5]}
               camera={{ position: [0, 0, 8.2], fov: 42 }}
-              style={{ background: "transparent" }}
+              style={{ background: "#FAFCFF" }}
               gl={{
                 powerPreference: "high-performance",
                 antialias: true,
@@ -550,12 +553,13 @@ export default function Spatial3DLab() {
                 style={{
                   ...TOKENS.type.micro,
                   fontSize: "10.5px",
-                  color: "#38BDF8",
-                  backgroundColor: "rgba(2, 132, 199, 0.2)",
+                  color: "#0284C7",
+                  backgroundColor: "rgba(2, 132, 199, 0.08)",
                   backdropFilter: "blur(6px)",
-                  padding: "4px 10px",
+                  padding: "5px 11px",
                   borderRadius: TOKENS.radius.xs,
-                  border: "1px solid rgba(56, 189, 248, 0.3)",
+                  border: "1px solid rgba(2, 132, 199, 0.25)",
+                  fontWeight: 700,
                 }}
               >
                 DRAG TO ORBIT · SCROLL TO ZOOM · CLICK NODES
@@ -565,12 +569,14 @@ export default function Spatial3DLab() {
                 style={{
                   ...TOKENS.type.micro,
                   fontSize: "10.5px",
-                  color: "#94A3B8",
-                  backgroundColor: "rgba(0, 0, 0, 0.7)",
+                  color: TOKENS.sub,
+                  backgroundColor: "rgba(255, 255, 255, 0.92)",
                   backdropFilter: "blur(6px)",
-                  padding: "4px 10px",
+                  padding: "5px 11px",
                   borderRadius: TOKENS.radius.xs,
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  border: `1px solid ${TOKENS.line}`,
+                  boxShadow: "0 2px 6px rgba(15, 23, 42, 0.04)",
+                  fontWeight: 600,
                 }}
               >
                 WEBGL ACCELERATED ENGINE
@@ -581,14 +587,14 @@ export default function Spatial3DLab() {
           {/* 2. Right: Live Selected Node Telemetry HUD */}
           <div
             style={{
-              backgroundColor: "rgba(11, 18, 32, 0.95)",
-              border: `1px solid ${selectedNode.color}60`,
+              backgroundColor: "#FFFFFF",
+              border: `1px solid ${selectedNode.color}40`,
               borderRadius: TOKENS.radius.sm,
               padding: "26px 24px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              boxShadow: `0 10px 35px ${selectedNode.color}20`,
+              boxShadow: TOKENS.shadow.raised,
             }}
           >
             <div>
@@ -597,25 +603,25 @@ export default function Spatial3DLab() {
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <div
                     style={{
-                      width: "40px",
-                      height: "40px",
+                      width: "42px",
+                      height: "42px",
                       borderRadius: "10px",
-                      backgroundColor: `${selectedNode.color}20`,
-                      border: `1px solid ${selectedNode.color}60`,
+                      backgroundColor: `${selectedNode.color}15`,
+                      border: `1px solid ${selectedNode.color}40`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       fontSize: "20px",
-                      boxShadow: `0 0 14px ${selectedNode.glowColor}40`,
+                      boxShadow: `0 4px 12px ${selectedNode.color}20`,
                     }}
                   >
                     {selectedNode.icon}
                   </div>
                   <div>
-                    <h3 style={{ ...TOKENS.type.title, fontSize: "18px", color: "#FFFFFF", margin: 0 }}>
+                    <h3 style={{ ...TOKENS.type.title, fontSize: "18px", color: TOKENS.ink, margin: 0 }}>
                       {selectedNode.name}
                     </h3>
-                    <span style={{ ...TOKENS.type.micro, color: "#94A3B8", fontSize: "11px" }}>
+                    <span style={{ ...TOKENS.type.micro, color: TOKENS.sub, fontSize: "11px", fontWeight: 600 }}>
                       {selectedNode.role}
                     </span>
                   </div>
@@ -625,11 +631,11 @@ export default function Spatial3DLab() {
                   style={{
                     ...TOKENS.type.micro,
                     fontSize: "10px",
-                    color: selectedNode.glowColor,
-                    backgroundColor: `${selectedNode.color}20`,
-                    padding: "3px 8px",
+                    color: selectedNode.color,
+                    backgroundColor: `${selectedNode.color}12`,
+                    padding: "4px 10px",
                     borderRadius: TOKENS.radius.xs,
-                    border: `1px solid ${selectedNode.color}40`,
+                    border: `1px solid ${selectedNode.color}35`,
                     fontWeight: 700,
                   }}
                 >
@@ -648,48 +654,48 @@ export default function Spatial3DLab() {
               >
                 <div
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.04)",
-                    border: `1px solid ${selectedNode.color}30`,
+                    backgroundColor: "#F8FAFC",
+                    border: `1px solid ${TOKENS.line}`,
                     borderRadius: TOKENS.radius.xs,
                     padding: "10px 12px",
                   }}
                 >
-                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: "#94A3B8", display: "block", marginBottom: "4px" }}>
+                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: TOKENS.sub, display: "block", marginBottom: "4px", fontWeight: 700 }}>
                     THROUGHPUT
                   </span>
-                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: "#FFFFFF" }}>
+                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: TOKENS.ink }}>
                     {selectedNode.metrics.throughput}
                   </span>
                 </div>
 
                 <div
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.04)",
-                    border: `1px solid ${selectedNode.color}30`,
+                    backgroundColor: "#F8FAFC",
+                    border: `1px solid ${TOKENS.line}`,
                     borderRadius: TOKENS.radius.xs,
                     padding: "10px 12px",
                   }}
                 >
-                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: "#94A3B8", display: "block", marginBottom: "4px" }}>
+                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: TOKENS.sub, display: "block", marginBottom: "4px", fontWeight: 700 }}>
                     LATENCY
                   </span>
-                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: selectedNode.glowColor }}>
+                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: selectedNode.color }}>
                     {selectedNode.metrics.latency}
                   </span>
                 </div>
 
                 <div
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.04)",
-                    border: `1px solid ${selectedNode.color}30`,
+                    backgroundColor: "#F8FAFC",
+                    border: `1px solid ${TOKENS.line}`,
                     borderRadius: TOKENS.radius.xs,
                     padding: "10px 12px",
                   }}
                 >
-                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: "#94A3B8", display: "block", marginBottom: "4px" }}>
+                  <span style={{ ...TOKENS.type.micro, fontSize: "9.5px", color: TOKENS.sub, display: "block", marginBottom: "4px", fontWeight: 700 }}>
                     HEALTH
                   </span>
-                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: "#10B981" }}>
+                  <span style={{ ...TOKENS.type.data, fontSize: "13px", fontWeight: 700, color: "#059669" }}>
                     {selectedNode.metrics.state}
                   </span>
                 </div>
@@ -700,7 +706,7 @@ export default function Spatial3DLab() {
                 style={{
                   display: "flex",
                   gap: "6px",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderBottom: `1px solid ${TOKENS.line}`,
                   paddingBottom: "10px",
                   marginBottom: "14px",
                 }}
@@ -708,15 +714,15 @@ export default function Spatial3DLab() {
                 <button
                   onClick={() => setActiveTab("specs")}
                   style={{
-                    padding: "4px 10px",
+                    padding: "5px 12px",
                     borderRadius: TOKENS.radius.xs,
                     border: "none",
                     backgroundColor: activeTab === "specs" ? selectedNode.color : "transparent",
-                    color: activeTab === "specs" ? "#FFFFFF" : "#94A3B8",
+                    color: activeTab === "specs" ? "#FFFFFF" : TOKENS.sub,
                     ...TOKENS.type.micro,
                     fontSize: "11px",
                     cursor: "pointer",
-                    fontWeight: 600,
+                    fontWeight: 700,
                   }}
                 >
                   SPECS & PROTOCOLS
@@ -725,15 +731,15 @@ export default function Spatial3DLab() {
                 <button
                   onClick={() => setActiveTab("code")}
                   style={{
-                    padding: "4px 10px",
+                    padding: "5px 12px",
                     borderRadius: TOKENS.radius.xs,
                     border: "none",
                     backgroundColor: activeTab === "code" ? selectedNode.color : "transparent",
-                    color: activeTab === "code" ? "#FFFFFF" : "#94A3B8",
+                    color: activeTab === "code" ? "#FFFFFF" : TOKENS.sub,
                     ...TOKENS.type.micro,
                     fontSize: "11px",
                     cursor: "pointer",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     display: "flex",
                     alignItems: "center",
                     gap: "4px",
@@ -749,8 +755,8 @@ export default function Spatial3DLab() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", minHeight: "120px" }}>
                   {selectedNode.specs.map((spec) => (
                     <div key={spec} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: selectedNode.color }} />
-                      <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: "#E2E8F0" }}>{spec}</span>
+                      <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: selectedNode.color }} />
+                      <span style={{ ...TOKENS.type.data, fontSize: "12.5px", color: TOKENS.ink }}>{spec}</span>
                     </div>
                   ))}
                 </div>
@@ -761,14 +767,14 @@ export default function Spatial3DLab() {
                 <pre
                   style={{
                     margin: 0,
-                    backgroundColor: "rgba(0, 0, 0, 0.4)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    backgroundColor: "#F1F5F9",
+                    border: `1px solid ${TOKENS.line}`,
                     borderRadius: TOKENS.radius.xs,
-                    padding: "10px 12px",
+                    padding: "12px 14px",
                     fontFamily: "'IBM Plex Mono', monospace",
                     fontSize: "11px",
-                    lineHeight: 1.5,
-                    color: "#A7F3D0",
+                    lineHeight: 1.55,
+                    color: "#0F172A",
                     overflowX: "auto",
                     minHeight: "120px",
                   }}
@@ -785,24 +791,26 @@ export default function Spatial3DLab() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: "12px 16px",
+                padding: "13px 18px",
                 marginTop: "16px",
-                backgroundColor: `${selectedNode.color}18`,
-                border: `1px solid ${selectedNode.color}50`,
+                backgroundColor: `${selectedNode.color}12`,
+                border: `1px solid ${selectedNode.color}40`,
                 borderRadius: TOKENS.radius.xs,
-                color: "#FFFFFF",
+                color: selectedNode.color,
                 textDecoration: "none",
                 ...TOKENS.type.data,
                 fontSize: "13px",
-                fontWeight: 600,
+                fontWeight: 700,
                 transition: TOKENS.transition,
                 boxShadow: `0 4px 14px ${selectedNode.color}15`,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = selectedNode.color;
+                e.currentTarget.style.color = "#FFFFFF";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = `${selectedNode.color}18`;
+                e.currentTarget.style.backgroundColor = `${selectedNode.color}12`;
+                e.currentTarget.style.color = selectedNode.color;
               }}
             >
               <span>Build with {selectedNode.name.split(" ")[0]} Architecture</span>

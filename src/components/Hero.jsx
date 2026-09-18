@@ -173,7 +173,7 @@ export default function Hero({ onExploreClick }) {
                     boxShadow: TOKENS.shadow.resting,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#1648CC";
+                    e.currentTarget.style.backgroundColor = "#0369A1";
                     e.currentTarget.style.boxShadow = TOKENS.shadow.raised;
                   }}
                   onMouseLeave={(e) => {
@@ -261,7 +261,7 @@ export default function Hero({ onExploreClick }) {
                   }}
                 >
                   <Sparkles size={11} />
-                  <span>3D HOLOGRAM CORE</span>
+                  <span>3D OPTICAL CRYSTAL</span>
                 </button>
 
                 <button

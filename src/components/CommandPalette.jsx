@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Command, ArrowRight, Code, Briefcase, Mail, Sparkles, Terminal, Copy, Check } from "lucide-react";
-import { TH } from "../theme";
+import { TH, TOKENS } from "../theme";
 import { playClickSound, playSuccessSound } from "../utils/audio";
 import { GithubIcon } from "./Icons";
 import confetti from "canvas-confetti";
@@ -112,36 +112,38 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(3, 5, 8, 0.8)",
-            backdropFilter: "blur(12px)",
+            background: "rgba(15, 23, 42, 0.35)",
+            backdropFilter: "blur(16px)",
           }}
         />
 
-        {/* Command HUD Window */}
+        {/* Command HUD Window (Apple Spotlight Light Mode) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: -20 }}
+          initial={{ opacity: 0, scale: 0.96, y: -16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: -20 }}
-          transition={{ type: "spring", damping: 26, stiffness: 350 }}
+          exit={{ opacity: 0, scale: 0.96, y: -16 }}
+          transition={{ type: "spring", damping: 28, stiffness: 380 }}
           style={{
             position: "relative",
             zIndex: 1101,
             width: "100%",
             maxWidth: 620,
-            background: "linear-gradient(175deg, #101522 0%, #090C14 100%)",
-            border: `1px solid ${TH.borderAccent}`,
-            borderRadius: 20,
+            backgroundColor: "rgba(255, 255, 255, 0.97)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: `1px solid ${TOKENS.line}`,
+            borderRadius: TOKENS.radius.sm,
             overflow: "hidden",
-            boxShadow: `0 24px 70px rgba(0,0,0,0.8), 0 0 40px rgba(0,245,155,0.15)`,
+            boxShadow: "0 25px 60px -12px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.05)",
           }}
         >
           {/* Top Search Input Bar */}
-          <div style={{ display: "flex", alignItems: "center", padding: "16px 20px", borderBottom: `1px solid ${TH.border}` }}>
-            <Search size={19} color={TH.accent} style={{ marginRight: 12 }} />
+          <div style={{ display: "flex", alignItems: "center", padding: "16px 20px", borderBottom: `1px solid ${TOKENS.line}` }}>
+            <Search size={18} color="#0284C7" style={{ marginRight: 12 }} />
             <input
               ref={inputRef}
               type="text"
-              placeholder="Type a command or jump to section..."
+              placeholder="Search sections, projects, or commands..."
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -152,21 +154,22 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
                 background: "transparent",
                 border: "none",
                 outline: "none",
-                color: "#FFF",
+                color: TOKENS.ink,
                 fontSize: 15,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 fontWeight: 500,
               }}
             />
             <span
               style={{
                 fontSize: 11,
-                fontFamily: "'JetBrains Mono', monospace",
-                color: TH.textMuted,
-                background: "rgba(255, 255, 255, 0.06)",
-                padding: "3px 7px",
-                borderRadius: 6,
-                border: `1px solid ${TH.border}`,
+                fontFamily: "'IBM Plex Mono', monospace",
+                color: TOKENS.sub,
+                background: "#F1F5F9",
+                padding: "3px 8px",
+                borderRadius: 4,
+                border: `1px solid ${TOKENS.line}`,
+                fontWeight: 600,
               }}
             >
               ESC
@@ -176,7 +179,7 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
           {/* Results List */}
           <div style={{ maxHeight: 340, overflowY: "auto", padding: "8px 10px" }}>
             {filtered.length === 0 ? (
-              <div style={{ padding: "32px 20px", textAlign: "center", color: TH.textMuted, fontSize: 14 }}>
+              <div style={{ padding: "32px 20px", textAlign: "center", color: TOKENS.sub, fontSize: 14 }}>
                 No matching actions or commands found.
               </div>
             ) : (
@@ -194,18 +197,18 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      padding: "12px 14px",
-                      borderRadius: 12,
-                      background: isSelected ? "rgba(0, 245, 155, 0.12)" : "transparent",
-                      border: isSelected ? `1px solid ${TH.borderAccent}` : "1px solid transparent",
+                      padding: "11px 14px",
+                      borderRadius: TOKENS.radius.xs,
+                      background: isSelected ? "rgba(2, 132, 199, 0.08)" : "transparent",
+                      border: isSelected ? "1px solid rgba(2, 132, 199, 0.25)" : "1px solid transparent",
                       cursor: "pointer",
-                      transition: "background 0.15s ease",
-                      color: isSelected ? "#FFF" : TH.textSub,
+                      transition: "background 0.12s ease",
+                      color: isSelected ? TOKENS.ink : TOKENS.sub,
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ color: isSelected ? TH.accent : TH.textMuted }}>{item.icon}</span>
-                      <span style={{ fontSize: 13.5, fontWeight: isSelected ? 600 : 500 }}>
+                      <span style={{ color: isSelected ? "#0284C7" : TOKENS.sub }}>{item.icon}</span>
+                      <span style={{ fontSize: 13.5, fontWeight: isSelected ? 700 : 500, color: isSelected ? TOKENS.ink : TOKENS.sub }}>
                         {item.title}
                       </span>
                     </div>
@@ -214,15 +217,16 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
                       <span
                         style={{
                           fontSize: 10,
-                          fontFamily: "'JetBrains Mono', monospace",
-                          color: TH.textMuted,
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          color: TOKENS.sub,
                           textTransform: "uppercase",
-                          letterSpacing: "0.08em",
+                          letterSpacing: "0.06em",
+                          fontWeight: 600,
                         }}
                       >
                         {item.category}
                       </span>
-                      {isSelected && <ArrowRight size={14} color={TH.accent} />}
+                      {isSelected && <ArrowRight size={14} color="#0284C7" />}
                     </div>
                   </div>
                 );
@@ -233,19 +237,20 @@ export default function CommandPalette({ isOpen, onClose, onSelectProject }) {
           {/* Footer Bar */}
           <div
             style={{
-              padding: "10px 18px",
-              background: "rgba(0, 0, 0, 0.35)",
-              borderTop: `1px solid ${TH.border}`,
+              padding: "11px 18px",
+              background: "#F8FAFC",
+              borderTop: `1px solid ${TOKENS.line}`,
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               fontSize: 11,
-              fontFamily: "'JetBrains Mono', monospace",
-              color: TH.textMuted,
+              fontFamily: "'IBM Plex Mono', monospace",
+              color: TOKENS.sub,
+              fontWeight: 600,
             }}
           >
             <span>Navigation: ↑ ↓ · Select: ↵</span>
-            {copied && <span style={{ color: TH.accent }}>✓ Email copied to clipboard!</span>}
+            {copied && <span style={{ color: "#059669" }}>✓ Email copied to clipboard!</span>}
             <span>Mansoor Developer HUD</span>
           </div>
         </motion.div>
