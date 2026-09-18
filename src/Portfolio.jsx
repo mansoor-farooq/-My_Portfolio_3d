@@ -44,6 +44,8 @@ import InteractiveTerminalHUD from "./components/InteractiveTerminalHUD";
 import FAQSection from "./components/FAQSection";
 import Footer from "./components/Footer";
 import FloatingWidgets from "./components/FloatingWidgets";
+import ServicesSection from "./components/ServicesSection";
+import TestimonialsSection from "./components/TestimonialsSection";
 
 // ── Skills Database ─────────────────────────────────────────────────────────────
 const SKILLS = [
@@ -273,7 +275,7 @@ export default function Portfolio() {
 
   // Section Observer for Active Navigation Highlighting
   useEffect(() => {
-    const sectionIds = ["home", "spatial-lab", "about", "skills", "projects", "cinema", "process", "blog", "terminal", "faq", "contact"];
+    const sectionIds = ["home", "spatial-lab", "about", "services", "skills", "projects", "cinema", "testimonials", "process", "blog", "terminal", "faq", "contact"];
     
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -391,6 +393,9 @@ export default function Portfolio() {
         {/* ── ABOUT SECTION (Character, Origins & Portrait Anchor) ── */}
         <AboutSection />
 
+        {/* ── ARCHITECTURAL SERVICES & CAPABILITIES (6-Card Executive Suite) ── */}
+        <ServicesSection />
+
         {/* ── TECHNICAL STACK SECTION ── */}
         <SkillsSection />
 
@@ -399,6 +404,9 @@ export default function Portfolio() {
 
         {/* ── CINEMATIC MOTION & VIDEO REELS (Nicolas Martins & Peryton Film Architecture) ── */}
         <CinematicReels />
+
+        {/* ── VERIFIED CLIENT ENDORSEMENTS & TESTIMONIALS ── */}
+        <TestimonialsSection />
 
         {/* ── ENGINEERING PROCESS & WORKFLOW PIPELINE ── */}
         <EngineeringProcess />

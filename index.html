@@ -29,34 +29,170 @@
     <meta name="twitter:title" content="Mansoor Farooq — Full-Stack Developer | Karachi" />
     <meta name="twitter:description" content="Building custom web applications, animated SaaS interfaces, and native Android apps with Next.js, Node.js, PostgreSQL, and Kotlin." />
     
-    <!-- Structured Data JSON-LD Schema -->
+    <!-- Structured Data JSON-LD Schemas (@graph) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Mansoor Farooq",
-      "jobTitle": "Full-Stack Developer",
-      "url": "https://mansoor-farooq.vercel.app",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Karachi",
-        "addressCountry": "Pakistan"
-      },
-      "knowsAbout": [
-        "Next.js",
-        "React.js",
-        "Node.js",
-        "PostgreSQL",
-        "Kotlin",
-        "Android",
-        "TypeScript",
-        "JavaScript",
-        "REST APIs",
-        "Web Performance Optimization"
-      ],
-      "sameAs": [
-        "https://github.com/mansoor-farooq",
-        "https://linkedin.com/in/mansoor-farooq-a757b9365"
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://mansoor-farooq.vercel.app/#person",
+          "name": "Mansoor Farooq",
+          "jobTitle": "Full-Stack Software Engineer & Solutions Architect",
+          "url": "https://mansoor-farooq.vercel.app",
+          "image": "https://mansoor-farooq.vercel.app/profile.jpg",
+          "description": "Full-Stack Developer specializing in Next.js, Node.js, PostgreSQL, Kotlin Android, and real-time WebGL systems.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Karachi",
+            "addressRegion": "Sindh",
+            "addressCountry": "Pakistan"
+          },
+          "knowsAbout": [
+            "Next.js",
+            "React.js",
+            "TypeScript",
+            "Node.js",
+            "Express.js",
+            "PostgreSQL",
+            "SQLite",
+            "Kotlin",
+            "Jetpack Compose",
+            "Android Development",
+            "REST APIs",
+            "Three.js",
+            "WebGL",
+            "Technical SEO",
+            "Core Web Vitals"
+          ],
+          "sameAs": [
+            "https://github.com/mansoor-farooq",
+            "https://linkedin.com/in/mansoor-farooq-a757b9365"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://mansoor-farooq.vercel.app/#website",
+          "url": "https://mansoor-farooq.vercel.app",
+          "name": "Mansoor Farooq Portfolio",
+          "description": "Ultra-Luxury Architectural Portfolio of Mansoor Farooq — Full-Stack Developer & Android Engineer.",
+          "publisher": {
+            "@id": "https://mansoor-farooq.vercel.app/#person"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://mansoor-farooq.vercel.app/#service",
+          "name": "Mansoor Farooq Software Consulting & Development",
+          "url": "https://mansoor-farooq.vercel.app",
+          "founder": {
+            "@id": "https://mansoor-farooq.vercel.app/#person"
+          },
+          "areaServed": "Worldwide",
+          "priceRange": "$$$",
+          "knowsLanguage": ["English", "Urdu"],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Software Engineering Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Full-Stack SaaS & Web Platforms",
+                  "description": "Next.js App Router, React, Node.js, and PostgreSQL multi-tenant web systems."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Native Android & Mobile Systems",
+                  "description": "Modern Android Architecture (MAD) using Kotlin, Jetpack Compose, and Room DB."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Offline-First & Local-Storage Architecture",
+                  "description": "Embedded SQLite and background bi-directional sync pipelines."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Backend APIs & Distributed Systems",
+                  "description": "High-concurrency Node.js and ASP.NET Core microservices with Redis caching."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "3D WebGL Experiences & Motion Design",
+                  "description": "Sensory Three.js, React Three Fiber, and Lenis smooth scroll web experiences."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Technical SEO & Core Web Vitals Auditing",
+                  "description": "Sub-second LCP, perfect JSON-LD schema graph, and top search ranking performance."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://mansoor-farooq.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is your primary tech stack for custom web and mobile apps?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "My primary web stack is Next.js (App Router), React, TypeScript, and Tailwind CSS on the frontend, with Node.js / Express and PostgreSQL on the backend. For offline-first capabilities, I use local SQLite stores. For native mobile applications, I build with native Kotlin and Jetpack Compose on Android."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How long does a typical custom application or website take to build?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A high-performance animated business website typically takes 1 to 2 weeks. A full-stack custom web application (with database modeling, authentication, dashboard, and payment/API integrations) typically takes 3 to 6 weeks depending on feature scope."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you build custom architectures or use pre-made templates / WordPress?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "I build 100% custom code from scratch. I do not use slow, bloated WordPress themes or generic templates. Custom Next.js code guarantees sub-1.5s load times, top-tier security, and complete flexibility for any custom business workflow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can you build offline-first applications that work without internet?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! Many of my projects (such as MindVault and industrial gate check-ins) are engineered offline-first using local SQLite database caching and progressive web app (PWA) background synchronization."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do we get started on a project?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Simply send a direct message through the contact form below or reach out directly on WhatsApp at +92 329 259 7331. We will schedule a quick scope alignment call to define your requirements, timeline, and architectural plan."
+              }
+            }
+          ]
+        }
       ]
     }
     </script>

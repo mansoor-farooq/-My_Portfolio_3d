@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Database, Cpu, Sparkles, Layers } from "lucide-react";
+import { ArrowRight, ShieldCheck, Database, Cpu, Sparkles, Layers, User } from "lucide-react";
 import { TOKENS } from "../theme";
 import IsometricArchitecture from "./IsometricArchitecture";
 import Interactive3DCore from "./Interactive3DCore";
+import CharacterScene from "./CharacterScene";
 
 export default function Hero({ onExploreClick }) {
-  const [heroMode, setHeroMode] = useState("3d");
+  const [heroMode, setHeroMode] = useState("character");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -244,6 +245,27 @@ export default function Hero({ onExploreClick }) {
                 }}
               >
                 <button
+                  onClick={() => setHeroMode("character")}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "4px 10px",
+                    border: "none",
+                    borderRadius: TOKENS.radius.xs,
+                    backgroundColor: heroMode === "character" ? TOKENS.accent : "transparent",
+                    color: heroMode === "character" ? "#FFFFFF" : TOKENS.muted,
+                    ...TOKENS.type.micro,
+                    fontSize: "11px",
+                    cursor: "pointer",
+                    transition: TOKENS.transition,
+                  }}
+                >
+                  <User size={11} />
+                  <span>CINEMATIC CHARACTER</span>
+                </button>
+
+                <button
                   onClick={() => setHeroMode("3d")}
                   style={{
                     display: "inline-flex",
@@ -261,7 +283,7 @@ export default function Hero({ onExploreClick }) {
                   }}
                 >
                   <Sparkles size={11} />
-                  <span>3D OPTICAL CRYSTAL</span>
+                  <span>OPTICAL CRYSTAL</span>
                 </button>
 
                 <button
@@ -286,7 +308,13 @@ export default function Hero({ onExploreClick }) {
                 </button>
               </div>
 
-              {heroMode === "3d" ? <Interactive3DCore /> : <IsometricArchitecture />}
+              {heroMode === "character" ? (
+                <CharacterScene />
+              ) : heroMode === "3d" ? (
+                <Interactive3DCore />
+              ) : (
+                <IsometricArchitecture />
+              )}
             </motion.div>
           </div>
 
