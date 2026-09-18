@@ -278,13 +278,17 @@ function LabScene({ activeNodeId, onSelectNode, hoveredNodeId, onHover, controls
       <Sparkles count={45} scale={8} size={2.5} speed={0.5} color="#38BDF8" opacity={0.6} />
       <OrbitControls
         ref={controlsRef}
-        enableZoom={true}
+        enableZoom={false}
         enablePan={false}
+        touches={{
+          ONE: THREE.TOUCH.NONE,
+          TWO: THREE.TOUCH.ROTATE,
+        }}
         minDistance={5}
         maxDistance={12}
         maxPolarAngle={Math.PI / 1.7}
         minPolarAngle={Math.PI / 2.6}
-        rotateSpeed={0.5}
+        rotateSpeed={0.6}
         autoRotate={true}
         autoRotateSpeed={0.4}
       />

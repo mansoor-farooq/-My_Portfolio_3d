@@ -37,6 +37,7 @@ import Spatial3DLab from "./components/Spatial3DLab";
 import AboutSection from "./components/AboutSection";
 import SkillsSection from "./components/SkillsSection";
 import FeaturedProjects from "./components/FeaturedProjects";
+import CinematicReels from "./components/CinematicReels";
 import EngineeringProcess from "./components/EngineeringProcess";
 import BlogSection from "./components/BlogSection";
 import InteractiveTerminalHUD from "./components/InteractiveTerminalHUD";
@@ -272,7 +273,7 @@ export default function Portfolio() {
 
   // Section Observer for Active Navigation Highlighting
   useEffect(() => {
-    const sectionIds = ["home", "spatial-lab", "about", "skills", "projects", "process", "blog", "terminal", "faq", "contact"];
+    const sectionIds = ["home", "spatial-lab", "about", "skills", "projects", "cinema", "process", "blog", "terminal", "faq", "contact"];
     
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
@@ -409,6 +410,9 @@ export default function Portfolio() {
 
         {/* ── FEATURED APPLICATIONS & CASE STUDIES (With Images & Problem/Solution) ── */}
         <FeaturedProjects />
+
+        {/* ── CINEMATIC MOTION & VIDEO REELS (Nicolas Martins & Peryton Film Architecture) ── */}
+        <CinematicReels />
 
         {/* ── ENGINEERING PROCESS & WORKFLOW PIPELINE ── */}
         <EngineeringProcess />
